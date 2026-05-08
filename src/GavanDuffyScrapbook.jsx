@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Scroll, Users, Compass, Heart, Home, Building2, FileText, ChevronRight, X, MapPin, Calendar, Ship, Scissors } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { X, MapPin, Search } from 'lucide-react';
+
+// Palette — kept faithful to the original drapery aesthetic.
+const C = {
+  cream: '#f4ebd8', creamDeep: '#ebe0c8', paper: 'rgba(255,255,255,0.55)',
+  ink: '#2a1f1a', inkSoft: '#3d2817', oxblood: '#7a3b2e', taupe: '#6b5137',
+  rule: '#c4a77d', gold: '#b08d3f', rose: '#a86b6b', sage: '#7a8a5d',
+};
+const FD = "'Playfair Display', Georgia, serif";
+const FB = "'EB Garamond', Georgia, serif";
+const FM = "'Special Elite', ui-monospace, monospace";
 
 export default function GavanDuffyScrapbook() {
-  const [activeTab, setActiveTab] = useState('overview');
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
-
-  // Fonts are loaded directly in index.html so the typography is in place before paint.
-
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: Scroll },
-    { id: 'family', label: 'Family', icon: Users },
-    { id: 'canada', label: 'Canada', icon: Compass },
-    { id: 'women', label: 'The Women', icon: Heart },
-    { id: 'places', label: 'Places', icon: Home },
-    { id: 'shop', label: 'The Shop', icon: Building2 },
-    { id: 'archive', label: 'Archive', icon: FileText },
-  ];
+  const [archiveFilter, setArchiveFilter] = useState('all');
+  const [archiveQuery, setArchiveQuery] = useState('');
 
   const timeline = [
     { year: '1875', event: 'Parents Thomas Duffy (draper) and Mary Flynn (milliner) marry at St Kevin\'s, Dublin', tone: 'family' },
@@ -246,966 +245,878 @@ export default function GavanDuffyScrapbook() {
     },
   };
 
-  // Timeline tone colours: birth (sage), death (slate, recurring motif), love (rose),
-  // business (gold), travel (deep teal), work (taupe), home (warm earth), scandal (rust).
+
+  // Tone colours for timeline dots
   const toneColour = (t) => ({
     birth: '#4a5d3a', death: '#4a3a3f', love: '#a86b6b',
     business: '#b08d3f', travel: '#2f4858', work: '#6b5137',
     home: '#5d4e3a', scandal: '#8b4513', family: '#6b4a3a',
   }[t] || '#3d2817');
 
+  // Anchor events surfaced on the year scrubber — the 30-event timeline distilled.
+  // Six anchors only, deliberately spaced so labels never collide on the rail.
+  const anchors = [
+    { y: 1880, label: 'Born above the shop', href: '#origins' },
+    { y: 1903, label: 'Sails for Canada', href: '#alberta' },
+    { y: 1912, label: 'Marries Mary Catherine', href: '#first' },
+    { y: 1920, label: 'Marries Kathleen', href: '#second' },
+    { y: 1948, label: 'Gavan Duffy Ltd.', href: '#shop' },
+    { y: 1954, label: 'Dies at Killiney', href: '#killiney' },
+  ];
+
+  // Archive: type counts + filter + search.
+  const archiveDocs = useMemo(() => archiveData(), []);
+  const filtered = archiveDocs.filter(d => {
+    if (archiveFilter !== 'all' && d.type.toLowerCase() !== archiveFilter) return false;
+    if (archiveQuery) {
+      const q = archiveQuery.toLowerCase();
+      return (d.title + ' ' + d.note + ' ' + d.src).toLowerCase().includes(q);
+    }
+    return true;
+  });
+  const counts = { all: archiveDocs.length };
+  archiveDocs.forEach(d => { const k = d.type.toLowerCase(); counts[k] = (counts[k] || 0) + 1; });
+  const filterTypes = ['all', ...Array.from(new Set(archiveDocs.map(d => d.type.toLowerCase()))).sort()];
+
+  // Decade buckets for the archive index.
+  const buckets = [
+    { years: '1851 – 1880', kicker: 'Origins, before the shop', from: 1851, to: 1880 },
+    { years: '1881 – 1910', kicker: 'Boyhood above the shop & the Alberta years', from: 1881, to: 1910 },
+    { years: '1911 – 1920', kicker: 'Marriage, the Rising, the flu, marriage again', from: 1911, to: 1920 },
+    { years: '1921 – 1954', kicker: 'The second life, the shop, the Killiney years', from: 1921, to: 1954 },
+    { years: '1955 –', kicker: 'Aftermath', from: 1955, to: 2100 },
+  ];
+
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #f4ebd8 0%, #ebe0c8 100%)',
-      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E"), linear-gradient(180deg, #f4ebd8 0%, #ebe0c8 100%)`,
-      fontFamily: "'EB Garamond', Georgia, serif",
-      color: '#2a1f1a',
+      background: `linear-gradient(180deg, ${C.cream} 0%, ${C.creamDeep} 100%)`,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E"), linear-gradient(180deg, ${C.cream} 0%, ${C.creamDeep} 100%)`,
+      fontFamily: FB, color: C.ink,
     }}>
-      {/* Header */}
-      <header style={{ borderBottom: '2px double #7a3b2e', padding: '2rem 1.25rem 1.5rem', textAlign: 'center' }}>
-        <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#7a3b2e', margin: 0 }}>
-          An Archive of the Life of
-        </p>
-        <h1 style={{
-          fontFamily: "'Playfair Display', serif",
-          fontWeight: 900,
-          fontSize: 'clamp(2.2rem, 7vw, 3.5rem)',
-          margin: '0.3rem 0 0.2rem',
-          letterSpacing: '-0.02em',
-          lineHeight: 1,
-          color: '#2a1f1a',
-        }}>
-          Patrick Gavan Duffy
-        </h1>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1rem', margin: 0, color: '#7a3b2e' }}>
-          Draper of Thomas Street &middot; 1880 — 1954
-        </p>
-        {/* Drapery motif: thread-and-button. The button at the centre has four thread holes;
-            the curves on either side suggest thread feeding through it. A nod to four generations of drapers. */}
-        <svg viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'block', margin: '1rem auto 0', width: 'min(220px, 65vw)', height: 'auto' }}>
-          <path d="M2,12 Q40,5 80,12 T100,12" stroke="#7a3b2e" strokeWidth="0.8" fill="none" />
-          <path d="M218,12 Q180,19 140,12 T120,12" stroke="#7a3b2e" strokeWidth="0.8" fill="none" />
-          <circle cx="110" cy="12" r="6" fill="#f4ebd8" stroke="#7a3b2e" strokeWidth="0.9" />
-          <circle cx="110" cy="12" r="4.4" fill="none" stroke="#7a3b2e" strokeWidth="0.4" />
-          <circle cx="107.5" cy="9.5" r="0.6" fill="#7a3b2e" />
-          <circle cx="112.5" cy="9.5" r="0.6" fill="#7a3b2e" />
-          <circle cx="107.5" cy="14.5" r="0.6" fill="#7a3b2e" />
-          <circle cx="112.5" cy="14.5" r="0.6" fill="#7a3b2e" />
-        </svg>
-      </header>
+      <Masthead anchors={anchors} />
+      <StickyNav />
 
-      {/* Tab strip */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 10,
-        background: 'rgba(244, 235, 216, 0.96)',
-        backdropFilter: 'blur(6px)',
-        borderBottom: '1px solid #8b6f47',
-        overflowX: 'auto',
-        WebkitOverflowScrolling: 'touch',
-      }}>
-        <div style={{ display: 'flex', gap: '0', padding: '0.5rem 0.5rem', minWidth: 'max-content' }}>
-          {tabs.map(t => {
-            const Icon = t.icon;
-            const active = activeTab === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setActiveTab(t.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '0.4rem',
-                  padding: '0.6rem 0.9rem',
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: '0.95rem',
-                  fontStyle: active ? 'normal' : 'italic',
-                  fontWeight: active ? 700 : 400,
-                  background: 'transparent',
-                  border: 'none',
-                  color: active ? '#7a3b2e' : '#6b5137',
-                  borderBottom: active ? '2px solid #7a3b2e' : '2px solid transparent',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s',
-                }}
-              >
-                <Icon size={15} />
-                {t.label}
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+      <main style={{ maxWidth: 1180, margin: '0 auto' }}>
 
-      <main style={{ maxWidth: '780px', margin: '0 auto', padding: '1.5rem 1.25rem 4rem' }}>
+        {/* CHAPTER I — Origins */}
+        <ChapterAnchor id="origins" />
+        <Chapter
+          no="I" year="1880" kicker="Origins, above the shop"
+          title="Born to a Dublin draper"
+          lede='Baptised "Patritius Joran Duffy" at St Catherine’s, Meath Street, in January 1880 — the middle name almost certainly an indexer’s misreading of "Gavan" in cursive Latin. He grew up above the shop at 44 Thomas Street, in the heart of the Liberties.'
+          body={[
+            "His father Thomas Duffy was already styling himself draper of Thomas Street eight years before the 1883 date traditionally given for the founding of the shop. The family lived above the premises with a sister-in-law housekeeper and six female drapery assistants. By the 1901 census Gavan was 20, already listed as a draper, working in his father's shop.",
+            "His father had got his start out of misfortune: injured in the Tamworth rail crash of September 1870 and compensated for it. The compensation, kept and saved, became the seed of 44 Thomas Street.",
+          ]}
+          marginalia={[
+            { kicker: 'On the baptism', body: 'St Catherine’s RC, Meath Street, January 1880. Godparents Jacobi Claffey and Josephina Sterry.', cite: 'irishgenealogy.ie ref DU-RC-BA-505126', italic: true },
+            { kicker: 'The household, 1901', body: 'Thomas (56, draper), Mary (45), Gavan (20), Lillie (18), Thomas Jr (15), John (13), Aloysius — and aunt Lizzie as housekeeper. Six drapery assistants boarded above.' },
+            { kicker: 'Sources', body: 'Click the people in the tree below, or jump to the Archive for the certificates and census schedules behind every line of this chapter.', italic: true },
+          ]}
+          hero={<DocSlot kind="Photograph" label="44 Thomas Street, c.1900" source="To be sourced" h={240} />}
+        />
 
-        {/* OVERVIEW */}
-        {activeTab === 'overview' && (
-          <div>
-            <div style={{ textAlign: 'center', margin: '1rem 0 2rem' }}>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1.15rem', lineHeight: 1.6, color: '#3d2817' }}>
-                "Any fool can make money,<br/>but it takes a wise man to keep it."
-              </p>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.2em', color: '#7a3b2e', marginTop: '0.5rem' }}>
-                — A FAVOURITE SAYING OF HIS FATHER
-              </p>
-            </div>
+        {/* CHAPTER II — Alberta */}
+        <ChapterAnchor id="alberta" />
+        <Chapter
+          no="II" year="1903" kicker="The seven Alberta years"
+          title="A draper’s son sails for Calgary"
+          lede="At twenty-three, second cabin on the SS Parisian out of Liverpool, eight days across the Atlantic to Quebec, a Canadian Pacific train west to a frontier cattle town of 4,400 souls. Two weeks later his mother died at home of a sudden heart attack, and he did not return for seven years."
+          body={[
+            "Sailed from Liverpool 15 May 1903 on the Allan Line’s SS Parisian, second cabin, occupation given as junior draper, destination Calgary. The Montreal Gazette’s shipping arrivals column pins his first sight of Canada to 3 p.m. on Saturday 23 May 1903 at Quebec City.",
+            "A week after he stepped off the boat his mother Mary Duffy collapsed and died at 44 Thomas Street of angina pectoris after a three-hour illness. The informant on her death certificate was his seventeen-year-old brother Thomas B. Whether a letter reached him in Alberta or he found out by belated post we cannot know.",
+            "He came home not on the slow Allan Line but on Cunard’s flagship express service, the RMS Campania — twin-screw, 12,950 tons, two enormous funnels, Blue Riband winner — third class from New York to Liverpool, arriving 14 April 1910. Occupation: Storekeeper. Not Draper. Not Ranch hand."
+          ]}
+          marginalia={[
+            { kicker: 'On the manifest', body: 'Patrick Duffy / 23 / Junior draper / Dublin / Calgary', cite: 'LAC RG76 C1, 1903 arrivals' },
+            { kicker: 'A possible trace', body: 'Calgary Herald police court column, 14 Aug 1907: a Patrick Duffy fined $3.50 for being drunk in public, "admitted he had more than he could comfortably navigate with."', cite: 'Only Patrick Duffy in the Herald 1903–1910', italic: true },
+            { kicker: 'Coming home', body: 'SS Campania, third class, "Storekeeper", arrived Liverpool 14 April 1910.', cite: 'BT26 / TNA Kew' },
+          ]}
+          hero={<DocSlot kind="Postcard" label="SS Parisian, Allan Line, c.1900" source="To be sourced" h={260} />}
+        />
 
-            <section style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid #c4a77d', padding: '1.5rem', marginBottom: '2rem' }}>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.5rem', marginTop: 0, marginBottom: '0.8rem', color: '#7a3b2e' }}>
-                The Man
-              </h2>
-              <p style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 0.9rem' }}>
-                Born in Dublin in 1880 to the founder of one of the best-known drapery shops in the city, baptised Patritius Joran Duffy at St Catherine&apos;s, Meath Street, that January. Grew up above the shop at 44 Thomas Street. At the age of twenty-three, boarded the SS Parisian for Canada and spent seven years working as a ranch hand in Alberta before returning to the family trade.
-              </p>
-              <p style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 0.9rem' }}>
-                Married a draper's assistant in 1912, had two children, lost her to the 1919 flu, remarried an eighteen-year-old barrister's daughter in 1920, and had two more. Raised the second family between grand coastal houses in Dalkey, Dún Laoghaire and Killiney.
-              </p>
-              <p style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: 0 }}>
-                Ran Duffy's of Thomas Street for nearly forty years, building it from a single-door shop into a five-building department store with his own name over it by the end. Up in court once on a lottery charge. A future Taoiseach came to his funeral.
-              </p>
-            </section>
+        <PullQuoteSection
+          eyebrow="30 May 1903 — while he was mid-Atlantic"
+          text="Mary Duffy, dressmaker, of 44 Thomas Street, aged 45 years. Cause of death: angina pectoris, three hours. Informant: T. B. Duffy, son, present at death."
+          attribution="Death certificate — GRO ref 4594706"
+        />
 
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.5rem', marginBottom: '1rem', color: '#7a3b2e', borderBottom: '1px solid #c4a77d', paddingBottom: '0.4rem' }}>
-              A Life in Events
-            </h2>
+        {/* CHAPTER III — First marriage */}
+        <ChapterAnchor id="first" />
+        <Chapter
+          no="III" year="1912" kicker="The first marriage"
+          title="A draperess from Mountain View Terrace"
+          lede="Mary Catherine Byrne — Mary Kate on the 1911 census — a draper’s assistant aged nineteen, daughter of a DMP policeman and a Kilkenny dressmaker."
+          body={[
+            "They married at Golden Bridge, Inchicore, on 4 September 1912. Thomas was born June 1913 at 66 South Circular Road. Gladys was born April 1916 at 66 St Michael’s Terrace, ten days before the Easter Rising began less than a mile away.",
+            "In February 1919 the third wave of the influenza pandemic took her. She was twenty-seven. Gavan, by then living at Herbert Lodge in Dalkey, sent her to Tudor House nursing home in Clontarf — the same private nursing home where his own father had died of myocarditis two years earlier — and reported her death himself. Thomas was six. Gladys was three.",
+          ]}
+          marginalia={[
+            { kicker: 'Two children', body: 'Thomas Joseph, b. 25 Jun 1913. Gladys May, b. 14 Apr 1916.' },
+            { kicker: 'Tudor House', body: 'Gavan’s father died here in May 1917. Two years later, his wife died here of the flu. The same private nursing home, twice.', italic: true },
+          ]}
+          hero={<DocSlot kind="Newspaper" label="Marriage notice — Freeman’s Journal, 5 Sep 1912" source="To be sourced" h={180} />}
+        />
 
-            <div style={{ position: 'relative', paddingLeft: '1.5rem' }}>
-              {/* Stitched seam down the timeline gutter, in lieu of a plain rule. A drapery touch. */}
-              <div style={{
-                position: 'absolute',
-                left: '0.45rem',
-                top: '0.5rem',
-                bottom: '0.5rem',
-                width: '1px',
-                backgroundImage: 'linear-gradient(to bottom, #8b6f47 0, #8b6f47 4px, transparent 4px, transparent 8px)',
-                backgroundSize: '1px 8px',
-              }} />
-              {timeline.map((e, i) => (
-                <div key={i} style={{ position: 'relative', marginBottom: '1.2rem' }}>
-                  <div style={{
-                    position: 'absolute', left: '-1.5rem', top: '0.35rem',
-                    width: '0.9rem', height: '0.9rem', borderRadius: '50%',
-                    background: toneColour(e.tone),
-                    border: '2px solid #f4ebd8',
-                    boxShadow: '0 0 0 1px ' + toneColour(e.tone),
-                  }} />
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '0.9rem', letterSpacing: '0.05em', color: toneColour(e.tone) }}>
-                    {e.year}
-                  </div>
-                  <div style={{ fontSize: '1rem', lineHeight: 1.5, color: '#2a1f1a' }}>
-                    {e.event}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* CHAPTER IV — Second life */}
+        <ChapterAnchor id="second" />
+        <Chapter
+          no="IV" year="1920" kicker="The second life"
+          title="An eighteen-year-old barrister’s daughter from Terenure"
+          lede="Eighteen months after Mary Catherine’s death, Gavan married Kathleen Mary Condon at St Joseph’s, Crumlin. He was thirty-eight, a widower with two small children. She was eighteen or nineteen."
+          body={[
+            "Kathleen’s father John Patrick Condon was a barrister and Clerk of the South Dublin Union at James’s Street. The Union office and Gavan’s shop on Thomas Street stood about four hundred yards apart. The two men had almost certainly known each other for years before Gavan married into the family.",
+            "Olga was born in 1923, George a few years later. The household moved through Queenstown Castle in Dalkey, Newtownsmith in Dún Laoghaire, and finally Undercliff, Killiney — a Deane and Woodward house from 1861, with two turrets and three acres of grounds, bought by a man who had grown up above a shop and sailed steerage to Canada at twenty-two.",
+          ]}
+          marginalia={[
+            { kicker: 'Officiant', body: 'Fr John A. Duffy OSA — Gavan’s own brother, an Augustinian priest.', italic: true },
+            { kicker: 'Two children', body: 'Olga (b. 1923, d. 2016) and George (b. after 1926).' },
+            { kicker: 'Coastal lives', body: 'Queenstown Castle Dalkey → Newtownsmith Dún Laoghaire → Undercliff Killiney.' },
+          ]}
+        />
 
-        {/* FAMILY */}
-        {activeTab === 'family' && (
-          <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', marginTop: '0.5rem', marginBottom: '0.3rem', color: '#7a3b2e' }}>
-              The Duffy Family
-            </h2>
-            <p style={{ fontStyle: 'italic', color: '#6b5137', marginTop: 0, marginBottom: '1rem', fontSize: '0.95rem' }}>
-              Tap any name to read more.
-            </p>
+        {/* CHAPTER V — The shop */}
+        <ChapterAnchor id="shop" />
+        <ShopChapter />
 
-            <p style={{ fontSize: '1rem', lineHeight: 1.7, color: '#3d2817', marginBottom: '1.5rem' }}>
-              Three generations of Dublin drapers, marrying milliners and barristers&apos; daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State.
-            </p>
+        {/* CHAPTER VI — Killiney */}
+        <ChapterAnchor id="killiney" />
+        <Chapter
+          no="VI" year="1954" kicker="The last house"
+          title="Undercliff, Killiney"
+          lede="A Deane and Woodward house from 1861. Two turrets, a triangular fanlight, naturalistically carved stone capitals, three acres, a gate lodge, a walled kitchen garden and a tennis court. Bono lives a few doors away today; Strathmore, the mansion opposite, was for decades the Canadian ambassador’s residence."
+          body={[
+            "Gavan, who grew up above a shop in the Liberties and sailed steerage to Canada as a ranch hand at 22, bought his way into this in his late sixties. He lived at Undercliff no more than five or six years before he died there on 19 June 1954, attended at the end by Delia Tierney, SRN SCM, who ran a small private nursing home a couple of miles away.",
+            "His funeral at St Anne’s, Shankill, was attended by Liam Cosgrave TD (future Taoiseach), P. Dockrell TD, E. Rooney TD, Senator Frank Hugh O’Donnell, Alderman P.S. Doyle, army officers and the entire staff of Gavan Duffy Ltd. He was buried at Deansgrange.",
+          ]}
+          marginalia={[
+            { kicker: 'The architects', body: 'Deane & Woodward — also the Kildare Street Club, the Museum Building at Trinity College Dublin, and the Oxford Museum.' },
+            { kicker: 'After', body: 'Kathleen put the house on the market five months later, November 1954.', italic: true },
+          ]}
+          hero={<DocSlot kind="Photograph" label="Undercliff, c.1997" source="Killiney History Society" h={260} />}
+        />
 
-            {/* Founder and his wife */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <PersonCard person="thomas_sr" people={people} onClick={setSelectedPerson} featured />
-              <PersonCard person="mary_duffy" people={people} onClick={setSelectedPerson} featured />
-            </div>
+        {/* THE PEOPLE — family tree */}
+        <ChapterAnchor id="family" />
+        <FamilyTree people={people} setSelectedPerson={setSelectedPerson} />
 
-            {/* Thomas Sr's unmarried sister */}
-            <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: '#6b5137', margin: '1rem 0 0.4rem', textAlign: 'center' }}>
-              Thomas's sister, in the household
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.5rem', maxWidth: '260px', margin: '0 auto' }}>
-              <PersonCard person="lizzie" people={people} onClick={setSelectedPerson} small faded />
-            </div>
-
-            <Connector />
-
-            {/* Gavan and his siblings */}
-            <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: '#6b5137', margin: '0.5rem 0 0.4rem', textAlign: 'center' }}>
-              Six children, four to adulthood
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <PersonCard person="gavan" people={people} onClick={setSelectedPerson} featured />
-              <PersonCard person="thomas_b" people={people} onClick={setSelectedPerson} />
-              <PersonCard person="lily" people={people} onClick={setSelectedPerson} small />
-              <PersonCard person="john_duffy" people={people} onClick={setSelectedPerson} small />
-              <PersonCard person="aloysius" people={people} onClick={setSelectedPerson} small />
-            </div>
-
-            <Connector />
-
-            {/* Two wives side by side */}
-            <div style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', color: '#7a3b2e' }}>
-              ⬦ MARRIED TWICE ⬦
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <PersonCard person="mary_catherine" people={people} onClick={setSelectedPerson} tint="#f3d9d9" />
-              <PersonCard person="kathleen" people={people} onClick={setSelectedPerson} tint="#e6ead8" />
-            </div>
-
-            <Connector />
-
-            <div style={{ textAlign: 'center', marginBottom: '0.5rem', fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', color: '#7a3b2e' }}>
-              ⬦ FOUR CHILDREN ⬦
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-              <PersonCard person="thomas_jr" people={people} onClick={setSelectedPerson} tint="#f3d9d9" small />
-              <PersonCard person="gladys" people={people} onClick={setSelectedPerson} tint="#f3d9d9" small />
-              <PersonCard person="olga" people={people} onClick={setSelectedPerson} tint="#e6ead8" small highlight />
-              <PersonCard person="george" people={people} onClick={setSelectedPerson} tint="#e6ead8" small />
-            </div>
-
-            <div style={{ marginTop: '2.5rem', borderTop: '1px dashed #8b6f47', paddingTop: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', color: '#7a3b2e' }}>
-                Mary Catherine's Line
-              </h3>
-              <p style={{ fontSize: '0.9rem', fontStyle: 'italic', color: '#6b5137', marginTop: 0 }}>
-                Policemen and a river pilot. The rural Irish line.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <PersonCard person="benjamin" people={people} onClick={setSelectedPerson} small />
-                <PersonCard person="catherine_whelan" people={people} onClick={setSelectedPerson} small />
-                <PersonCard person="john_byrne" people={people} onClick={setSelectedPerson} small faded />
-                <PersonCard person="martin_whelan" people={people} onClick={setSelectedPerson} small faded />
-              </div>
-            </div>
-
-            <div style={{ marginTop: '2rem', borderTop: '1px dashed #8b6f47', paddingTop: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', color: '#7a3b2e' }}>
-                Kathleen's Line
-              </h3>
-              <p style={{ fontSize: '0.9rem', fontStyle: 'italic', color: '#6b5137', marginTop: 0 }}>
-                A Meath barrister, a Carlow mother, ten children.
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <PersonCard person="john_condon" people={people} onClick={setSelectedPerson} small />
-                <PersonCard person="anna_mary" people={people} onClick={setSelectedPerson} small />
-              </div>
-              <p style={{ fontSize: '0.85rem', fontStyle: 'italic', color: '#6b5137', marginTop: '1rem', marginBottom: '0.4rem' }}>
-                Kathleen's siblings
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <PersonCard person="eileen_condon" people={people} onClick={setSelectedPerson} small />
-                <PersonCard person="francis_condon" people={people} onClick={setSelectedPerson} small />
-                <PersonCard person="other_condons" people={people} onClick={setSelectedPerson} small faded />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* CANADA */}
-        {activeTab === 'canada' && (
-          <div>
-            <div style={{
-              background: 'linear-gradient(135deg, #2f4858 0%, #1a2f3a 100%)',
-              color: '#f4ebd8',
-              padding: '2rem 1.5rem',
-              marginBottom: '1.5rem',
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <Ship size={100} style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.08 }} />
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', opacity: 0.7, margin: 0 }}>
-                THE CROSSING
-              </p>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '2rem', margin: '0.3rem 0 0.2rem', lineHeight: 1 }}>
-                SS Parisian
-              </h2>
-              <p style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.85, margin: 0 }}>
-                Allan Line &middot; Liverpool → Quebec &middot; May 1903
-              </p>
-            </div>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                The Ship
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                Built in 1881 by R. Napier and Sons of Glasgow. 5,395 tons, 441 feet long, steel hulled, single-screw. She was briefly the largest steel steamer afloat and the first Atlantic liner fitted with bilge keels. By 1902 the Marconi Company had installed wireless telegraphy; in 1899 she'd been re-engined. When Gavan boarded her, she was a freshly-refitted, 22-year-old ship at the top of her game.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                Two years after his voyage, in March 1905, she was rammed and sunk in Halifax harbour by the German steamer Albano. She settled on the bottom at pier 2 in shallow water, was raised and repaired, and served another nine years. On the night of 14 April 1912 she was in wireless contact with the Titanic, relaying ice warnings. She was scrapped in Italy in 1914.
-              </p>
-              <p style={{ lineHeight: 1.7, fontSize: '0.88rem', fontStyle: 'italic', color: '#6b5137', borderLeft: '2px solid #c4a77d', paddingLeft: '0.8rem' }}>
-                Photographs of the Parisian survive in several collections. The National Museums Liverpool hold a dockside photograph from her Allan Line years. The Norway Heritage collection and Heritage-Ships image archive both carry broadside views. The Maine Memory Network has a c.1890 photograph of her at Portland, Maine, one of her regular ports. When Gavan walked up her gangway at Liverpool on 15 May 1903 she looked much as she does in these photographs: black hull, white superstructure, two tall buff funnels with black tops, and four masts still carrying vestigial sail rigging from her early years.
-              </p>
-            </section>
-
-            <section style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid #c4a77d', padding: '1.2rem', marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.1rem', color: '#7a3b2e', marginTop: 0 }}>
-                The Manifest Entry
-              </h3>
-              <table style={{ width: '100%', fontSize: '0.95rem', borderCollapse: 'collapse' }}>
-                <tbody>
-                  {[
-                    ['Name', 'Patrick Duffy'],
-                    ['Age', '23 years'],
-                    ['Occupation', 'Junior draper'],
-                    ['Place of birth', 'Dublin'],
-                    ['Ship', 'SS Parisian'],
-                    ['Port of arrival', 'Quebec'],
-                    ['Date', 'May 1903'],
-                    ['Class', 'Second cabin'],
-                    ['Ultimate destination', 'Calgary'],
-                  ].map(([k, v], i) => (
-                    <tr key={i} style={{ borderBottom: i < 8 ? '1px dashed #c4a77d' : 'none' }}>
-                      <td style={{ padding: '0.4rem 0.5rem 0.4rem 0', fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.1em', color: '#7a3b2e', verticalAlign: 'top', width: '45%' }}>{k.toUpperCase()}</td>
-                      <td style={{ padding: '0.4rem 0' }}>{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                Calgary, 1903
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                A frontier cattle town of about 4,400 people. A stop on the Canadian Pacific Railway, gateway to the great Alberta ranching country. The big ranches were on its doorstep: <em>Bar U, Cochrane, Walrond, Oxley, Quorn, A7</em>. A 22-year-old junior draper from Dublin did not buy a ticket to Calgary in 1903 to work in drapery. There were no drapery jobs there. He went to work cattle.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                The family firm confirmed it in the 1958 seventy-fifth anniversary feature: <em>"Patrick Gavan Duffy had spent his youth travelling extensively. He worked for a while as a cowboy on a Canadian ranch."</em> He was there for seven years before returning to Dublin, where he appears on the April 1911 census back at home, aged 29, a draper's assistant once more.
-              </p>
-            </section>
-
-            <section style={{ borderLeft: '3px solid #b08d3f', paddingLeft: '1rem', fontStyle: 'italic', color: '#5d4e3a' }}>
-              <p style={{ margin: 0, lineHeight: 1.6 }}>
-                In 1891, Harry Longabaugh was a horse breaker at the Bar U ranch, before he became better known as the Sundance Kid. If Gavan worked at the Bar U, he was on the same ranch twelve years after him.
-              </p>
-            </section>
-
-            <section style={{ background: 'rgba(122, 59, 46, 0.06)', border: '1px solid #a86b6b', padding: '1.2rem', marginTop: '2rem', marginBottom: '1.5rem' }}>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', color: '#7a3b2e', margin: 0 }}>
-                A POSSIBLE TRACE
-              </p>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e', margin: '0.3rem 0 0.6rem' }}>
-                Variegated Jags, Calgary 1907
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                The <em>Calgary Herald</em> of <strong>Wednesday 14 August 1907</strong>, page 1, ran a column called <em>"Variegated Jags &mdash; Mixed Bunch Greeted Court &mdash; Some Came in Rigs and Some Had Price"</em>: a slightly arch round-up of the morning's drunkenness arraignments before Magistrate Smith. One of the named was a <strong>Patrick Duffy</strong>, who <em>"admitted he had more than he could comfortably navigate with and handed over $3.50"</em>. He sits between Montgomery Bell, fined five dollars for imbibing too freely, and Thomas Price, who claimed not to remember a thing.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                It is the <strong>only</strong> Patrick Duffy mention in the entire <em>Calgary Herald</em> across 1903 to 1910. The date sits squarely in his Alberta years, he was twenty-six, the right age for a young cowboy in town to spend his pay, and Calgary in mid-August was the late-summer round-up break when ranch hands came in to do exactly that. The match is plausible, not certain. There is no occupation, address or further identifier in the column. We can never prove it was him from this single line; we can only say that no other Patrick Duffy appears in Calgary's paper of record across his seven Alberta years, and that this one fits.
-              </p>
-            </section>
-
-            <div style={{
-              background: 'linear-gradient(135deg, #2f4858 0%, #1a2f3a 100%)',
-              color: '#f4ebd8',
-              padding: '2rem 1.5rem',
-              marginTop: '2rem',
-              marginBottom: '1.5rem',
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <Ship size={100} style={{ position: 'absolute', right: '-20px', bottom: '-20px', opacity: 0.08 }} />
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', opacity: 0.7, margin: 0 }}>
-                THE RETURN
-              </p>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: '2rem', margin: '0.3rem 0 0.2rem', lineHeight: 1 }}>
-                SS Campania
-              </h2>
-              <p style={{ fontStyle: 'italic', fontSize: '1rem', opacity: 0.85, margin: 0 }}>
-                Cunard Line &middot; New York &rarr; Liverpool &middot; 14 April 1910
-              </p>
-            </div>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                The Ship Home
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                After almost seven years on the prairies, Gavan came home not on the slow Allan Line that had taken him out, but on Cunard's flagship express service. The <strong>RMS Campania</strong>, twin-screw, 12,950 tons, two enormous funnels, was one of the fastest liners on the North Atlantic in her day. She had won the Blue Riband in 1893, and even at seventeen years old in 1910 she still made the New York to Liverpool crossing in just under six days.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                He travelled in third class, as a single Irish adult, and gave his occupation as <strong>"Storekeeper"</strong> &mdash; not "draper", not "ranch hand". A reasonable description from a man returning to take over a family shop, and a hint that the seven Alberta years had not been one continuous stretch of cattle work. He had bought a ticket on Cunard's express service, not steerage on a slow boat: he had savings and he was in a hurry.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                From New York to Calgary by Canadian Pacific train was four nights. Whether he came south through Montana on a US line or east to Montreal and then down through New England we may never know &mdash; the US border crossing record exists in the St Albans Lists but is locked behind a US-records subscription tier. Either way, by mid-April 1910 he was off the Cunarder at the Princes Landing Stage, Liverpool, with the night boat to Dublin a short walk away.
-              </p>
-            </section>
-
-            <section style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid #c4a77d', padding: '1.2rem', marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.1rem', color: '#7a3b2e', marginTop: 0 }}>
-                The Return Manifest Entry
-              </h3>
-              <table style={{ width: '100%', fontSize: '0.95rem', borderCollapse: 'collapse' }}>
-                <tbody>
-                  {[
-                    ['Name', 'Patrick Duffy'],
-                    ['Class', 'Third'],
-                    ['Profession, Occupation or Calling', 'Storekeeper'],
-                    ['Ethnic column', 'Irish, adult, single'],
-                    ['Ship', 'SS Campania (Cunard, official no. 102086)'],
-                    ['Port of departure', 'New York'],
-                    ['Port of arrival', 'Liverpool'],
-                    ['Date', '14 April 1910'],
-                  ].map(([k, v], i) => (
-                    <tr key={i} style={{ borderBottom: i < 7 ? '1px dashed #c4a77d' : 'none' }}>
-                      <td style={{ padding: '0.4rem 0.5rem 0.4rem 0', fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.1em', color: '#7a3b2e', verticalAlign: 'top', width: '45%' }}>{k.toUpperCase()}</td>
-                      <td style={{ padding: '0.4rem 0' }}>{v}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p style={{ lineHeight: 1.6, fontSize: '0.85rem', color: '#6b5137', fontStyle: 'italic', margin: '0.8rem 0 0' }}>
-                Source: UK and Ireland, Incoming Passenger Lists, 1878-1960 (BT26), April 1910 Liverpool arrivals, image 88 of 297. The National Archives, Kew, via Ancestry collection 1518, record 29534914.
-              </p>
-            </section>
-
-            <section style={{ borderLeft: '3px solid #b08d3f', paddingLeft: '1rem', fontStyle: 'italic', color: '#5d4e3a', marginBottom: '1rem' }}>
-              <p style={{ margin: 0, lineHeight: 1.6 }}>
-                Out on the SS Parisian, Allan Line, second cabin, junior draper, May 1903. Home on the SS Campania, Cunard, third class, storekeeper, April 1910. The round trip is closed. He was not yet twenty-nine.
-              </p>
-            </section>
-          </div>
-        )}
-
-        {/* WOMEN */}
-        {activeTab === 'women' && (
-          <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', marginTop: '0.5rem', color: '#7a3b2e' }}>
-              The Two Wives
-            </h2>
-
-            <article style={{ background: 'linear-gradient(180deg, #f3d9d9 0%, #ead0d0 100%)', padding: '1.5rem', marginTop: '1.5rem', border: '1px solid #a86b6b' }}>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', color: '#7a3b2e', margin: 0 }}>
-                THE FIRST WIFE
-              </p>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', margin: '0.2rem 0 0.1rem', color: '#4a1a1a' }}>
-                Mary Catherine Byrne
-              </h3>
-              <p style={{ fontStyle: 'italic', margin: '0 0 1rem', color: '#7a3b2e' }}>c.1892 – 28 February 1919</p>
-              <p style={{ lineHeight: 1.7, margin: '0 0 0.8rem' }}>
-                <strong>Mary Kate</strong>, as she was known on the 1911 census, was a draper's assistant herself — listed simply as "draperess", aged 19, at her mother's house at 10 Mountain View Terrace, South Circular Road. Her father Benjamin was a DMP policeman, dead by 1911; her widowed mother Catherine Whelan, a Kilkenny dressmaker by trade, ran the household and raised five children into respectable Dublin clerking and civil-service work.
-              </p>
-              <p style={{ lineHeight: 1.7, margin: '0 0 0.8rem' }}>
-                She and Gavan married at Golden Bridge, Inchicore, on 4 September 1912. They had Thomas in 1913 and Gladys in 1916. They were living on the South Circular Road through the Rising. In February 1919 she died of influenza complicated by broncho-pneumonia at Tudor House, a private nursing home in Clontarf. She was twenty-seven. Gavan, who had moved the household to Herbert Lodge in Dalkey by then, reported the death himself.
-              </p>
-              <p style={{ lineHeight: 1.7, margin: 0 }}>
-                She was one of the young adults the third wave of the 1918–19 pandemic took. Thomas was six when his mother died. Gladys was three.
-              </p>
-            </article>
-
-            <article style={{ background: 'linear-gradient(180deg, #e6ead8 0%, #dde1cc 100%)', padding: '1.5rem', marginTop: '1.5rem', border: '1px solid #7a8a5d' }}>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.25em', color: '#4a5d3a', margin: 0 }}>
-                THE SECOND WIFE
-              </p>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', margin: '0.2rem 0 0.1rem', color: '#2d3a1a' }}>
-                Kathleen Mary Condon
-              </h3>
-              <p style={{ fontStyle: 'italic', margin: '0 0 1rem', color: '#4a5d3a' }}>c.1902 – 13 May 1984</p>
-              <p style={{ lineHeight: 1.7, margin: '0 0 0.8rem' }}>
-                A barrister's daughter from 73 Greenmount Road, Terenure. Her father John Patrick Condon was a member of the Irish Bar. She was described on the 1920 marriage cert as a "Lady", meaning of independent means. She was eighteen or nineteen. Gavan was thirty-eight, a widower with two small children.
-              </p>
-              <p style={{ lineHeight: 1.7, margin: '0 0 0.8rem' }}>
-                They married on 15 September 1920 at St Joseph's, Crumlin. Eighteen months after Mary Catherine's death. The witnesses were <em>Thomas B. Duffy</em> (Gavan's brother) and <em>Eileen J. Condon</em> (Kathleen's sister). The officiant was Fr John A. Duffy OSA — an Augustinian priest who was almost certainly a relation of Gavan's.
-              </p>
-              <p style={{ lineHeight: 1.7, margin: 0 }}>
-                She had Olga in 1923 and George a few years later. Outlived Gavan by thirty years. Died at the Sacred Heart Hospital, Ballinderry, near Mullingar, in May 1984 and was buried at Collinstown Cemetery, Co. Westmeath — not beside Gavan at Deansgrange.
-              </p>
-            </article>
-          </div>
-        )}
-
-        {/* PLACES */}
-        {activeTab === 'places' && (
-          <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', marginTop: '0.5rem', color: '#7a3b2e' }}>
-              The Houses
-            </h2>
-            <p style={{ fontStyle: 'italic', color: '#6b5137', marginTop: 0, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-              From the Liberties to the sea. Tap any address to read more.
-            </p>
-
+        {/* THE HOUSES */}
+        <ChapterAnchor id="places" />
+        <section style={{ padding: '60px 28px 40px', borderTop: `1px solid ${C.rule}` }}>
+          <SectionHeading kicker="Chapter — The Houses" title="From the Liberties to the sea" sub="Eight addresses, fifty years of moves." />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14, marginTop: 24 }}>
             {Object.entries(places).map(([key, p]) => (
-              <button
-                key={key}
-                onClick={() => setSelectedPlace(key)}
-                style={{
-                  display: 'block', width: '100%', textAlign: 'left',
-                  background: 'rgba(255,255,255,0.45)',
-                  border: '1px solid #c4a77d',
-                  padding: '1rem 1.1rem',
-                  marginBottom: '0.7rem',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  color: 'inherit',
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.7)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.45)'}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem' }}>
-                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.1rem', margin: 0, color: '#2a1f1a', flex: 1 }}>
-                    {p.name}
-                  </h3>
-                  <span style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', color: '#7a3b2e', whiteSpace: 'nowrap' }}>
-                    {p.era}
-                  </span>
+              <button key={key} onClick={() => setSelectedPlace(key)} style={{
+                display: 'block', textAlign: 'left', background: C.paper,
+                border: `1px solid ${C.rule}`, padding: '16px 18px', cursor: 'pointer',
+                fontFamily: 'inherit', color: 'inherit',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                  <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, margin: 0, color: C.ink }}>{p.name}</h3>
+                  <span style={{ fontFamily: FM, fontSize: 10, color: C.oxblood, whiteSpace: 'nowrap', letterSpacing: '0.1em' }}>{p.era}</span>
                 </div>
-                <p style={{ margin: '0.4rem 0 0', fontSize: '0.92rem', color: '#5d4e3a', lineHeight: 1.5 }}>
-                  {p.desc.substring(0, 120)}{p.desc.length > 120 ? '…' : ''}
+                <p style={{ margin: '6px 0 0', fontSize: 14, color: C.taupe, lineHeight: 1.5 }}>
+                  {p.desc.substring(0, 130)}{p.desc.length > 130 ? '…' : ''}
                 </p>
               </button>
             ))}
           </div>
-        )}
+        </section>
 
-        {/* SHOP */}
-        {activeTab === 'shop' && (
-          <div>
-            <div style={{
-              background: '#2a1f1a',
-              color: '#f4ebd8',
-              padding: '2rem 1.5rem',
-              textAlign: 'center',
-              marginBottom: '1.5rem',
-              border: '3px double #b08d3f',
-            }}>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.3em', margin: 0, color: '#b08d3f' }}>
-                42 · 43 · 44 · 45 · 46 THOMAS STREET
-              </p>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '2.5rem', fontWeight: 700, margin: '0.4rem 0 0.3rem', color: '#f4ebd8' }}>
-                Duffy's
-              </h2>
-              <p style={{ fontSize: '0.9rem', margin: 0, color: '#d4c9a8', letterSpacing: '0.1em' }}>
-                OF DUBLIN &middot; EST. 1883
-              </p>
-              {/* A row of fabric swatches: a quiet nod to a draper's sample book. */}
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginTop: '1.1rem' }} aria-hidden="true">
-                {[
-                  '#7a3b2e', '#b08d3f', '#4a5d3a', '#2f4858',
-                  '#8b6f47', '#6b4a3a', '#a86b6b', '#3d2817',
-                ].map((c, i) => (
-                  <span key={i} style={{
-                    display: 'inline-block',
-                    width: '14px',
-                    height: '18px',
-                    background: c,
-                    border: '1px solid rgba(244, 235, 216, 0.4)',
-                  }} />
-                ))}
-              </div>
-            </div>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                Out of Misfortune Came Opportunity
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                On <strong>Wednesday 14 September 1870</strong>, the Irish Mail train crashed at Tamworth. Father Healy, a Catholic priest returning to Ireland, was drowned. The engine-driver and stoker were killed. Twenty-seven passengers were on the train; nine were injured. One of the names in the published roll of the injured was <strong>Thomas Duffey, of Dublin</strong> (the <em>Derry Journal</em>, 17 September 1870). He was a young Dublin haberdashery buyer travelling to London on company business. He took the compensation and saved it.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                Thirteen years later, in 1883, he leased No. 44 Thomas Street from Monsieur and Madame Jules Bouvier of Geneva at £50 a year, and opened <em>Thomas Duffy, Draper and Milliner</em>. The ground itself had been leased to Charles Eastwood by the Earl of Meath in 1697.
-              </p>
-            </section>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                The Founder
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                <strong>Thomas Duffy</strong> in his swallow-tailed coat and tall silk hat was a familiar figure in Dublin of the 1900s. His resemblance to the Prince of Wales (later Edward VII) was so striking that Dubliners occasionally doffed their hats to him in the street by mistake. Justice of the Peace. Elected a Poor Law Guardian in 1905. Stood unsuccessfully against W.T. Cosgrave, the future founder of Cumann na nGaedheal, for Dublin Corporation around 1908.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                He retired in 1917, aged 73, handing the firm to his sons <strong>Thomas B.</strong> and <strong>Patrick Gavan</strong>. He died in 1918.
-              </p>
-            </section>
-
-            <section style={{ marginBottom: '1.5rem' }}>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                Gavan's Reign: 1918 – 1954
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                Thomas B. left around 1918 to found his own drapery at North Earl Street — <em>T. B. Duffy &amp; Co., Ltd.</em>, which still trades today as <strong>Duffy's Curtains</strong> under his descendants. Gavan took sole charge of Thomas Street.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                Over the next forty years he expanded from No. 44 through Nos. 42, 43, 45 and 46, knocking the buildings together. In 1939 he applied for the transfer of a seven-day pub licence attached to 45/46 (pragmatism, not thirst). In 1948 he registered as <em>Gavan Duffy Ltd.</em>, putting his own name over the door and bringing his daughters <strong>Gladys</strong> (Chairman) and <strong>Olga</strong> (Director) onto the board.
-              </p>
-            </section>
-
-            <section style={{ background: 'rgba(122, 59, 46, 0.08)', border: '1px solid #a86b6b', padding: '1.2rem', marginBottom: '1.5rem' }}>
-              <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.2em', color: '#7a3b2e', margin: 0 }}>
-                FROM THE IRISH PRESS, 10 OCT 1941
-              </p>
-              <h4 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', margin: '0.3rem 0 0.6rem' }}>
-                Dublin Traders on Lottery Charge
-              </h4>
-              <p style={{ lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
-                Eight Thomas Street traders appeared in the Dublin District Court yesterday, on a charge of organising a sale of tickets in a lottery not authorised by law. They were: Cornelius Lee, William Henry Sheridan, <strong>Patrick Gavan Duffy</strong>, William Gordon, drapers; Patrick Sheeran, furniture merchant; Patrick J. Rogers, grocer; Richard Phillips, fish and poultry merchant; Laurence Kennedy, meal and flour merchant…
-              </p>
-            </section>
-
-            <section>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.3rem', color: '#7a3b2e' }}>
-                The End
-              </h3>
-              <p style={{ lineHeight: 1.7 }}>
-                Gavan died at Undercliffe, Killiney, on 19 June 1954. The shop placed a notice in the Irish Independent: <em>"Owing to the death of Patrick Gavan Duffy (R.I.P.), the premises Gavan Duffy, Ltd., 42/46 Thomas Street will be closed until Wednesday, 23rd June 1954."</em> His funeral at St Anne's, Shankill, was attended by Liam Cosgrave TD (future Taoiseach), P. Dockrell TD, E. Rooney TD, Senator Frank Hugh O'Donnell, Alderman P.S. Doyle, army officers and the entire staff of Gavan Duffy Ltd.
-              </p>
-              <p style={{ lineHeight: 1.7 }}>
-                In 1958 the firm celebrated 75 years of trading with a full newspaper feature. <strong>Gladys</strong> was Chairman of Directors; <strong>Olga</strong> was Director. The shop kept trading into the 1960s. <strong>Gavan Duffy, Limited (CRO No. 13000) was finally dissolved on 20 April 1965</strong>, eleven years after Gavan\'s death and seven after the anniversary, when his daughters wound it up.
-              </p>
-            </section>
-          </div>
-        )}
-
-        {/* ARCHIVE */}
-        {activeTab === 'archive' && (
-          <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', marginTop: '0.5rem', color: '#7a3b2e' }}>
-              Documents Found
-            </h2>
-            <p style={{ fontStyle: 'italic', color: '#6b5137', marginTop: 0, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-              Primary source documents gathered for this archive.
-            </p>
-
-            {[
-              { year: 1903, title: 'SS Parisian passenger manifest', src: 'Library & Archives Canada', note: 'Patrick Duffy, 23, junior draper, Dublin, destination Calgary. Second cabin.', type: 'Migration' },
-              { year: 1907, title: 'Calgary Herald — "Variegated Jags" police court column', src: 'Calgary Herald, Wednesday 14 August 1907, page 1', note: 'A Patrick Duffy fined $3.50 in police court for being drunk in public, "admitted he had more than he could comfortably navigate with". The only Patrick Duffy mentioned in the Calgary Herald across the entire 1903-1910 period. Date and place fit Gavan\'s Alberta years and a 26-year-old cowboy in town for the late-summer round-up break, but the column gives no occupation, age or address: the identification is plausible rather than certain. Recorded here as a possible trace.', type: 'Newspaper' },
-              { year: 1910, title: 'SS Campania return passenger manifest (BT26)', src: 'UK and Ireland, Incoming Passenger Lists, 1878-1960 (The National Archives, Kew)', ref: 'Ancestry coll. 1518 record 29534914; image 88 of 297, Liverpool April 1910', note: 'Patrick Duffy, third class, profession "Storekeeper", Irish, single, adult. Cunard SS Campania, official no. 102086, New York to Liverpool, arriving 14 April 1910. Closes the round trip with the 1903 SS Parisian outbound. The Cunard express service (six-day crossing) and the third-class booking suggest a young man with savings, in a hurry to be home. The "Storekeeper" entry rather than "Draper" or "Ranch hand" hints that the seven Alberta years were not all on the range.', type: 'Migration' },
-              { year: 1911, title: 'Irish Census — Byrne family', src: 'National Archives of Ireland', note: '10 Mountain View Terrace. Mary Kate Byrne, draperess, aged 19. Whelan cousin living with the family.', type: 'Census' },
-              { year: 1912, title: 'Marriage cert — Patrick Gavan Duffy & Mary Catherine Byrne', src: 'General Register Office', ref: '5606871', note: 'Golden Bridge, Inchicore. 4 September 1912. Fathers: Thomas Duffy, draper; Benjamin Byrne, ex-police sergeant.', type: 'BMD' },
-              { year: 1913, title: 'Birth cert — Thomas Joseph Duffy', src: 'GRO', note: '25 June 1913, 66 South Circular Road. Father signs "Gavan Duffy".', type: 'BMD' },
-              { year: 1916, title: 'Birth cert — Gladys May Duffy', src: 'GRO', ref: '1555061', note: '14 April 1916, 66 St Michael\'s Terrace. Ten days before the Easter Rising.', type: 'BMD' },
-              { year: 1919, title: 'Death cert — Catherine (Mary Kate) Duffy', src: 'GRO', ref: '4417657', note: 'Tudor House, Clontarf. Influenza, broncho-pneumonia. Informant Gavan Duffy, husband, Herbert Lodge, Dalkey.', type: 'BMD' },
-              { year: 1920, title: 'Marriage cert — Patrick Gavan Duffy & Kathleen Condon', src: 'GRO', note: 'St Joseph\'s, Crumlin. 15 September 1920. Father of bride: John Patrick Condon, Barrister.', type: 'BMD' },
-              { year: 1923, title: 'Birth cert — Olga Duffy', src: 'GRO', ref: '1474688', note: '30 March 1923 at 36 Upper Mount Street (nursing home). Home: Queenstown Castle, Dalkey.', type: 'BMD' },
-              { year: 1926, title: 'Irish Free State Census', src: 'National Archives of Ireland', note: 'Newtownsmith, Dún Laoghaire. Gavan (44, draper, own account), Kathleen, Thomas, Gladys, Olga + servant Maud Brownson.', type: 'Census' },
-              { year: 1926, title: 'Irish Free State Census — Thomas B. Duffy\'s household', src: 'National Archives of Ireland', note: 'Clontarf, Dublin. Schedule 64. Thomas Duffy (40y6m, Head, Draper, Employer, b. Dublin City), Sara Duffy (35y11m, Wife, b. Co Cork, married 9 years = April 1917, 3 children born 3 living), Thomas Jr (7, son, at school, b. Clontarf), Freda (5y5m, daughter, b. Clontarf), Laura (1y+, daughter, b. Clontarf), + Bridget Tuite (34, servant, b. Gowran, Co Kilkenny). Confirms Thomas B\'s marriage to Sara in April 1917, one month before his father\'s death, and gives three new first cousins once removed: Thomas Jr, Freda and Laura Duffy.', type: 'Census' },
-              { year: 1939, title: 'Pub licence transfer application', src: 'Irish Independent', note: '45/46 Thomas Street seven-day licence.', type: 'Newspaper' },
-              { year: 1941, title: 'Dublin Traders on Lottery Charge', src: 'Irish Press', note: 'Gavan among eight Thomas Street traders charged. Outcome reserved.', type: 'Newspaper' },
-              { year: 1948, title: '"Alma", 3 Tubbermore Ave., Dalkey — Nursing & Accouchement classified', src: 'Irish Independent, 31 August 1948', note: 'Under "NURSING & ACCOUCHEMENT" heading: "NURSE, S.R.N., S.C.M., can accommodate convalescent, semi-convalescent, or elderly patients in own home. \'Alma,\' 3 Tubbermore Ave., Dalkey." This is Delia Tierney advertising her private nursing home, six years before she became informant at Gavan\'s death. SRN + SCM = State Registered Nurse + State Certified Midwife.', type: 'Newspaper' },
-              { year: 1954, title: 'Death cert — Patrick Gavan Duffy', src: 'GRO', ref: '4164986', note: 'Undercliffe, Killiney. Informant Delia Tierney, "Alma", Tubbermore Road, Dalkey. Delia Tierney is now identified: a State Registered Nurse and State Certified Midwife (SRN, SCM) who ran a small private nursing home for convalescent and elderly patients at "Alma", 3 Tubbermore Avenue, Dalkey, from around 1947 onward (classifieds confirm her presence at that address in Irish Independent 31 August 1948, and the house had been sold vacant in Irish Independent 23 August 1947). She was Gavan\'s professional private nurse in his final illness, attending him at home at Undercliff. Her own address appears on the cert because, as the medically qualified informant, her residence was the one recorded.', type: 'BMD' },
-              { year: 1954, title: 'Obituary & funeral notice', src: 'Irish Independent & Irish Press', note: 'Buried Deansgrange. Mourners include Liam Cosgrave TD.', type: 'Newspaper' },
-              { year: 1958, title: "Duffy's of Thomas Street: 75th Anniversary feature", src: 'Irish Independent, 25 March 1958', note: 'Full history of the firm, founder\'s biography, cowboy detail confirmed, Gladys as Chairman and Olga as Director named.', type: 'Newspaper' },
-              { year: 1984, title: 'Death notice — Kathleen Duffy', src: 'Evening Herald', note: 'Died Sacred Heart Hospital, Mullingar. Buried Collinstown Cemetery, Westmeath.', type: 'Newspaper' },
-              { year: 1901, title: 'Irish Census — Duffy family', src: 'National Archives of Ireland', note: '44 Thomas Street. Thomas Duffy (56, draper, born Dublin City), Mary (45, wife), and five children at home: Gavan (20, draper), Lillie (18), Thomas Jr (15), John (13), plus sister-in-law Lizzie Duffy (39, housekeeper) and six female drapery assistants living above the shop.', type: 'Census' },
-              { year: 1911, title: 'Irish Census — Duffy family', src: 'National Archives of Ireland', note: '44 Thomas Street. Thomas Duffy (64, Magistrate (Draper), widower, 26 years married, 6 children born, 4 living). Gavan (30, draper, single, back from Alberta). Thomas B (28, draper). Aloysius (21, Student — Visitor). Lily (27). Five female drapery assistant boarders.', type: 'Census' },
-              { year: 1911, title: 'Irish Census — Byrne family', src: 'National Archives of Ireland', note: '10 Mountain View Terrace. Mary Kate Byrne, draperess, aged 19. Whelan cousin living with the family.', type: 'Census' },
-              { year: 1911, title: 'Irish Census — Condon family', src: 'National Archives of Ireland', note: '90 South Circular Road, Kilmainham. John Patrick Condon (47, Barrister-at-law not practising, Clerk of Poor Law Union, born Co Meath), wife Anna Mary (44, née Whyte), 8 children at home including Kathleen Mary aged 10 and Francis Xavier aged 6. Sister-in-law Harriett Whyte (dressmaker, Carlow) and servant Mary Drennan (Cavan).', type: 'Census' },
-              { year: 1926, title: 'Irish Free State Census — Condon family', src: 'National Archives of Ireland', note: '22 Greenmount Road, Terenure. John Patrick now Clerk and Superintendent Registrar, Commissioners of the Dublin Union, James\'s Street. Places his workplace about 400 yards from Gavan\'s Thomas Street shop.', type: 'Census' },
-              { year: 1941, title: 'Marriage cert — Francis Condon & Teresa Roche', src: 'GRO', note: 'Blackrock RC church, 2 July 1941. Francis: Builder\'s Foreman, of Queenstown Castle, Dalkey. Father John Condon. Teresa of 3 Ardeen Terrace, Blackrock. Confirms the Condons took Queenstown Castle on after Gavan vacated it.', type: 'BMD' },
-              { year: 1917, title: 'Death cert — Thomas Joseph Duffy (founder)', src: 'GRO, Clontarf/Howth Registrar\'s District, No. 100', note: 'Died 13 May 1917 at Tudor House, Clontarf. Age 74, widower, draper. Cause: myocarditis (5 days) and pulmonary oedema, certified. Informant: Gavan Duffy, son, present at death. Same nursing home where Mary Catherine Byrne died two years later.', type: 'BMD' },
-              { year: 1917, title: 'Probate grant — Thomas Joseph Duffy', src: 'National Archives of Ireland, Calendar of Wills & Administrations', note: 'Probate granted 18 July 1917 in Dublin. Effects £2,197 0s 5d. Executors: Patrick G. Duffy, Thomas B. Duffy (drapers) and the Rev. John A. Duffy R.C.C. Confirms Rev John A. Duffy as a brother rather than a distant relative.', type: 'Probate' },
-              { year: 1870, title: 'Fatal Accident to the Irish Mail Train — Tamworth', src: 'Freeman\'s Journal, 15 September 1870, and Derry Journal, 17 September 1870', note: 'Reports the Tamworth rail crash of Wednesday 14 September 1870. Irish Mail train from Dublin/Holyhead to London derailed at 25 mph when pointsman Alfred Evans sent it into a siding. Engine-driver Samuel Taylor and stoker William Davis killed. Father Healy, Catholic priest, drowned. Among the published list of injured passengers: "Thomas Duffey, of Dublin" (Derry Journal names list, 17 Sept 1870). "Duffey" is a known variant spelling of Duffy in Irish civil records. Confirms the family tradition that Thomas Duffy was injured in the Tamworth crash and received compensation that helped fund the Thomas Street drapery.', type: 'Newspaper' },
-              { year: 1870, title: 'Tamworth Inquest — Verdict of Manslaughter', src: 'Drogheda Conservative, 1 October 1870', note: 'The coroner\'s inquiry at Tamworth returned a verdict of manslaughter against Alfred Evans, the pointsman whose stopped watch sent the Irish Mail into the siding. "It was impossible for the jury, upon the evidence given at the inquest, to arrive at any other conclusion." This means the crash was officially found to be culpable — not misadventure — establishing LNWR vicarious liability for compensation of injured passengers including Thomas Duffy. Evans would have been committed for trial at the next Warwickshire Assizes.', type: 'Newspaper' },
-              { year: 1875, title: 'Marriage cert — Thomas Duffy & Mary Flynn', src: 'Roman Catholic Church of St Kevin, Dublin (civil registration)', note: 'Married 24 November 1875 at St Kevin\'s, Registrar\'s District possibly Dublin South City, Union of South Dublin. Thomas Duffy, full age, Bachelor, Draper of Thomas Street, son of Patrick Duffy (Surveyor). Mary Flynn, full age, Spinster, Milliner of South Circular Road, daughter of Patrick Flynn (Tailor). Witnesses Thomas Smyth and Christina Flynn (bride\'s sister). Celebrated by Rev James Baxter. This cert completely rewrites the founder story — Thomas was a draper on Thomas Street EIGHT YEARS before the 1883 date traditionally given for the shop\'s founding. Also gives us two new great-great-great-grandfathers: Patrick Duffy (Surveyor) and Patrick Flynn (Tailor).', type: 'BMD' },
-              { year: 1880, title: 'Baptism record — Patritius Joran Duffy', src: 'St Catherine\'s RC, Meath Street, Dublin (irishgenealogy.ie)', ref: 'DU-RC-BA-505126, page 140, entry 2200', note: 'Baptised at St Catherine\'s, Meath Street, in January 1880. Father Thomas Duffy, mother Maria Flynn, address "1 Thoms" (Thomas Street). Godparents Jacobi Claffey and Josephina Sterry. Officiating priest E. Dukay. The "Joran" middle name in the index is almost certainly an indexer\'s misreading of "Gavan" in cursive Latin. CRITICAL: this puts his actual birth in late 1879 or January 1880, not 1881. The GRO civil registration was filed in 1881 but every later age record (23 on the May 1903 manifest, 30 on the April 1911 census, 74 at death in June 1954) confirms an 1880 birth.', type: 'Church' },
-              { year: 1881, title: 'Birth cert — Patrick Gavan Duffy', src: 'GRO', ref: '1590441', note: 'Civil registration filed in 1881 of a child born late 1879 or January 1880. The "Gavan" calling-name goes back to the register entry.', type: 'BMD' },
-              { year: 1903, title: 'SS Parisian arrival at Quebec', src: 'Montreal Gazette, Monday 25 May 1903, page 10, shipping arrivals column', note: '"Steamship Parisian arrived at 3 p.m. Saturday, and left for Montreal at 10 p.m. today." Pins Gavan\'s first sight of Canada to 3 p.m. on Saturday 23 May 1903 at Quebec City. An eight-day Atlantic crossing from Liverpool. Newspapers.com image 419863109.', type: 'Newspaper' },
-              { year: 1965, title: 'Gavan Duffy, Limited dissolved', src: 'Companies Registration Office (CRO CORE)', ref: 'Reg. No. 13000', note: 'Status: Dissolved. Effective date 20 April 1965. Eleven years after Gavan\'s death and seven years after the 1958 anniversary feature, Gladys (Chairman) and Olga (Director) wound up the firm. The 1948 founding directors and original registered office sit behind a paid CRO Company Printout (€3.50).', type: 'Business' },
-              { year: 1903, title: 'Death cert — Mary Duffy (Gavan\'s mother)', src: 'GRO', ref: '4594706', note: 'Died 30 May 1903 at 44 Thomas Street, aged 45, of angina pectoris after only 3 hours\' illness. A sudden heart attack. Occupation: Dressmaker. Informant: T.B. Duffy, Son, Present at Death. Died two weeks after Gavan sailed for Canada — he was mid-Atlantic or already on the prairies when she died.', type: 'BMD' },
-              { year: 1880, title: 'Marriage cert — Benjamin Byrne & Catherine Whelan', src: 'GRO', ref: '8036271', note: 'St Canice\'s, Kilkenny. Benjamin: policeman. Catherine: dressmaker. Fathers: John Byrne (pilot), Martin Whelan (policeman, deceased).', type: 'BMD' },
-              { year: 1851, title: 'Fashionable Intelligence — Arrivals at Dalkey', src: 'Freeman\'s Journal, 6 June 1851', note: 'Earliest known mention of Queenstown Castle. Season lets listed, among them: "Alexander Kirkpatrick, Esq., J.P., Mrs. Kirkpatrick, and family, at Queenstown Castle." So the house existed and was being let to Dublin society for the summer by 1851, a decade before Undercliff was built.', type: 'Newspaper' },
-              { year: 1878, title: 'Marriage notice — James Milo Burke', src: 'The Nation, 7 September 1878', note: '"James Milo Burke, Esq., J.P., Queenstown Castle, Dalkey" as witness/relation at a society wedding. Confirms Milo Burke (J.P., later D.L.) in residence at Queenstown Castle from at least 1878.', type: 'Newspaper' },
-              { year: 1883, title: 'Marriage notice — Martin John Burke (son of Milo)', src: 'Belfast Newsletter, 24 December 1883', note: '"Martin John Burke, only son of Milo Burke, Esq., of Queenstown Castle, Dalkey, County Dublin" married Elizabeth Jane Barron-Stanton at St Helens, Holywood, Co Down by special licence, 22 Dec 1883. Anchors the Burke family at Queenstown Castle in the early 1880s.', type: 'Newspaper' },
-              { year: 1908, title: 'Auction of Springfield House & Queenstown Castle', src: 'Irish Independent, 9 July 1908', note: '"THE CHARMING SEASIDE RESIDENCES, known as SPRINGFIELD HOUSE, DALKEY, And QUEENSTOWN CASTLE, DALKEY. Both held in Fee Simple... Re J. MILO BURKE, Esq., J.P., D.L., Deceased." Joseph F. Keogh auctioneer. So Milo Burke had died shortly before this date; both houses were held freehold by him.', type: 'Newspaper' },
-              { year: 1909, title: 'Auction of contents of Queenstown Castle', src: 'Irish Independent, 11 March 1909', note: '"BEING THE CONTENTS OF QUEENSTOWN CASTLE, DALKEY. Re MILO BURKE, DECEASED." McMullan & Cox auctioneers, 30 Bachelor\'s Walk. 12 March 1909. Antique and modern furniture, old Sheffield plate, china, glass, pictures. The dispersal of Milo Burke\'s effects.', type: 'Newspaper' },
-              { year: 1923, title: 'Birth notice — Olga Duffy', src: 'Freeman\'s Journal, 30 March 1923', note: '"DUFFY — March 26, 1923, at Maglona, 36 Upper Mount street, Dublin, the wife of Gavan Duffy, Queenstown Castle, Dalkey — a daughter." Confirms Gavan publicly used Queenstown Castle as his home address in 1923 and that Olga was actually born at Maglona nursing home on Upper Mount Street rather than at the house.', type: 'Newspaper' },
-              { year: 1925, title: 'Queenstown Castle sale notice', src: 'Irish Independent, 11 & 18 July 1925', note: 'Battersby & Co auction. "B. & CO. QUEENSTOWN CASTLE, DALKEY. 23rd JULY. POSSESSION. HELD FREE OF RENT FOR EVER." 3 acres, lounge hall, drawing room with conservatory, dining room, study, 6 bedrooms, bathroom, servant\'s room, tiled kitchen, wash-house, pantries, coach-house, stabling, boat-house, electric bells, gas. **Gavan advertised the house for auction in July 1925.** The advert does not reveal who bought it. By April 1926 the Duffys had moved to Newtownsmith. The family story is that John Patrick Condon bought the house from Gavan — the auction may have been the mechanism, or the sale may have been by private treaty around the same date. Registry of Deeds memorial needed to confirm.', type: 'Newspaper' },
-              { year: 1931, title: 'Laguna Queens Publicity Ball — prize list', src: 'Irish Independent, 7 February 1931', note: '"Duffy and Son, Gramophones and Records — Presented by Messrs. Duffy and Son, Thomas St. — Miss Condon, Queenstown Castle, Dalkey." A Miss Condon of Queenstown Castle won a prize donated by a Duffy and Son firm on Thomas Street (possibly Gavan\'s shop branching into gramophones, possibly a different Duffy). Socially links the Condons at Queenstown Castle to Thomas Street commerce in 1931.', type: 'Newspaper' },
-              { year: 1934, title: 'Partnership Suit: Tobacco-Growing Enterprise', src: 'Irish Press, 16 January 1934', note: 'Dublin Circuit Court. Judge Davitt ruled Francis Condon, Queenstown Castle, Dalkey, and Mrs F. Harrison, Shanganagh Grove, Ballybrack, were the sole partners in a 1933 tobacco-growing venture at Shanganagh. Condon "had grown tobacco in Canada" and contributed his experience. Proceeds £318, split evenly. The Harrisons had alleged six partners; Condon rebutted and won. Confirms Francis\'s Canadian agricultural years.', type: 'Newspaper' },
-              { year: 1936, title: 'Death notices & obituary — John Patrick Condon', src: 'Irish Press, 27, 28 & 29 January 1936', note: 'Died at Queenstown Castle, Dalkey, 26 January 1936, aged ~72. Three separate notices. Obituary (27 Jan): "As a boy he was taught by the late Mr. Michael Cusack, founder of the G.A.A." Early member of the Christian Brothers\' Past Pupils\' Union, associated with the Gaelic League. Funeral to Glasnevin. Chief mourners include Mrs. A. Condon (widow); Messrs A., J., John, F., Jas. and Jos. Condon (sons — five names, more than the 1911 census showed at home); Misses M. and E. Condon (daughters); Misses M. and H. Whyte (aunts, Anna\'s sisters); J. Grandy, M. Conway and Miss B. Conway (cousins); Mr J. E. Condon, Clerk, Dublin Union (nephew, succeeded him at work); Mr P. Crowley (brother-in-law). At funeral: Mrs K. Duffy (Kathleen), Mr G. Duffy (son-in-law, Gavan). Also attending: W. T. Cosgrave, T.D.', type: 'Newspaper' },
-              { year: 1936, title: 'Statutory Notice to Creditors — John Patrick Condon', src: 'Irish Press, 10 March 1936', note: 'Frederick J. Mangan, Solicitor, 31 Dame Street, acting for the Executrices. Probate granted 28 February 1936. Claims against the estate by 14 April 1936. Confirms: late of Queenstown Castle, Dalkey; Barrister-at-Law; died 26 January 1936.', type: 'Probate' },
-              { year: 1943, title: 'Queenstown Castle sold by private treaty', src: 'Irish Press, 31 July 1943', note: '"Mr. Albert MacArthur has carried through the following sales by private treaty — 34 Dame St... Queenstown Castle, Dalkey; ‘The Downs Manor,’ Delgany..." The sale of Queenstown Castle by the Condon family or a subsequent owner in mid-1943.', type: 'Newspaper' },
-              { year: 1946, title: 'Queenstown Castle sold at auction for £4,350', src: 'Irish Press, 30 November 1946', note: '"Queenstown Castle, Coliemore Road, Dalkey, has been sold for £4,350. Standing on a ¼ acre, it has a private boat slip and bathing place. Six bed-rooms, lounge and three reception rooms... Property is freehold. P.L.V. £45." Note the stated size here is 1/4 acre rather than 3 acres — either sub-divided or misreported.', type: 'Newspaper' },
-              { year: 1947, title: 'Queenstown Castle Hotel — excise licence application', src: 'Irish Independent, 20 September 1947', note: '"In the Matter of an Application by Martha Carney, of Queenstown Castle Hotel, Coliemore Road, Dalkey... to apply to the Court at Dublin on the 10th day of October, 1947, for a Certificate to entitle and enable her to obtain a new Excise Licence to sell beer, cider, spirits, wines..." By 1947 the house had been converted to Queenstown Castle Hotel and was under Martha Carney\'s management.', type: 'Newspaper' },
-            ].sort((a,b) => a.year - b.year).map((doc, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.45)',
-                border: '1px solid #c4a77d',
-                padding: '0.9rem 1rem',
-                marginBottom: '0.6rem',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.6rem' }}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1rem', color: '#2a1f1a' }}>
-                    {doc.title}
-                  </div>
-                  <div style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.72rem', color: '#7a3b2e', whiteSpace: 'nowrap' }}>
-                    {doc.year}
-                  </div>
-                </div>
-                <div style={{ fontSize: '0.72rem', fontFamily: "'Special Elite', monospace", letterSpacing: '0.1em', color: '#6b5137', marginTop: '0.1rem' }}>
-                  {doc.type.toUpperCase()} &middot; {doc.src}{doc.ref ? ` · ref ${doc.ref}` : ''}
-                </div>
-                <p style={{ margin: '0.4rem 0 0', fontSize: '0.92rem', lineHeight: 1.5, color: '#5d4e3a' }}>
-                  {doc.note}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* THE ARCHIVE */}
+        <ChapterAnchor id="archive" />
+        <ArchiveSection
+          docs={filtered} all={archiveDocs} counts={counts} types={filterTypes}
+          filter={archiveFilter} setFilter={setArchiveFilter}
+          query={archiveQuery} setQuery={setArchiveQuery}
+          buckets={buckets}
+        />
 
       </main>
 
-      {/* Person modal */}
       {selectedPerson && (
         <Modal onClose={() => setSelectedPerson(null)}>
-          <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.2em', color: '#7a3b2e', margin: 0 }}>
+          <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.22em', color: C.oxblood, margin: 0 }}>
             {people[selectedPerson].role?.toUpperCase()}
           </p>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.6rem', margin: '0.3rem 0 0.2rem', color: '#2a1f1a' }}>
+          <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 26, margin: '6px 0 4px', color: C.ink }}>
             {people[selectedPerson].name}
           </h3>
           {people[selectedPerson].dates && (
-            <p style={{ fontStyle: 'italic', color: '#7a3b2e', margin: '0 0 1rem' }}>
+            <p style={{ fontStyle: 'italic', color: C.oxblood, margin: '0 0 14px' }}>
               {people[selectedPerson].dates}
             </p>
           )}
-          <PhotoSlot photo={people[selectedPerson].photo} alt={people[selectedPerson].name} />
           {(people[selectedPerson].story || 'More research needed.').split('\n\n').map((para, i) => (
-            <p key={i} style={{ lineHeight: 1.7, fontSize: '1rem', margin: i === 0 ? '0 0 1rem' : '0 0 1rem' }}>
+            <p key={i} style={{ lineHeight: 1.7, fontSize: 16, margin: '0 0 14px' }}>
               {renderInline(para)}
             </p>
           ))}
         </Modal>
       )}
 
-      {/* Place modal */}
       {selectedPlace && (
         <Modal onClose={() => setSelectedPlace(null)}>
-          <p style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.7rem', letterSpacing: '0.2em', color: '#7a3b2e', margin: 0 }}>
-            <MapPin size={11} style={{ display: 'inline', marginRight: '0.3rem' }} />
+          <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.22em', color: C.oxblood, margin: 0 }}>
+            <MapPin size={11} style={{ display: 'inline', marginRight: 4 }} />
             {places[selectedPlace].era}
           </p>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.5rem', margin: '0.3rem 0 1rem', color: '#2a1f1a' }}>
+          <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 24, margin: '6px 0 14px', color: C.ink }}>
             {places[selectedPlace].name}
           </h3>
           {places[selectedPlace].images && places[selectedPlace].images.length > 0 && (
-            <div style={{ display: 'grid', gridTemplateColumns: places[selectedPlace].images.length > 1 ? '1fr 1fr' : '1fr', gap: '0.6rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: places[selectedPlace].images.length > 1 ? '1fr 1fr' : '1fr', gap: 8, marginBottom: 14 }}>
               {places[selectedPlace].images.map((img, i) => (
                 <figure key={i} style={{ margin: 0 }}>
-                  <img src={img.src} alt={img.caption} style={{ width: '100%', height: 'auto', border: '1px solid #8b6f47', display: 'block', background: '#ede2c4' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                  {img.caption && (
-                    <figcaption style={{ fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', color: '#6b5137', marginTop: '0.3rem', fontStyle: 'italic', lineHeight: 1.4 }}>
-                      {img.caption}
-                    </figcaption>
-                  )}
+                  <img src={img.src} alt={img.caption} style={{ width: '100%', height: 'auto', border: `1px solid ${C.taupe}`, display: 'block', background: '#ede2c4' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  {img.caption && <figcaption style={{ fontFamily: FM, fontSize: 10, color: C.taupe, marginTop: 4, fontStyle: 'italic' }}>{img.caption}</figcaption>}
                 </figure>
               ))}
             </div>
           )}
           {places[selectedPlace].desc.split('\n\n').map((para, i) => (
-            <p key={i} style={{ lineHeight: 1.7, fontSize: '1rem', margin: i === 0 ? '0 0 1rem' : '0 0 1rem' }}>
+            <p key={i} style={{ lineHeight: 1.7, fontSize: 16, margin: '0 0 14px' }}>
               {renderInline(para)}
             </p>
           ))}
         </Modal>
       )}
 
-      {/* Footer */}
-      <footer style={{
-        borderTop: '1px solid #c4a77d',
-        marginTop: '3rem',
-        padding: '2rem 1.25rem 1.5rem',
-        textAlign: 'center',
-        fontFamily: "'Special Elite', monospace",
-        fontSize: '0.7rem',
-        letterSpacing: '0.15em',
-        color: '#6b5137',
-        lineHeight: 1.8,
-      }}>
-        <div style={{ marginBottom: '0.6rem', fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1rem', letterSpacing: 0, color: '#7a3b2e' }}>
-          &mdash; Compiled with love and a paper trail &mdash;
-        </div>
-        <div>An archive of Patrick Gavan Duffy &middot; 1880&ndash;1954</div>
-        <div style={{ marginTop: '0.4rem', opacity: 0.7 }}>Last updated May 2026</div>
-      </footer>
+      <Footer />
     </div>
   );
 }
 
-// --- Sub-components ---
+// ── Layout primitives ──────────────────────────────────────────────────────
 
-// Photo slot with graceful placeholder if no photo is supplied
-function PhotoSlot({ photo, alt }) {
-  if (photo) {
-    return (
-      <figure style={{ margin: '0 0 1rem', float: 'right', marginLeft: '1rem', maxWidth: '40%' }}>
-        <img src={photo} alt={alt} style={{ width: '100%', height: 'auto', border: '1px solid #8b6f47', display: 'block', background: '#ede2c4' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-      </figure>
-    );
-  }
-  // Tasteful Victorian-style silhouette frame when no photo is supplied.
+function Masthead({ anchors }) {
+  const start = 1875, end = 1965, span = end - start;
   return (
-    <figure style={{
-      float: 'right',
-      marginLeft: '1rem',
-      marginBottom: '0.6rem',
-      width: '35%',
-      minHeight: '160px',
-      border: '1px solid #8b6f47',
-      background: 'linear-gradient(180deg, #ede2c4 0%, #d9c79a 100%)',
-      boxShadow: 'inset 0 0 0 4px #f4ebd8, inset 0 0 0 5px #8b6f47',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '0.6rem',
-      margin: '0 0 0.6rem 1rem',
-    }}>
-      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style={{ width: '70%', height: 'auto' }} aria-label={`Silhouette placeholder for ${alt || 'family member'}`}>
-        <ellipse cx="50" cy="40" rx="18" ry="22" fill="#7a3b2e" opacity="0.55" />
-        <path d="M20,130 C20,90 30,72 50,72 C70,72 80,90 80,130 Z" fill="#7a3b2e" opacity="0.55" />
+    <header style={{ borderBottom: `2px double ${C.oxblood}`, padding: '40px 24px 28px', textAlign: 'center' }}>
+      <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.oxblood, margin: 0 }}>
+        An archive of the life of
+      </p>
+      <h1 style={{ fontFamily: FD, fontWeight: 900, fontSize: 'clamp(2.4rem, 7vw, 4rem)', margin: '8px 0 4px', letterSpacing: '-0.02em', lineHeight: 1, color: C.ink }}>
+        Patrick Gavan Duffy
+      </h1>
+      <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: '1.05rem', margin: 0, color: C.oxblood }}>
+        Draper of Thomas Street
+      </p>
+      <p style={{ fontFamily: FD, fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', margin: '14px 0 0', color: C.ink, letterSpacing: '0.05em' }}>
+        1880 <span style={{ color: C.taupe }}>—</span> 1954
+      </p>
+
+      {/* Drapery motif: thread-and-button — four generations of drapers */}
+      <svg viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'block', margin: '14px auto 24px', width: 'min(180px, 50vw)', height: 'auto' }}>
+        <path d="M2,12 Q40,5 80,12 T100,12" stroke={C.oxblood} strokeWidth="0.8" fill="none" />
+        <path d="M218,12 Q180,19 140,12 T120,12" stroke={C.oxblood} strokeWidth="0.8" fill="none" />
+        <circle cx="110" cy="12" r="6" fill={C.cream} stroke={C.oxblood} strokeWidth="0.9" />
+        <circle cx="110" cy="12" r="4.4" fill="none" stroke={C.oxblood} strokeWidth="0.4" />
+        <circle cx="107.5" cy="9.5" r="0.6" fill={C.oxblood} />
+        <circle cx="112.5" cy="9.5" r="0.6" fill={C.oxblood} />
+        <circle cx="107.5" cy="14.5" r="0.6" fill={C.oxblood} />
+        <circle cx="112.5" cy="14.5" r="0.6" fill={C.oxblood} />
       </svg>
+
+      {/* Hero year scrubber — labels alternate above and below the rail so neighbours don't collide */}
+      <div style={{ maxWidth: 880, margin: '0 auto' }}>
+        <div style={{ position: 'relative', height: 110 }}>
+          <div style={{
+            position: 'absolute', left: 0, right: 0, top: 55, height: 2,
+            backgroundImage: `linear-gradient(to right, ${C.taupe} 0, ${C.taupe} 4px, transparent 4px, transparent 8px)`,
+            backgroundSize: '8px 2px',
+          }} />
+          <div style={{
+            position: 'absolute',
+            left: `${((1880 - start) / span) * 100}%`,
+            width: `${((1954 - 1880) / span) * 100}%`,
+            top: 54, height: 4, background: C.oxblood, opacity: 0.7,
+          }} />
+          {anchors.map((a, i) => {
+            const x = ((a.y - start) / span) * 100;
+            const above = i % 2 === 0;
+            return (
+              <a key={i} href={a.href} title={`${a.y} — ${a.label}`} style={{ position: 'absolute', left: `${x}%`, top: 0, transform: 'translateX(-50%)', textAlign: 'center', textDecoration: 'none', width: 90, height: '100%' }}>
+                {above && (
+                  <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0 }}>
+                    <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.ink, lineHeight: 1 }}>{a.y}</div>
+                    <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: C.taupe, marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
+                  </div>
+                )}
+                <div style={{
+                  width: 13, height: 13, borderRadius: '50%',
+                  background: C.cream, border: `2px solid ${C.oxblood}`, position: 'absolute', top: 49, left: '50%', transform: 'translateX(-50%)',
+                }} />
+                {!above && (
+                  <div style={{ position: 'absolute', top: 70, left: 0, right: 0 }}>
+                    <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.ink, lineHeight: 1 }}>{a.y}</div>
+                    <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: C.taupe, marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
+                  </div>
+                )}
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function StickyNav() {
+  const story = [
+    { id: 'origins', label: 'Origins' },
+    { id: 'alberta', label: 'Alberta' },
+    { id: 'first', label: 'First Marriage' },
+    { id: 'second', label: 'Second Life' },
+    { id: 'shop', label: 'The Shop' },
+    { id: 'killiney', label: 'Killiney' },
+  ];
+  const reference = [
+    { id: 'family', label: 'Family Tree' },
+    { id: 'places', label: 'Places & Houses' },
+    { id: 'archive', label: 'Sources', count: 49 },
+  ];
+  const allIds = [...story, ...reference].map(c => c.id);
+  const [active, setActive] = React.useState('origins');
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      // Pick the section whose top is closest to (but above) 140px from the viewport top.
+      let current = allIds[0];
+      for (const id of allIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top - 140 <= 0) current = id;
+      }
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const linkStyle = (isActive) => ({
+    fontFamily: FD, fontSize: 14, color: isActive ? C.ink : C.taupe,
+    textDecoration: 'none', padding: '4px 0', position: 'relative',
+    fontWeight: isActive ? 700 : 400,
+    borderBottom: isActive ? `2px solid ${C.oxblood}` : '2px solid transparent',
+  });
+
+  return (
+    <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(244,235,216,0.96)', backdropFilter: 'blur(8px)', borderBottom: `1px solid ${C.rule}` }}>
+      <nav style={{ maxWidth: 1180, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 22, overflowX: 'auto', whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.24em', color: C.oxblood, flexShrink: 0 }}>P.G.D.</span>
+        {story.map(ch => (
+          <a key={ch.id} href={`#${ch.id}`} style={linkStyle(active === ch.id)}>{ch.label}</a>
+        ))}
+        <span aria-hidden="true" style={{ width: 1, height: 18, background: C.rule, flexShrink: 0 }} />
+        {reference.map(ch => (
+          <a key={ch.id} href={`#${ch.id}`} style={linkStyle(active === ch.id)}>
+            {ch.label}
+            {ch.count != null && (
+              <span style={{ fontFamily: FM, fontSize: 10, marginLeft: 6, color: C.oxblood, letterSpacing: '0.05em' }}>
+                {ch.count}
+              </span>
+            )}
+          </a>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+function ChapterAnchor({ id }) {
+  return <div id={id} style={{ position: 'relative', top: -100 }} />;
+}
+
+function Chapter({ no, year, kicker, title, lede, body, marginalia, hero }) {
+  return (
+    <section style={{ padding: '52px 28px 36px', borderBottom: `1px solid ${C.rule}` }}>
+      <div style={{
+        display: 'grid', gridTemplateColumns: '110px 1fr 220px', gap: 28, alignItems: 'start',
+      }} className="chapter-grid">
+        <div style={{ position: 'sticky', top: 130 }}>
+          <div style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.3em', color: C.taupe }}>CHAPTER {no}</div>
+          <div style={{ fontFamily: FD, fontWeight: 900, fontSize: 40, lineHeight: 1, color: C.oxblood, marginTop: 6 }}>{year}</div>
+          <div style={{ width: 32, height: 2, background: C.oxblood, margin: '12px 0' }} />
+          <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 13, color: C.taupe }}>{kicker}</div>
+        </div>
+        <div>
+          <h2 style={{ fontFamily: FD, fontWeight: 700, fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)', lineHeight: 1.05, color: C.ink, margin: '0 0 12px', letterSpacing: '-0.01em' }}>{title}</h2>
+          <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.05rem, 1.8vw, 1.3rem)', lineHeight: 1.45, color: C.inkSoft, margin: '0 0 18px' }}>{lede}</p>
+          {hero}
+          {body.map((p, i) => (
+            <p key={i} style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 14px', textWrap: 'pretty' }}>{p}</p>
+          ))}
+        </div>
+        <aside style={{ borderLeft: `1px dashed ${C.taupe}`, paddingLeft: 16 }}>
+          <Marginalia items={marginalia} />
+        </aside>
+      </div>
+      <style>{`@media (max-width: 880px) { .chapter-grid { grid-template-columns: 1fr !important; } }`}</style>
+    </section>
+  );
+}
+
+function Marginalia({ items }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {items.map((it, i) => (
+        <div key={i}>
+          <div style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.22em', color: C.oxblood, marginBottom: 4 }}>{it.kicker}</div>
+          <div style={{ fontFamily: FD, fontSize: 14, lineHeight: 1.4, color: C.ink, fontStyle: it.italic ? 'italic' : 'normal' }}>{it.body}</div>
+          {it.cite && <div style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.1em', color: C.taupe, marginTop: 4 }}>{it.cite}</div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PullQuoteSection({ eyebrow, text, attribution }) {
+  return (
+    <section style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.4)', borderBottom: `1px solid ${C.rule}` }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
+        <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', color: C.oxblood, margin: 0 }}>{eyebrow}</p>
+        <figure style={{ margin: '14px 0 0', padding: '20px 24px', background: 'rgba(122,59,46,0.06)', borderTop: `2px solid ${C.oxblood}`, borderBottom: `2px solid ${C.oxblood}` }}>
+          <blockquote style={{ margin: 0, fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.6vw, 1.8rem)', lineHeight: 1.3, color: C.inkSoft }}>
+            “{text}”
+          </blockquote>
+          <figcaption style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.22em', color: C.oxblood, marginTop: 10, textTransform: 'uppercase' }}>
+            — {attribution}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
+function DocSlot({ kind, label, source, h = 220 }) {
+  return (
+    <figure style={{ margin: '4px 0 18px' }}>
+      <div style={{
+        height: h,
+        background: 'repeating-linear-gradient(135deg, #ede2c4 0 8px, #e6d8b8 8px 16px)',
+        border: `1px solid ${C.taupe}`, boxShadow: '4px 5px 0 rgba(42,31,26,0.08)',
+        transform: 'rotate(-0.4deg)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: FM, fontSize: 11, color: C.taupe, letterSpacing: '0.18em',
+        textAlign: 'center', padding: 16,
+      }}>
+        [ {kind.toUpperCase()} — {label.toUpperCase()} ]
+      </div>
+      <figcaption style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.12em', color: C.taupe, marginTop: 6, textAlign: 'right' }}>
+        SOURCE: {source}
+      </figcaption>
     </figure>
   );
 }
 
-// Lightweight inline renderer: handles **bold** and bare URLs as clickable links.
-function renderInline(text) {
-  // Split on URLs first, keeping them as tokens
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  const parts = text.split(urlRegex);
-  return parts.map((part, i) => {
-    if (urlRegex.test(part)) {
-      urlRegex.lastIndex = 0; // reset regex state
-      return (
-        <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: '#7a3b2e', textDecoration: 'underline', wordBreak: 'break-all' }}>
-          {part}
-        </a>
-      );
-    }
-    // Handle **bold** within non-URL segments
-    const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
-    return boldParts.map((bp, j) => {
-      if (bp.startsWith('**') && bp.endsWith('**')) {
-        return <strong key={`${i}-${j}`}>{bp.slice(2, -2)}</strong>;
-      }
-      return <React.Fragment key={`${i}-${j}`}>{bp}</React.Fragment>;
-    });
-  });
-}
-
-function PersonCard({ person, people, onClick, featured, tint, small, faded, highlight }) {
-  const p = people[person];
+function SectionHeading({ kicker, title, sub }) {
   return (
-    <button
-      onClick={() => onClick(person)}
-      style={{
-        display: 'block', width: '100%', textAlign: 'left',
-        background: tint || 'rgba(255,255,255,0.55)',
-        border: highlight ? '2px solid #b08d3f' : '1px solid #8b6f47',
-        padding: small ? '0.7rem 0.8rem' : '1rem 1.1rem',
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-        color: 'inherit',
-        opacity: faded ? 0.75 : 1,
-        transition: 'all 0.2s',
-        position: 'relative',
-      }}
-      onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-      onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-    >
-      {highlight && (
-        <div style={{ position: 'absolute', top: '-10px', right: '8px', background: '#b08d3f', color: '#f4ebd8', fontSize: '0.6rem', padding: '2px 6px', fontFamily: "'Special Elite', monospace", letterSpacing: '0.1em' }}>
-          GRANDMOTHER
-        </div>
-      )}
-      <div style={{
-        fontFamily: "'Playfair Display', serif",
-        fontWeight: featured ? 700 : 600,
-        fontSize: featured ? '1.15rem' : small ? '0.95rem' : '1.05rem',
-        lineHeight: 1.2,
-        color: '#2a1f1a',
-      }}>
-        {p.name}
-      </div>
-      {p.dates && (
-        <div style={{ fontSize: '0.78rem', fontStyle: 'italic', color: '#6b5137', marginTop: '0.2rem' }}>
-          {p.dates}
-        </div>
-      )}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontFamily: "'Special Elite', monospace", fontSize: '0.65rem', letterSpacing: '0.1em', color: '#7a3b2e', marginTop: '0.4rem' }}>
-        READ MORE <ChevronRight size={10} />
-      </div>
-    </button>
+    <header>
+      <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase', color: C.oxblood, margin: 0 }}>{kicker}</p>
+      <h2 style={{ fontFamily: FD, fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 2.6rem)', margin: '6px 0 4px', color: C.ink, letterSpacing: '-0.02em' }}>{title}</h2>
+      {sub && <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 16, color: C.oxblood, margin: 0 }}>{sub}</p>}
+    </header>
   );
 }
 
-function Connector() {
+// ── The Shop chapter — drapery flourishes preserved ────────────────────────
+function ShopChapter() {
   return (
-    <div style={{ textAlign: 'center', color: '#8b6f47', fontSize: '1rem', lineHeight: 1, margin: '0.1rem 0' }}>│</div>
+    <>
+      <Chapter
+        no="V" year="1883" kicker="Forty years at 44 Thomas Street"
+        title="Duffy’s of Thomas Street"
+        lede="Founded by Thomas in 1883 at No. 44, expanded by Gavan through the 1900s and 1940s across five adjoining buildings: 42, 43, 44, 45 and 46. By 1948 his own name was over the door."
+        body={[
+          'Out of misfortune came opportunity. On Wednesday 14 September 1870, the Irish Mail train crashed at Tamworth. Thomas Duffy, a young Dublin haberdashery buyer travelling to London, was among the injured. He took the compensation and saved it. Thirteen years later he leased No. 44 from Monsieur and Madame Jules Bouvier of Geneva at £50 a year and opened Thomas Duffy, Draper and Milliner.',
+          'Thomas B. Duffy left around 1918 to found his own drapery at North Earl Street — Duffy’s of North Earl Street, which still trades today as Duffy’s Curtains. Gavan took sole charge of Thomas Street.',
+          'Over the next forty years he expanded from No. 44 through Nos. 42, 43, 45 and 46, knocking the buildings together. In 1939 he applied for the transfer of a seven-day pub licence attached to 45/46 (pragmatism, not thirst). In 1948 he registered as Gavan Duffy Ltd., putting his own name over the door and bringing his daughters Gladys (Chairman) and Olga (Director) onto the board.',
+        ]}
+        marginalia={[
+          { kicker: 'On the lease', body: 'No. 44 leased 1883 from Monsieur and Madame Jules Bouvier of Geneva at £50 a year. The ground had been leased to Charles Eastwood by the Earl of Meath in 1697.' },
+          { kicker: 'A favourite saying', body: '"Any fool can make money, but it takes a wise man to keep it."', italic: true, cite: 'A SAYING OF HIS FATHER’S' },
+          { kicker: 'Before the court, 1941', body: 'Eight Thomas Street traders charged with organising an unauthorised lottery, Gavan among them.', italic: true, cite: 'Irish Press, 10 Oct 1941' },
+        ]}
+        hero={
+          <div style={{ background: C.ink, color: C.cream, padding: '24px 22px', textAlign: 'center', marginBottom: 16, border: `3px double ${C.gold}` }}>
+            <p style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.3em', margin: 0, color: C.gold }}>
+              42 · 43 · 44 · 45 · 46 THOMAS STREET
+            </p>
+            <h3 style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 700, margin: '6px 0 4px', color: C.cream }}>
+              Duffy’s
+            </h3>
+            <p style={{ fontSize: 13, margin: 0, color: '#d4c9a8', letterSpacing: '0.1em' }}>
+              OF DUBLIN · EST. 1883
+            </p>
+            {/* Drapery touch retained: fabric swatches, like a sample book */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 4, marginTop: 14 }} aria-hidden="true">
+              {[C.oxblood, C.gold, '#4a5d3a', '#2f4858', C.taupe, '#6b4a3a', C.rose, C.inkSoft].map((c, i) => (
+                <span key={i} style={{ display: 'inline-block', width: 14, height: 18, background: c, border: '1px solid rgba(244,235,216,0.4)' }} />
+              ))}
+            </div>
+          </div>
+        }
+      />
+    </>
   );
 }
 
+// ── The People — SVG family tree ───────────────────────────────────────────
+function FamilyTree({ people, setSelectedPerson }) {
+  const NW = 170, NH = 88;
+  const G1 = 70, G2 = 270, G3 = 480;
+  const GAVAN_X = 540;
+
+  const N = ({ id, x, y, accent, faded, highlight }) => {
+    const p = people[id]; if (!p) return null;
+    const ys = (p.dates || '').match(/\d{4}/g)?.map(Number) || [];
+    const start = 1840, end = 2020, span = end - start;
+    const lf = ys[0], lt = ys[1];
+    return (
+      <g transform={`translate(${x},${y})`} style={{ cursor: 'pointer' }} onClick={() => setSelectedPerson(id)}>
+        <rect width={NW} height={NH} fill={accent || 'rgba(255,255,255,0.7)'} stroke={highlight ? C.gold : C.taupe} strokeWidth={highlight ? 2 : 1} opacity={faded ? 0.6 : 1} />
+        <text x={10} y={20} style={{ fontFamily: FD, fontWeight: 700, fontSize: 13, fill: C.ink }}>{p.name.length > 22 ? p.name.slice(0, 21) + '…' : p.name}</text>
+        <text x={10} y={36} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.oxblood }}>{p.dates || ''}</text>
+        <foreignObject x={10} y={44} width={NW - 20} height={32}>
+          <div xmlns="http://www.w3.org/1999/xhtml" style={{ fontFamily: FB, fontSize: 11, color: C.taupe, lineHeight: 1.3, overflow: 'hidden', maxHeight: 30 }}>
+            {(p.role || '').slice(0, 70)}{(p.role || '').length > 70 ? '…' : ''}
+          </div>
+        </foreignObject>
+        {/* Lifespan bar */}
+        {Number.isFinite(lf) && (
+          <g transform={`translate(10, ${NH - 8})`}>
+            <line x1={0} x2={NW - 20} y1={0} y2={0} stroke={C.rule} strokeWidth={1} />
+            <line
+              x1={Math.max(0, ((lf - start) / span) * (NW - 20))}
+              x2={Math.min(NW - 20, ((Number.isFinite(lt) ? lt : end) - start) / span * (NW - 20))}
+              y1={0} y2={0} stroke={C.oxblood} strokeWidth={3}
+            />
+          </g>
+        )}
+      </g>
+    );
+  };
+
+  return (
+    <section style={{ padding: '60px 28px 40px', borderTop: `1px solid ${C.rule}` }}>
+      <SectionHeading
+        kicker="Chapter — The People"
+        title="Three generations of drapers"
+        sub="Marrying milliners and barristers’ daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State."
+      />
+      <div style={{ display: 'flex', gap: 16, marginTop: 20, fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', color: C.taupe, flexWrap: 'wrap' }}>
+        <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: '#f3d9d9', border: `1px solid ${C.rose}` }} /> 1ST MARRIAGE</span>
+        <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: '#e6ead8', border: `1px solid ${C.sage}` }} /> 2ND MARRIAGE</span>
+        <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: 'rgba(176,141,63,0.2)', border: `2px solid ${C.gold}` }} /> DIRECT LINE</span>
+        <span style={{ marginLeft: 'auto', fontStyle: 'italic', fontFamily: FD, color: C.oxblood, letterSpacing: 0, fontSize: 13 }}>Tap any node for the full story.</span>
+      </div>
+
+      <div style={{ overflowX: 'auto', marginTop: 18, paddingBottom: 12 }}>
+        <svg width={1180} height={620} style={{ display: 'block', minWidth: 1180 }}>
+          {/* GEN I */}
+          <N id="thomas_sr" x={310} y={G1} />
+          <N id="mary_duffy" x={310 + 260} y={G1} />
+          <line x1={310 + NW} x2={310 + 260} y1={G1 + NH / 2} y2={G1 + NH / 2} stroke={C.oxblood} strokeWidth={1.2} />
+          <rect x={310 + NW + 4} y={G1 + NH / 2 - 10} width={48} height={20} fill={C.cream} stroke={C.oxblood} strokeWidth={0.5} />
+          <text x={310 + NW + 28} y={G1 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: C.oxblood, letterSpacing: '0.05em' }}>m. 1875</text>
+
+          <N id="lizzie" x={70} y={G1 + 8} faded />
+          <text x={70 + NW + 8} y={G1 + 30} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>unmarried sister</text>
+          <text x={70 + NW + 8} y={G1 + 44} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>in the household</text>
+
+          {/* drop to GEN II */}
+          <g stroke={C.taupe} strokeWidth={1} fill="none">
+            <line x1={310 + NW + 28} x2={310 + NW + 28} y1={G1 + NH / 2 + 10} y2={G2 - 30} />
+            <line x1={170} x2={985} y1={G2 - 30} y2={G2 - 30} />
+            {[170, 360, GAVAN_X + NW / 2, 730, 985].map((cx, i) => (
+              <line key={i} x1={cx} x2={cx} y1={G2 - 30} y2={G2} />
+            ))}
+          </g>
+
+          {/* GEN II */}
+          <N id="thomas_b" x={170 - NW / 2} y={G2} />
+          <N id="lily" x={360 - NW / 2} y={G2} faded />
+          <N id="gavan" x={GAVAN_X} y={G2} highlight />
+          <N id="john_duffy" x={730 - NW / 2} y={G2} faded />
+          <N id="aloysius" x={985 - NW / 2} y={G2} faded />
+
+          {/* Wives flanking Gavan */}
+          <N id="mary_catherine" x={GAVAN_X - 270} y={G2 + 130} accent="#f3d9d9" />
+          <N id="kathleen" x={GAVAN_X + 200} y={G2 + 130} accent="#e6ead8" />
+
+          <line x1={GAVAN_X - 270 + NW} x2={GAVAN_X} y1={G2 + 130 + NH / 2} y2={G2 + NH - 4} stroke={C.rose} strokeWidth={1.3} />
+          <rect x={GAVAN_X - 200} y={G2 + 130 + NH / 2 - 10} width={68} height={20} fill={C.cream} stroke={C.rose} />
+          <text x={GAVAN_X - 166} y={G2 + 130 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: C.rose, letterSpacing: '0.05em' }}>m. 1912 †19</text>
+
+          <line x1={GAVAN_X + NW} x2={GAVAN_X + 200} y1={G2 + NH - 4} y2={G2 + 130 + NH / 2} stroke={C.sage} strokeWidth={1.3} />
+          <rect x={GAVAN_X + 60} y={G2 + 130 + NH / 2 - 10} width={56} height={20} fill={C.cream} stroke={C.sage} />
+          <text x={GAVAN_X + 88} y={G2 + 130 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: '#4a5d3a', letterSpacing: '0.05em' }}>m. 1920</text>
+
+          {/* Children */}
+          <g stroke={C.taupe} strokeWidth={1} fill="none">
+            <line x1={GAVAN_X - 270 + NW / 2} x2={GAVAN_X - 270 + NW / 2} y1={G2 + 130 + NH} y2={G3 - 22} />
+            <line x1={170} x2={GAVAN_X - 270 + NW / 2} y1={G3 - 22} y2={G3 - 22} />
+            <line x1={170} x2={170} y1={G3 - 22} y2={G3} />
+            <line x1={350} x2={350} y1={G3 - 22} y2={G3} />
+
+            <line x1={GAVAN_X + 200 + NW / 2} x2={GAVAN_X + 200 + NW / 2} y1={G2 + 130 + NH} y2={G3 - 22} />
+            <line x1={GAVAN_X + 200 + NW / 2} x2={985} y1={G3 - 22} y2={G3 - 22} />
+            <line x1={770} x2={770} y1={G3 - 22} y2={G3} />
+            <line x1={985} x2={985} y1={G3 - 22} y2={G3} />
+          </g>
+          <N id="thomas_jr" x={170 - NW / 2} y={G3} accent="#f3d9d9" />
+          <N id="gladys" x={350 - NW / 2} y={G3} accent="#f3d9d9" />
+          <N id="olga" x={770 - NW / 2} y={G3} accent="#e6ead8" highlight />
+          <N id="george" x={985 - NW / 2} y={G3} accent="#e6ead8" faded />
+        </svg>
+      </div>
+
+      {/* In-law branches */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 28, marginTop: 28 }}>
+        <div>
+          <p style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.25em', color: C.rose, margin: 0 }}>BRANCH — MARY CATHERINE’S LINE</p>
+          <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 20, margin: '6px 0 10px', color: C.ink }}>The Byrnes & the Whelans</h3>
+          <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 14, color: C.taupe, margin: '0 0 10px' }}>Policemen and a river pilot. The rural Irish line, into Dublin via the DMP.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {['benjamin', 'catherine_whelan', 'john_byrne', 'martin_whelan'].map(id => (
+              <button key={id} onClick={() => setSelectedPerson(id)} style={{ background: C.paper, border: `1px solid ${C.rule}`, padding: '8px 10px', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit' }}>
+                <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 13, color: C.ink }}>{people[id].name}</div>
+                <div style={{ fontFamily: FB, fontSize: 11, color: C.taupe, marginTop: 2 }}>{(people[id].role || '').slice(0, 50)}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.25em', color: '#4a5d3a', margin: 0 }}>BRANCH — KATHLEEN’S LINE</p>
+          <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 20, margin: '6px 0 10px', color: C.ink }}>The Condons & the Whytes</h3>
+          <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 14, color: C.taupe, margin: '0 0 10px' }}>A Meath barrister, a Carlow mother, ten children. Taught as a boy by Michael Cusack, founder of the GAA.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {['john_condon', 'anna_mary', 'eileen_condon', 'francis_condon', 'other_condons'].map(id => (
+              <button key={id} onClick={() => setSelectedPerson(id)} style={{ background: C.paper, border: `1px solid ${C.rule}`, padding: '8px 10px', cursor: 'pointer', textAlign: 'left', fontFamily: 'inherit' }}>
+                <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 13, color: C.ink }}>{people[id].name}</div>
+                <div style={{ fontFamily: FB, fontSize: 11, color: C.taupe, marginTop: 2 }}>{(people[id].role || '').slice(0, 50)}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── The Archive ────────────────────────────────────────────────────────────
+function ArchiveSection({ docs, all, counts, types, filter, setFilter, query, setQuery, buckets }) {
+  // Six "discovery" docs surfaced as featured magazine treatments
+  const featuredYears = [1875, 1880, 1936];
+  const featured = featuredYears
+    .map(y => all.find(d => d.year === y))
+    .filter(Boolean);
+
+  return (
+    <section style={{ padding: '60px 28px 60px', borderTop: `1px solid ${C.rule}` }}>
+      <SectionHeading kicker="Chapter — Sources" title="The paper trail" sub={`${all.length} primary documents — birth, marriage and death certificates; censuses; newspaper clippings; probate grants; passenger manifests.`} />
+
+      {/* Search + filter chips */}
+      <div style={{ marginTop: 20, padding: 16, background: 'rgba(255,255,255,0.4)', border: `1px solid ${C.rule}` }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', border: `1px solid ${C.taupe}`, background: '#fbf6e8', maxWidth: 520, marginBottom: 14 }}>
+          <Search size={14} style={{ color: C.taupe }} />
+          <input
+            type="search"
+            placeholder="Search documents — names, places, sources…"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            style={{
+              flex: 1, border: 'none', background: 'transparent', outline: 'none',
+              fontFamily: FD, fontSize: 14, color: C.ink,
+            }}
+          />
+          {query && <span style={{ fontFamily: FM, fontSize: 9, color: C.taupe, letterSpacing: '0.15em' }}>{docs.length} RESULTS</span>}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {types.map(t => (
+            <button key={t} onClick={() => setFilter(t)} style={{
+              fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase',
+              padding: '6px 12px',
+              background: filter === t ? C.oxblood : 'transparent',
+              color: filter === t ? C.cream : C.taupe,
+              border: `1px solid ${filter === t ? C.oxblood : C.rule}`,
+              cursor: 'pointer',
+            }}>
+              {t === 'all' ? 'All' : t} <span style={{ marginLeft: 4, opacity: 0.7 }}>{counts[t] || 0}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Featured discoveries */}
+      {filter === 'all' && !query && (
+        <div style={{ marginTop: 36 }}>
+          <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', color: C.oxblood, margin: 0 }}>⬦ THE DISCOVERIES ⬦</p>
+          <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 14, color: C.taupe, margin: '4px 0 18px' }}>Documents that rewrote the family story.</p>
+          {featured.map((d, i) => (
+            <article key={i} style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 360px) 1fr', gap: 24, padding: '20px 0', borderBottom: `1px solid ${C.rule}` }} className="featured-grid">
+              <DocSlot kind={d.type} label={d.title.slice(0, 40)} source={d.src} h={220} />
+              <div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 4 }}>
+                  <span style={{ fontFamily: FD, fontWeight: 900, fontSize: 32, color: C.oxblood, lineHeight: 1 }}>{d.year}</span>
+                  <span style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.22em', color: C.taupe, textTransform: 'uppercase' }}>Featured · {d.type}</span>
+                </div>
+                <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 22, lineHeight: 1.15, color: C.ink, margin: '4px 0 12px' }}>{d.title}</h3>
+                <p style={{ fontSize: 15, lineHeight: 1.6, color: C.ink, margin: 0 }}>{d.note.slice(0, 360)}{d.note.length > 360 ? '…' : ''}</p>
+              </div>
+            </article>
+          ))}
+          <style>{`@media (max-width: 720px) { .featured-grid { grid-template-columns: 1fr !important; } }`}</style>
+        </div>
+      )}
+
+      {/* Decade buckets */}
+      <div style={{ marginTop: 36 }}>
+        <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', color: C.oxblood, margin: '0 0 14px' }}>THE FULL INDEX</p>
+        {buckets.map(b => {
+          const rows = docs.filter(d => d.year >= b.from && d.year <= b.to);
+          if (!rows.length) return null;
+          return (
+            <section key={b.years} style={{ marginBottom: 28 }}>
+              <header style={{ display: 'flex', alignItems: 'baseline', gap: 14, padding: '10px 0', borderBottom: `2px solid ${C.oxblood}`, marginBottom: 4, flexWrap: 'wrap' }}>
+                <h3 style={{ fontFamily: FD, fontWeight: 900, fontSize: 24, color: C.ink, margin: 0, letterSpacing: '-0.01em' }}>{b.years}</h3>
+                <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 14, color: C.taupe, margin: 0 }}>{b.kicker}</p>
+                <span style={{ marginLeft: 'auto', fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', color: C.taupe }}>{rows.length} {rows.length === 1 ? 'DOCUMENT' : 'DOCUMENTS'}</span>
+              </header>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <tbody>
+                  {rows.map((d, i) => (
+                    <tr key={i} style={{ borderBottom: `1px dashed ${C.rule}` }}>
+                      <td style={{ padding: '10px 10px 10px 0', fontFamily: FM, fontSize: 11, color: C.oxblood, letterSpacing: '0.08em', verticalAlign: 'top', width: 60 }}>{d.year}</td>
+                      <td style={{ padding: '10px 10px', verticalAlign: 'top' }}>
+                        <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 14, color: C.ink, lineHeight: 1.3 }}>{d.title}</div>
+                        <div style={{ fontFamily: FB, fontSize: 12, color: C.taupe, marginTop: 2, fontStyle: 'italic' }}>
+                          {d.src}{d.citation ? <span style={{ fontFamily: FM, fontSize: 10, marginLeft: 8 }}>· ref {d.citation}</span> : null}
+                        </div>
+                        <div style={{ fontFamily: FB, fontSize: 13, color: C.inkSoft, marginTop: 4, lineHeight: 1.5 }}>
+                          {d.note.length > 240 ? d.note.slice(0, 240) + '…' : d.note}
+                        </div>
+                      </td>
+                      <td style={{ padding: '10px 0 10px 10px', verticalAlign: 'top', width: 110, textAlign: 'right' }}>
+                        <span style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '3px 8px', border: `1px solid ${C.rule}`, color: C.taupe, whiteSpace: 'nowrap' }}>{d.type}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+// ── Modal & inline renderer ────────────────────────────────────────────────
 function Modal({ children, onClose }) {
-  // Close on Escape, lock body scroll while open.
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onClose]);
-
   return (
-    <div
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      style={{
-        position: 'fixed', inset: 0,
-        background: 'rgba(42, 31, 26, 0.75)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '1rem',
-        zIndex: 100,
-        backdropFilter: 'blur(4px)',
-      }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          background: '#f4ebd8',
-          border: '2px solid #7a3b2e',
-          padding: '2.2rem 1.5rem 1.8rem',
-          maxWidth: '480px',
-          width: '100%',
-          maxHeight: '85vh',
-          overflowY: 'auto',
-          position: 'relative',
-          fontFamily: "'EB Garamond', Georgia, serif",
-          color: '#2a1f1a',
-        }}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          autoFocus
-          style={{
-            position: 'absolute', top: '0.6rem', right: '0.6rem',
-            background: 'rgba(244, 235, 216, 0.9)',
-            border: '1px solid #7a3b2e',
-            cursor: 'pointer',
-            color: '#7a3b2e',
-            width: '2rem', height: '2rem',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            borderRadius: '50%',
-            transition: 'background 0.15s, transform 0.15s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#7a3b2e'; e.currentTarget.style.color = '#f4ebd8'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244, 235, 216, 0.9)'; e.currentTarget.style.color = '#7a3b2e'; }}
-        >
-          <X size={18} />
+    <div role="dialog" aria-modal="true" onClick={onClose} style={{
+      position: 'fixed', inset: 0, background: 'rgba(42,31,26,0.55)', zIndex: 100,
+      display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 20, overflowY: 'auto',
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: C.cream, border: `2px solid ${C.oxblood}`, padding: '28px 28px 32px', maxWidth: 720, width: '100%',
+        maxHeight: 'calc(100vh - 40px)', overflowY: 'auto', position: 'relative',
+        boxShadow: '0 30px 60px rgba(42,31,26,0.3)',
+      }}>
+        <button onClick={onClose} aria-label="Close" style={{
+          position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', cursor: 'pointer', color: C.taupe,
+        }}>
+          <X size={22} />
         </button>
         {children}
       </div>
     </div>
   );
 }
+
+function renderInline(text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = text.split(urlRegex);
+  return parts.map((part, i) => {
+    if (urlRegex.test(part)) {
+      urlRegex.lastIndex = 0;
+      return <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: C.oxblood, textDecoration: 'underline', wordBreak: 'break-all' }}>{part}</a>;
+    }
+    const boldParts = part.split(/(\*\*[^*]+\*\*)/g);
+    return boldParts.map((bp, j) => bp.startsWith('**') && bp.endsWith('**')
+      ? <strong key={`${i}-${j}`}>{bp.slice(2, -2)}</strong>
+      : <React.Fragment key={`${i}-${j}`}>{bp}</React.Fragment>);
+  });
+}
+
+function Footer() {
+  return (
+    <footer style={{ borderTop: `1px solid ${C.rule}`, marginTop: 48, padding: '32px 24px 22px', textAlign: 'center', fontFamily: FM, fontSize: 11, letterSpacing: '0.15em', color: C.taupe, lineHeight: 1.8 }}>
+      <div style={{ marginBottom: 8, fontFamily: FD, fontStyle: 'italic', fontSize: 16, letterSpacing: 0, color: C.oxblood }}>
+        — Compiled with love and a paper trail —
+      </div>
+      <div>An archive of Patrick Gavan Duffy · 1880–1954</div>
+      <div style={{ marginTop: 6, opacity: 0.7 }}>Last updated May 2026</div>
+    </footer>
+  );
+}
+
+// ── Archive data — one per source ──────────────────────────────────────────
+function archiveData() {
+  return ARCHIVE;
+}
+
+const ARCHIVE = [
+  { year: 1851, type: 'Newspaper', title: 'Fashionable Intelligence — Arrivals at Dalkey', src: "Freeman's Journal, 6 June 1851", note: 'Earliest known mention of Queenstown Castle.' },
+  { year: 1870, type: 'Newspaper', title: 'Fatal Accident to the Irish Mail Train — Tamworth', src: "Freeman's Journal, 15 Sep 1870", note: 'The Tamworth crash. "Thomas Duffey, of Dublin" listed among the injured.' },
+  { year: 1870, type: 'Newspaper', title: 'Tamworth Inquest — Verdict of Manslaughter', src: 'Drogheda Conservative, 1 Oct 1870', note: 'Manslaughter verdict against the pointsman, establishing LNWR liability.' },
+  { year: 1875, type: 'BMD', title: 'Marriage cert — Thomas Duffy & Mary Flynn', src: "St Kevin's, Dublin", note: 'Married 24 November 1875. Thomas already styled "draper of Thomas Street" eight years before the 1883 founding date.' },
+  { year: 1880, type: 'Church', title: 'Baptism — Patritius Joran Duffy', src: "St Catherine's RC, Meath St", citation: 'DU-RC-BA-505126', note: 'Baptised January 1880. The "Joran" is almost certainly an indexer’s misreading of "Gavan" in cursive Latin.' },
+  { year: 1880, type: 'BMD', title: 'Marriage — Benjamin Byrne & Catherine Whelan', src: "St Canice's, Kilkenny", citation: '8036271', note: 'Mary Catherine’s parents.' },
+  { year: 1881, type: 'BMD', title: 'Birth cert — Patrick Gavan Duffy', src: 'GRO', citation: '1590441', note: 'Civil registration filed 1881 of a child born late 1879 / January 1880.' },
+  { year: 1901, type: 'Census', title: 'Irish Census — Duffy family at 44 Thomas St', src: 'NAI', note: 'Thomas (56), Mary (45), Gavan (20), Lillie, Thomas Jr, John, plus aunt Lizzie and six drapery assistants.' },
+  { year: 1903, type: 'Migration', title: 'SS Parisian outbound passenger manifest', src: 'Library & Archives Canada', note: 'Patrick Duffy, 23, junior draper, Dublin, Calgary. Second cabin.' },
+  { year: 1903, type: 'Newspaper', title: 'SS Parisian arrival — Quebec, 23 May', src: 'Montreal Gazette, 25 May 1903', note: '"Steamship Parisian arrived at 3 p.m. Saturday."' },
+  { year: 1903, type: 'BMD', title: "Death cert — Mary Duffy (Gavan's mother)", src: 'GRO', citation: '4594706', note: 'Died 30 May 1903 at 44 Thomas Street, angina pectoris, three hours.' },
+  { year: 1907, type: 'Newspaper', title: 'Calgary Herald — "Variegated Jags" police court column', src: 'Calgary Herald, 14 Aug 1907', note: 'A possible trace: a Patrick Duffy fined $3.50 for being drunk in public.' },
+  { year: 1908, type: 'Newspaper', title: 'Auction of Springfield House & Queenstown Castle', src: 'Irish Independent, 9 Jul 1908', note: 'Re J. Milo Burke, Esq., J.P., D.L., Deceased.' },
+  { year: 1909, type: 'Newspaper', title: 'Auction of contents of Queenstown Castle', src: 'Irish Independent, 11 Mar 1909', note: 'Dispersal of Milo Burke’s effects.' },
+  { year: 1910, type: 'Migration', title: 'SS Campania return manifest (BT26)', src: 'TNA Kew', citation: 'Ancestry coll. 1518', note: 'Third class, "Storekeeper", 14 April 1910 Liverpool arrival.' },
+  { year: 1911, type: 'Census', title: 'Irish Census — Duffy family, 44 Thomas St', src: 'NAI', note: 'Thomas (64, Magistrate). Gavan (30, back from Alberta). Thomas B (28). Aloysius (21, Visitor). Lily (27).' },
+  { year: 1911, type: 'Census', title: 'Irish Census — Byrne family, Mountain View Terrace', src: 'NAI', note: 'Mary Kate Byrne, draperess, aged 19.' },
+  { year: 1911, type: 'Census', title: 'Irish Census — Condon family, Kilmainham', src: 'NAI', note: 'John Patrick Condon (47, Barrister). Kathleen aged 10. Eight children at home.' },
+  { year: 1912, type: 'BMD', title: 'Marriage — P.G. Duffy & Mary Catherine Byrne', src: 'GRO', citation: '5606871', note: 'Golden Bridge, Inchicore, 4 Sep 1912.' },
+  { year: 1913, type: 'BMD', title: 'Birth — Thomas Joseph Duffy (signed "Gavan Duffy")', src: 'GRO', note: '25 Jun 1913, 66 South Circular Road.' },
+  { year: 1916, type: 'BMD', title: 'Birth — Gladys May Duffy, ten days before the Rising', src: 'GRO', citation: '1555061', note: '14 Apr 1916, 66 St Michael’s Terrace.' },
+  { year: 1917, type: 'BMD', title: 'Death cert — Thomas Joseph Duffy (founder)', src: 'GRO, Clontarf/Howth', note: 'Died 13 May 1917 at Tudor House, Clontarf. Myocarditis. Informant Gavan, present at death.' },
+  { year: 1917, type: 'Probate', title: 'Probate — Thomas Joseph Duffy, £2,197', src: 'NAI Calendar of Wills', note: 'Executors: Patrick G. Duffy, Thomas B. Duffy, Rev John A. Duffy R.C.C.' },
+  { year: 1919, type: 'BMD', title: 'Death cert — Catherine "Mary Kate" Duffy', src: 'GRO', citation: '4417657', note: 'Tudor House, Clontarf, 28 Feb 1919. Influenza, broncho-pneumonia. Informant Gavan, husband.' },
+  { year: 1920, type: 'BMD', title: 'Marriage — P.G. Duffy & Kathleen Condon', src: "St Joseph's, Crumlin", note: '15 Sep 1920. Officiant Fr John A. Duffy OSA.' },
+  { year: 1923, type: 'BMD', title: 'Birth — Olga Duffy', src: 'GRO', citation: '1474688', note: '30 Mar 1923, 36 Upper Mount Street nursing home. Home Queenstown Castle, Dalkey.' },
+  { year: 1923, type: 'Newspaper', title: 'Birth notice — Olga Duffy', src: "Freeman's Journal, 30 Mar 1923", note: '"At Maglona, 36 Upper Mount street, the wife of Gavan Duffy, Queenstown Castle, Dalkey — a daughter."' },
+  { year: 1925, type: 'Newspaper', title: 'Queenstown Castle sale notice', src: 'Irish Independent, 11 Jul 1925', note: 'Battersby & Co auction. Gavan advertised the house for auction in July 1925.' },
+  { year: 1926, type: 'Census', title: 'Irish Free State Census — Newtownsmith, Dún Laoghaire', src: 'NAI', note: 'Gavan (44), Kathleen, Thomas, Gladys, Olga + servant Maud Brownson.' },
+  { year: 1926, type: 'Census', title: 'Irish Free State Census — Thomas B. Duffy at Clontarf', src: 'NAI', note: 'Thomas B (40y6m), Sara (b. Co Cork), Thomas Jr, Freda, Laura + servant.' },
+  { year: 1926, type: 'Census', title: 'Irish Free State Census — Condon family, Terenure', src: 'NAI', note: 'John Patrick Clerk and Superintendent Registrar of the Dublin Union, James’s Street.' },
+  { year: 1931, type: 'Newspaper', title: 'Laguna Queens Publicity Ball — prize list', src: 'Irish Independent, 7 Feb 1931', note: 'Miss Condon of Queenstown Castle wins prize donated by a Duffy & Son of Thomas Street.' },
+  { year: 1934, type: 'Newspaper', title: 'Partnership Suit: Tobacco-Growing Enterprise', src: 'Irish Press, 16 Jan 1934', note: 'Francis Condon "had grown tobacco in Canada". Confirms his Canadian agricultural years.' },
+  { year: 1936, type: 'Newspaper', title: 'Death notices & obituary — John Patrick Condon', src: 'Irish Press, 27 Jan 1936', note: '"As a boy he was taught by the late Mr. Michael Cusack, founder of the G.A.A."' },
+  { year: 1936, type: 'Probate', title: 'Statutory Notice to Creditors — John Patrick Condon', src: 'Irish Press, 10 Mar 1936', note: 'Probate granted 28 February 1936.' },
+  { year: 1939, type: 'Newspaper', title: 'Pub licence transfer application', src: 'Irish Independent', note: '45/46 Thomas Street seven-day licence.' },
+  { year: 1941, type: 'BMD', title: 'Marriage — Francis Condon & Teresa Roche', src: 'GRO', note: 'Blackrock, 2 Jul 1941. Confirms Condons took Queenstown Castle on after Gavan vacated.' },
+  { year: 1941, type: 'Newspaper', title: 'Dublin Traders on Lottery Charge', src: 'Irish Press, 10 Oct 1941', note: 'Gavan among eight Thomas Street traders charged.' },
+  { year: 1943, type: 'Newspaper', title: 'Queenstown Castle sold by private treaty', src: 'Irish Press, 31 Jul 1943', note: 'Albert MacArthur sale.' },
+  { year: 1946, type: 'Newspaper', title: 'Queenstown Castle sold at auction for £4,350', src: 'Irish Press, 30 Nov 1946', note: 'Coliemore Road, Dalkey.' },
+  { year: 1947, type: 'Newspaper', title: 'Queenstown Castle Hotel — excise licence application', src: 'Irish Independent, 20 Sep 1947', note: 'House converted to hotel under Martha Carney.' },
+  { year: 1948, type: 'Newspaper', title: '"Alma", 3 Tubbermore Ave., Dalkey — Nursing classified', src: 'Irish Independent, 31 Aug 1948', note: 'Delia Tierney advertising her private nursing home, six years before she became informant at Gavan’s death.' },
+  { year: 1954, type: 'BMD', title: 'Death cert — Patrick Gavan Duffy', src: 'GRO', citation: '4164986', note: 'Undercliffe, Killiney. Informant Delia Tierney, SRN SCM.' },
+  { year: 1954, type: 'Newspaper', title: 'Obituary & funeral notice', src: 'Irish Independent & Irish Press', note: 'Buried Deansgrange. Mourners include Liam Cosgrave TD.' },
+  { year: 1958, type: 'Newspaper', title: "Duffy's of Thomas Street: 75th Anniversary feature", src: 'Irish Independent, 25 Mar 1958', note: 'Full history of the firm.' },
+  { year: 1965, type: 'Business', title: 'Gavan Duffy, Limited dissolved', src: 'CRO CORE', citation: 'Reg. No. 13000', note: 'Effective 20 April 1965.' },
+  { year: 1984, type: 'Newspaper', title: 'Death notice — Kathleen Duffy', src: 'Evening Herald', note: 'Sacred Heart Hospital, Mullingar. Buried Collinstown Cemetery, Westmeath.' },
+];
