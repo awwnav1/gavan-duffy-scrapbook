@@ -6,14 +6,7 @@ export default function GavanDuffyScrapbook() {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedPlace, setSelectedPlace] = useState(null);
 
-  useEffect(() => {
-    // Inject Google Fonts
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Special+Elite&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-    return () => { try { document.head.removeChild(link); } catch(e){} };
-  }, []);
+  // Fonts are loaded directly in index.html so the typography is in place before paint.
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: Scroll },
@@ -52,6 +45,8 @@ export default function GavanDuffyScrapbook() {
     { year: '1948', event: 'Firm registered as Gavan Duffy Ltd.; daughters Gladys and Olga join board', tone: 'business' },
     { year: 'Jun 1954', event: 'Dies at Undercliffe, Killiney, aged 74. Funeral at St Anne\'s, Shankill; burial at Deansgrange', tone: 'death' },
     { year: '20 Apr 1965', event: 'Gavan Duffy, Limited (CRO No. 13000) is dissolved. Gladys and Olga had run the firm for eleven years after their father\'s death', tone: 'business' },
+    { year: '2005', event: 'Daughter Gladys May Duffy dies, aged 89. The last Chairman of the firm', tone: 'death' },
+    { year: '2016', event: 'Daughter Olga Duffy (later Ward), the youngest of the second-marriage children and the last of the four, dies aged 92 or 93', tone: 'death' },
   ];
 
   const people = {
@@ -123,15 +118,15 @@ export default function GavanDuffyScrapbook() {
     },
     gladys: {
       name: 'Gladys May Duffy',
-      dates: 'b. 1916',
+      dates: '14 April 1916 – 2005',
       role: 'Daughter, first marriage. Became Chairman of Directors, Gavan Duffy Ltd.',
-      story: 'Born 14 April 1916 at 66 St Michael\'s Terrace, South Circular Road — ten days before the Easter Rising began less than a mile away. An unusually English/Protestant-associated name for a Catholic Dublin daughter. **Lost her mother Mary Catherine to the 1919 flu when she was two years and ten months old.** Family tradition holds that she was sent to the **Dominican sisters in Wicklow** (probably the Siena Convent boarding school at Wicklow Town) at around three or four, an unusually young placement that fits the immediate circumstances — a widowed Dublin draper with a toddler daughter and a six-year-old son, unable to raise a small girl in a shop on Thomas Street. She likely stayed with the Dominicans until the family home was re-established under Kathleen from about 1922, because by the April 1926 census she was back at home in Newtownsmith, Dún Laoghaire, aged ten. Never married (listed as "Miss" at her father\'s 1954 funeral). Chaired the family firm as Chairman of Directors from 1948 onward. The Dominican formation would have given her the discipline and presence needed to chair a drapery board at 32.',
+      story: 'Born 14 April 1916 at 66 St Michael\'s Terrace, South Circular Road — ten days before the Easter Rising began less than a mile away. An unusually English/Protestant-associated name for a Catholic Dublin daughter. **Lost her mother Mary Catherine to the 1919 flu when she was two years and ten months old.** Family tradition holds that she was sent to the **Dominican sisters in Wicklow** (probably the Siena Convent boarding school at Wicklow Town) at around three or four, an unusually young placement that fits the immediate circumstances — a widowed Dublin draper with a toddler daughter and a six-year-old son, unable to raise a small girl in a shop on Thomas Street. She likely stayed with the Dominicans until the family home was re-established under Kathleen from about 1922, because by the April 1926 census she was back at home in Newtownsmith, Dún Laoghaire, aged ten. Never married (listed as "Miss" at her father\'s 1954 funeral). Chaired the family firm as Chairman of Directors from 1948 onward. The Dominican formation would have given her the discipline and presence needed to chair a drapery board at 32. **Died in 2005, aged 89.**',
     },
     olga: {
       name: 'Olga Duffy',
-      dates: 'b. 30 March 1923',
+      dates: '30 March 1923 – 2016',
       role: 'Your grandmother. Daughter, second marriage. Director, Gavan Duffy Ltd.',
-      story: 'Born at a private nursing home at 36 Upper Mount Street, family home at Queenstown Castle, Dalkey. An exotic name for 1923 Dublin (Grand Duchess Olga Romanov murdered just five years before; Princess Olga of Greece in the society papers). Listed as "Miss" at her father\'s funeral in June 1954, so married William F. Ward after that date.',
+      story: 'Born at a private nursing home at 36 Upper Mount Street, family home at Queenstown Castle, Dalkey. An exotic name for 1923 Dublin (Grand Duchess Olga Romanov murdered just five years before; Princess Olga of Greece in the society papers). Listed as "Miss" at her father\'s funeral in June 1954, so married William F. Ward after that date. **Died in 2016, aged 92 or 93.**',
     },
     george: {
       name: 'George Duffy',
@@ -251,11 +246,12 @@ export default function GavanDuffyScrapbook() {
     },
   };
 
-  // Timeline tone colours
+  // Timeline tone colours: birth (sage), death (slate, recurring motif), love (rose),
+  // business (gold), travel (deep teal), work (taupe), home (warm earth), scandal (rust).
   const toneColour = (t) => ({
-    birth: '#4a5d3a', death: '#3d2817', love: '#7a3b2e',
+    birth: '#4a5d3a', death: '#4a3a3f', love: '#a86b6b',
     business: '#b08d3f', travel: '#2f4858', work: '#6b5137',
-    home: '#5d4e3a', scandal: '#8b4513'
+    home: '#5d4e3a', scandal: '#8b4513', family: '#6b4a3a',
   }[t] || '#3d2817');
 
   return (
@@ -285,6 +281,18 @@ export default function GavanDuffyScrapbook() {
         <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1rem', margin: 0, color: '#7a3b2e' }}>
           Draper of Thomas Street &middot; 1880 — 1954
         </p>
+        {/* Drapery motif: thread-and-button. The button at the centre has four thread holes;
+            the curves on either side suggest thread feeding through it. A nod to four generations of drapers. */}
+        <svg viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'block', margin: '1rem auto 0', width: 'min(220px, 65vw)', height: 'auto' }}>
+          <path d="M2,12 Q40,5 80,12 T100,12" stroke="#7a3b2e" strokeWidth="0.8" fill="none" />
+          <path d="M218,12 Q180,19 140,12 T120,12" stroke="#7a3b2e" strokeWidth="0.8" fill="none" />
+          <circle cx="110" cy="12" r="6" fill="#f4ebd8" stroke="#7a3b2e" strokeWidth="0.9" />
+          <circle cx="110" cy="12" r="4.4" fill="none" stroke="#7a3b2e" strokeWidth="0.4" />
+          <circle cx="107.5" cy="9.5" r="0.6" fill="#7a3b2e" />
+          <circle cx="112.5" cy="9.5" r="0.6" fill="#7a3b2e" />
+          <circle cx="107.5" cy="14.5" r="0.6" fill="#7a3b2e" />
+          <circle cx="112.5" cy="14.5" r="0.6" fill="#7a3b2e" />
+        </svg>
       </header>
 
       {/* Tab strip */}
@@ -347,7 +355,7 @@ export default function GavanDuffyScrapbook() {
                 The Man
               </h2>
               <p style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 0.9rem' }}>
-                Born in Dublin in 1880 to the founder of one of the best-known drapery shops in the city, baptised Patritius Joran Duffy at St Catherine\'s, Meath Street, that January. Grew up above the shop at 44 Thomas Street. At the age of twenty-three, boarded the SS Parisian for Canada and spent seven years working as a ranch hand in Alberta before returning to the family trade.
+                Born in Dublin in 1880 to the founder of one of the best-known drapery shops in the city, baptised Patritius Joran Duffy at St Catherine&apos;s, Meath Street, that January. Grew up above the shop at 44 Thomas Street. At the age of twenty-three, boarded the SS Parisian for Canada and spent seven years working as a ranch hand in Alberta before returning to the family trade.
               </p>
               <p style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 0.9rem' }}>
                 Married a draper's assistant in 1912, had two children, lost her to the 1919 flu, remarried an eighteen-year-old barrister's daughter in 1920, and had two more. Raised the second family between grand coastal houses in Dalkey, Dún Laoghaire and Killiney.
@@ -362,7 +370,16 @@ export default function GavanDuffyScrapbook() {
             </h2>
 
             <div style={{ position: 'relative', paddingLeft: '1.5rem' }}>
-              <div style={{ position: 'absolute', left: '0.45rem', top: '0.5rem', bottom: '0.5rem', width: '1px', background: '#8b6f47' }} />
+              {/* Stitched seam down the timeline gutter, in lieu of a plain rule. A drapery touch. */}
+              <div style={{
+                position: 'absolute',
+                left: '0.45rem',
+                top: '0.5rem',
+                bottom: '0.5rem',
+                width: '1px',
+                backgroundImage: 'linear-gradient(to bottom, #8b6f47 0, #8b6f47 4px, transparent 4px, transparent 8px)',
+                backgroundSize: '1px 8px',
+              }} />
               {timeline.map((e, i) => (
                 <div key={i} style={{ position: 'relative', marginBottom: '1.2rem' }}>
                   <div style={{
@@ -394,9 +411,9 @@ export default function GavanDuffyScrapbook() {
               Tap any name to read more.
             </p>
 
-            <div style={{ background: 'rgba(200,170,120,0.2)', border: '1px dashed #a58a5f', padding: '0.7rem 1rem', marginBottom: '1.3rem', fontSize: '0.82rem', color: '#5d4e3a', fontFamily: "'Special Elite', monospace", lineHeight: 1.5 }}>
-              📷 Every person card has a photo slot inside. To add a family photo, edit the scrapbook code and add a <code>photo: 'url-or-path'</code> field to the person's entry in the <code>people</code> object near the top of the file. Any valid image URL will work.
-            </div>
+            <p style={{ fontSize: '1rem', lineHeight: 1.7, color: '#3d2817', marginBottom: '1.5rem' }}>
+              Three generations of Dublin drapers, marrying milliners and barristers&apos; daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State.
+            </p>
 
             {/* Founder and his wife */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '0.5rem' }}>
@@ -767,6 +784,21 @@ export default function GavanDuffyScrapbook() {
               <p style={{ fontSize: '0.9rem', margin: 0, color: '#d4c9a8', letterSpacing: '0.1em' }}>
                 OF DUBLIN &middot; EST. 1883
               </p>
+              {/* A row of fabric swatches: a quiet nod to a draper's sample book. */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginTop: '1.1rem' }} aria-hidden="true">
+                {[
+                  '#7a3b2e', '#b08d3f', '#4a5d3a', '#2f4858',
+                  '#8b6f47', '#6b4a3a', '#a86b6b', '#3d2817',
+                ].map((c, i) => (
+                  <span key={i} style={{
+                    display: 'inline-block',
+                    width: '14px',
+                    height: '18px',
+                    background: c,
+                    border: '1px solid rgba(244, 235, 216, 0.4)',
+                  }} />
+                ))}
+              </div>
             </div>
 
             <section style={{ marginBottom: '1.5rem' }}>
@@ -974,6 +1006,25 @@ export default function GavanDuffyScrapbook() {
           ))}
         </Modal>
       )}
+
+      {/* Footer */}
+      <footer style={{
+        borderTop: '1px solid #c4a77d',
+        marginTop: '3rem',
+        padding: '2rem 1.25rem 1.5rem',
+        textAlign: 'center',
+        fontFamily: "'Special Elite', monospace",
+        fontSize: '0.7rem',
+        letterSpacing: '0.15em',
+        color: '#6b5137',
+        lineHeight: 1.8,
+      }}>
+        <div style={{ marginBottom: '0.6rem', fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1rem', letterSpacing: 0, color: '#7a3b2e' }}>
+          &mdash; Compiled with love and a paper trail &mdash;
+        </div>
+        <div>An archive of Patrick Gavan Duffy &middot; 1880&ndash;1954</div>
+        <div style={{ marginTop: '0.4rem', opacity: 0.7 }}>Last updated May 2026</div>
+      </footer>
     </div>
   );
 }
@@ -989,33 +1040,28 @@ function PhotoSlot({ photo, alt }) {
       </figure>
     );
   }
+  // Tasteful Victorian-style silhouette frame when no photo is supplied.
   return (
-    <div style={{
+    <figure style={{
       float: 'right',
       marginLeft: '1rem',
       marginBottom: '0.6rem',
       width: '35%',
-      minHeight: '140px',
-      border: '1.5px dashed #a58a5f',
-      background: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.3) 6px, transparent 6px, transparent 12px)',
+      minHeight: '160px',
+      border: '1px solid #8b6f47',
+      background: 'linear-gradient(180deg, #ede2c4 0%, #d9c79a 100%)',
+      boxShadow: 'inset 0 0 0 4px #f4ebd8, inset 0 0 0 5px #8b6f47',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'column',
-      padding: '1rem 0.8rem',
-      textAlign: 'center',
-      fontFamily: "'Special Elite', monospace",
-      fontSize: '0.65rem',
-      letterSpacing: '0.1em',
-      color: '#7a5c3a',
-      lineHeight: 1.5,
+      padding: '0.6rem',
+      margin: '0 0 0.6rem 1rem',
     }}>
-      <div style={{ fontSize: '1.4rem', marginBottom: '0.4rem', color: '#a58a5f' }}>📷</div>
-      <div>PHOTO<br />SLOT</div>
-      <div style={{ marginTop: '0.4rem', fontSize: '0.55rem', opacity: 0.7, textTransform: 'none', letterSpacing: 0 }}>
-        Add a <code>photo</code> field to this person's entry
-      </div>
-    </div>
+      <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style={{ width: '70%', height: 'auto' }} aria-label={`Silhouette placeholder for ${alt || 'family member'}`}>
+        <ellipse cx="50" cy="40" rx="18" ry="22" fill="#7a3b2e" opacity="0.55" />
+        <path d="M20,130 C20,90 30,72 50,72 C70,72 80,90 80,130 Z" fill="#7a3b2e" opacity="0.55" />
+      </svg>
+    </figure>
   );
 }
 
@@ -1097,9 +1143,23 @@ function Connector() {
 }
 
 function Modal({ children, onClose }) {
+  // Close on Escape, lock body scroll while open.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
   return (
     <div
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
       style={{
         position: 'fixed', inset: 0,
         background: 'rgba(42, 31, 26, 0.75)',
@@ -1114,7 +1174,7 @@ function Modal({ children, onClose }) {
         style={{
           background: '#f4ebd8',
           border: '2px solid #7a3b2e',
-          padding: '1.8rem 1.5rem',
+          padding: '2.2rem 1.5rem 1.8rem',
           maxWidth: '480px',
           width: '100%',
           maxHeight: '85vh',
@@ -1126,13 +1186,23 @@ function Modal({ children, onClose }) {
       >
         <button
           onClick={onClose}
+          aria-label="Close"
+          autoFocus
           style={{
-            position: 'absolute', top: '0.7rem', right: '0.7rem',
-            background: 'transparent', border: 'none', cursor: 'pointer',
-            color: '#7a3b2e', padding: '0.3rem',
+            position: 'absolute', top: '0.6rem', right: '0.6rem',
+            background: 'rgba(244, 235, 216, 0.9)',
+            border: '1px solid #7a3b2e',
+            cursor: 'pointer',
+            color: '#7a3b2e',
+            width: '2rem', height: '2rem',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: '50%',
+            transition: 'background 0.15s, transform 0.15s',
           }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#7a3b2e'; e.currentTarget.style.color = '#f4ebd8'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(244, 235, 216, 0.9)'; e.currentTarget.style.color = '#7a3b2e'; }}
         >
-          <X size={20} />
+          <X size={18} />
         </button>
         {children}
       </div>
