@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { X, MapPin, Search } from 'lucide-react';
 
 // Palette — kept faithful to the original drapery aesthetic.
@@ -259,12 +260,12 @@ export default function GavanDuffyScrapbook() {
   // Anchor events surfaced on the year scrubber — the 30-event timeline distilled.
   // Six anchors only, deliberately spaced so labels never collide on the rail.
   const anchors = [
-    { y: 1880, label: 'Born above the shop', href: '#origins' },
-    { y: 1903, label: 'Sails for Canada', href: '#alberta' },
-    { y: 1912, label: 'Marries Mary Catherine', href: '#first' },
-    { y: 1920, label: 'Marries Kathleen', href: '#second' },
-    { y: 1948, label: 'Gavan Duffy Ltd.', href: '#shop' },
-    { y: 1954, label: 'Dies at Killiney', href: '#places' },
+    { y: 1880, label: 'Born above the shop', href: '/#origins' },
+    { y: 1903, label: 'Sails for Canada', href: '/#alberta' },
+    { y: 1912, label: 'Marries Mary Catherine', href: '/#first' },
+    { y: 1920, label: 'Marries Kathleen', href: '/#second' },
+    { y: 1948, label: 'Gavan Duffy Ltd.', href: '/#shop' },
+    { y: 1954, label: 'Dies at Killiney', href: '/places' },
   ];
 
   // Archive: type counts + filter + search.
@@ -299,127 +300,145 @@ export default function GavanDuffyScrapbook() {
     }}>
       <Masthead anchors={anchors} />
       <StickyNav />
+      <ScrollToTopOnRouteChange />
 
       <main style={{ maxWidth: 1180, margin: '0 auto' }}>
+        <Routes>
+          <Route index element={
+            <>
+              {/* CHAPTER I — Origins */}
+              <ChapterAnchor id="origins" />
+              <Chapter
+                no="I" year="1880" kicker="Origins, above the shop"
+                title="Born to a Dublin draper"
+                lede='Baptised "Patritius Joran Duffy" at St Catherine’s, Meath Street, in January 1880 — the middle name almost certainly an indexer’s misreading of "Gavan" in cursive Latin. He grew up above the shop at 44 Thomas Street, in the heart of the Liberties.'
+                body={[
+                  "His father Thomas Duffy was already styling himself draper of Thomas Street eight years before the 1883 date traditionally given for the founding of the shop. The family lived above the premises with a sister-in-law housekeeper and six female drapery assistants. By the 1901 census Gavan was 20, already listed as a draper, working in his father's shop.",
+                  "His father had got his start out of misfortune: injured in the Tamworth rail crash of September 1870 and compensated for it. The compensation, kept and saved, became the seed of 44 Thomas Street.",
+                ]}
+                marginalia={[
+                  { kicker: 'On the baptism', body: 'St Catherine’s RC, Meath Street, January 1880. Godparents Jacobi Claffey and Josephina Sterry.', cite: 'irishgenealogy.ie ref DU-RC-BA-505126', italic: true },
+                  { kicker: 'The household, 1901', body: 'Thomas (56, draper), Mary (45), Gavan (20), Lillie (18), Thomas Jr (15), John (13), Aloysius — and aunt Lizzie as housekeeper. Six drapery assistants boarded above.' },
+                  { kicker: 'Sources', body: 'Open the Family Tree page for everyone in this household, or the Sources page for the certificates and census schedules behind every line.', italic: true },
+                ]}
+                hero={<DocSlot kind="Photograph" label="44 Thomas Street, c.1900" source="To be sourced" h={240} />}
+              />
 
-        {/* CHAPTER I — Origins */}
-        <ChapterAnchor id="origins" />
-        <Chapter
-          no="I" year="1880" kicker="Origins, above the shop"
-          title="Born to a Dublin draper"
-          lede='Baptised "Patritius Joran Duffy" at St Catherine’s, Meath Street, in January 1880 — the middle name almost certainly an indexer’s misreading of "Gavan" in cursive Latin. He grew up above the shop at 44 Thomas Street, in the heart of the Liberties.'
-          body={[
-            "His father Thomas Duffy was already styling himself draper of Thomas Street eight years before the 1883 date traditionally given for the founding of the shop. The family lived above the premises with a sister-in-law housekeeper and six female drapery assistants. By the 1901 census Gavan was 20, already listed as a draper, working in his father's shop.",
-            "His father had got his start out of misfortune: injured in the Tamworth rail crash of September 1870 and compensated for it. The compensation, kept and saved, became the seed of 44 Thomas Street.",
-          ]}
-          marginalia={[
-            { kicker: 'On the baptism', body: 'St Catherine’s RC, Meath Street, January 1880. Godparents Jacobi Claffey and Josephina Sterry.', cite: 'irishgenealogy.ie ref DU-RC-BA-505126', italic: true },
-            { kicker: 'The household, 1901', body: 'Thomas (56, draper), Mary (45), Gavan (20), Lillie (18), Thomas Jr (15), John (13), Aloysius — and aunt Lizzie as housekeeper. Six drapery assistants boarded above.' },
-            { kicker: 'Sources', body: 'Click the people in the tree below, or jump to the Archive for the certificates and census schedules behind every line of this chapter.', italic: true },
-          ]}
-          hero={<DocSlot kind="Photograph" label="44 Thomas Street, c.1900" source="To be sourced" h={240} />}
-        />
+              {/* CHAPTER II — Alberta */}
+              <ChapterAnchor id="alberta" />
+              <Chapter
+                no="II" year="1903" kicker="The seven Alberta years"
+                title="A draper’s son sails for Calgary"
+                lede="At twenty-three, second cabin on the SS Parisian out of Liverpool, eight days across the Atlantic to Quebec, a Canadian Pacific train west to a frontier cattle town of 4,400 souls. Two weeks later his mother died at home of a sudden heart attack, and he did not return for seven years."
+                body={[
+                  "Sailed from Liverpool 15 May 1903 on the Allan Line’s SS Parisian, second cabin, occupation given as junior draper, destination Calgary. The Montreal Gazette’s shipping arrivals column pins his first sight of Canada to 3 p.m. on Saturday 23 May 1903 at Quebec City.",
+                  "A week after he stepped off the boat his mother Mary Duffy collapsed and died at 44 Thomas Street of angina pectoris after a three-hour illness. The informant on her death certificate was his seventeen-year-old brother Thomas B. Whether a letter reached him in Alberta or he found out by belated post we cannot know.",
+                  "He came home not on the slow Allan Line but on Cunard’s flagship express service, the RMS Campania — twin-screw, 12,950 tons, two enormous funnels, Blue Riband winner — third class from New York to Liverpool, arriving 14 April 1910. Occupation: Storekeeper. Not Draper. Not Ranch hand."
+                ]}
+                marginalia={[
+                  { kicker: 'On the manifest', body: 'Patrick Duffy / 23 / Junior draper / Dublin / Calgary', cite: 'LAC RG76 C1, 1903 arrivals' },
+                  { kicker: 'A possible trace', body: 'Calgary Herald police court column, 14 Aug 1907: a Patrick Duffy fined $3.50 for being drunk in public, "admitted he had more than he could comfortably navigate with."', cite: 'Only Patrick Duffy in the Herald 1903–1910', italic: true },
+                  { kicker: 'Coming home', body: 'SS Campania, third class, "Storekeeper", arrived Liverpool 14 April 1910.', cite: 'BT26 / TNA Kew' },
+                ]}
+                hero={<DocSlot kind="Postcard" label="SS Parisian, Allan Line, c.1900" source="To be sourced" h={260} />}
+              />
 
-        {/* CHAPTER II — Alberta */}
-        <ChapterAnchor id="alberta" />
-        <Chapter
-          no="II" year="1903" kicker="The seven Alberta years"
-          title="A draper’s son sails for Calgary"
-          lede="At twenty-three, second cabin on the SS Parisian out of Liverpool, eight days across the Atlantic to Quebec, a Canadian Pacific train west to a frontier cattle town of 4,400 souls. Two weeks later his mother died at home of a sudden heart attack, and he did not return for seven years."
-          body={[
-            "Sailed from Liverpool 15 May 1903 on the Allan Line’s SS Parisian, second cabin, occupation given as junior draper, destination Calgary. The Montreal Gazette’s shipping arrivals column pins his first sight of Canada to 3 p.m. on Saturday 23 May 1903 at Quebec City.",
-            "A week after he stepped off the boat his mother Mary Duffy collapsed and died at 44 Thomas Street of angina pectoris after a three-hour illness. The informant on her death certificate was his seventeen-year-old brother Thomas B. Whether a letter reached him in Alberta or he found out by belated post we cannot know.",
-            "He came home not on the slow Allan Line but on Cunard’s flagship express service, the RMS Campania — twin-screw, 12,950 tons, two enormous funnels, Blue Riband winner — third class from New York to Liverpool, arriving 14 April 1910. Occupation: Storekeeper. Not Draper. Not Ranch hand."
-          ]}
-          marginalia={[
-            { kicker: 'On the manifest', body: 'Patrick Duffy / 23 / Junior draper / Dublin / Calgary', cite: 'LAC RG76 C1, 1903 arrivals' },
-            { kicker: 'A possible trace', body: 'Calgary Herald police court column, 14 Aug 1907: a Patrick Duffy fined $3.50 for being drunk in public, "admitted he had more than he could comfortably navigate with."', cite: 'Only Patrick Duffy in the Herald 1903–1910', italic: true },
-            { kicker: 'Coming home', body: 'SS Campania, third class, "Storekeeper", arrived Liverpool 14 April 1910.', cite: 'BT26 / TNA Kew' },
-          ]}
-          hero={<DocSlot kind="Postcard" label="SS Parisian, Allan Line, c.1900" source="To be sourced" h={260} />}
-        />
+              <PullQuoteSection
+                eyebrow="30 May 1903 — while he was mid-Atlantic"
+                text="Mary Duffy, dressmaker, of 44 Thomas Street, aged 45 years. Cause of death: angina pectoris, three hours. Informant: T. B. Duffy, son, present at death."
+                attribution="Death certificate — GRO ref 4594706"
+              />
 
-        <PullQuoteSection
-          eyebrow="30 May 1903 — while he was mid-Atlantic"
-          text="Mary Duffy, dressmaker, of 44 Thomas Street, aged 45 years. Cause of death: angina pectoris, three hours. Informant: T. B. Duffy, son, present at death."
-          attribution="Death certificate — GRO ref 4594706"
-        />
+              {/* CHAPTER III — Marriages & Children */}
+              <ChapterAnchor id="marriages" />
+              <ChapterAnchor id="first" />
+              <Chapter
+                no="III" year="1912" kicker="The first marriage"
+                title="A draperess from Mountain View Terrace"
+                lede="Mary Catherine Byrne — Mary Kate on the 1911 census — a draper’s assistant aged nineteen, daughter of a DMP policeman and a Kilkenny dressmaker."
+                body={[
+                  "They married at Golden Bridge, Inchicore, on 4 September 1912. Thomas was born June 1913 at 66 South Circular Road. Gladys was born April 1916 at 66 St Michael’s Terrace, ten days before the Easter Rising began less than a mile away.",
+                  "In February 1919 the third wave of the influenza pandemic took her. She was twenty-seven. Gavan, by then living at Herbert Lodge in Dalkey, sent her to Tudor House nursing home in Clontarf — the same private nursing home where his own father had died of myocarditis two years earlier — and reported her death himself. Thomas was six. Gladys was three.",
+                ]}
+                marginalia={[
+                  { kicker: 'Two children', body: 'Thomas Joseph, b. 25 Jun 1913. Gladys May, b. 14 Apr 1916.' },
+                  { kicker: 'Tudor House', body: 'Gavan’s father died here in May 1917. Two years later, his wife died here of the flu. The same private nursing home, twice.', italic: true },
+                ]}
+                hero={<DocSlot kind="Newspaper" label="Marriage notice — Freeman’s Journal, 5 Sep 1912" source="To be sourced" h={180} />}
+              />
 
-        {/* CHAPTER III — Marriages & Children */}
-        <ChapterAnchor id="marriages" />
-        <ChapterAnchor id="first" />
-        <Chapter
-          no="III" year="1912" kicker="The first marriage"
-          title="A draperess from Mountain View Terrace"
-          lede="Mary Catherine Byrne — Mary Kate on the 1911 census — a draper’s assistant aged nineteen, daughter of a DMP policeman and a Kilkenny dressmaker."
-          body={[
-            "They married at Golden Bridge, Inchicore, on 4 September 1912. Thomas was born June 1913 at 66 South Circular Road. Gladys was born April 1916 at 66 St Michael’s Terrace, ten days before the Easter Rising began less than a mile away.",
-            "In February 1919 the third wave of the influenza pandemic took her. She was twenty-seven. Gavan, by then living at Herbert Lodge in Dalkey, sent her to Tudor House nursing home in Clontarf — the same private nursing home where his own father had died of myocarditis two years earlier — and reported her death himself. Thomas was six. Gladys was three.",
-          ]}
-          marginalia={[
-            { kicker: 'Two children', body: 'Thomas Joseph, b. 25 Jun 1913. Gladys May, b. 14 Apr 1916.' },
-            { kicker: 'Tudor House', body: 'Gavan’s father died here in May 1917. Two years later, his wife died here of the flu. The same private nursing home, twice.', italic: true },
-          ]}
-          hero={<DocSlot kind="Newspaper" label="Marriage notice — Freeman’s Journal, 5 Sep 1912" source="To be sourced" h={180} />}
-        />
+              {/* CHAPTER IV — Second life */}
+              <ChapterAnchor id="second" />
+              <Chapter
+                no="IV" year="1920" kicker="The second life"
+                title="An eighteen-year-old barrister’s daughter from Terenure"
+                lede="Eighteen months after Mary Catherine’s death, Gavan married Kathleen Mary Condon at St Joseph’s, Crumlin. He was thirty-eight, a widower with two small children. She was eighteen or nineteen."
+                body={[
+                  "Kathleen’s father John Patrick Condon was a barrister and Clerk of the South Dublin Union at James’s Street. The Union office and Gavan’s shop on Thomas Street stood about four hundred yards apart. The two men had almost certainly known each other for years before Gavan married into the family.",
+                  "Olga was born in 1923, George a few years later. The household moved through Queenstown Castle in Dalkey, Newtownsmith in Dún Laoghaire, and finally Undercliff, Killiney — a Deane and Woodward house from 1861, with two turrets and three acres of grounds, bought by a man who had grown up above a shop and sailed steerage to Canada at twenty-two.",
+                ]}
+                marginalia={[
+                  { kicker: 'Officiant', body: 'Fr John A. Duffy OSA — Gavan’s own brother, an Augustinian priest.', italic: true },
+                  { kicker: 'Two children', body: 'Olga (b. 1923, d. 2016) and George (b. after 1926).' },
+                  { kicker: 'Coastal lives', body: 'Queenstown Castle Dalkey → Newtownsmith Dún Laoghaire → Undercliff Killiney.' },
+                ]}
+              />
 
-        {/* CHAPTER IV — Second life */}
-        <ChapterAnchor id="second" />
-        <Chapter
-          no="IV" year="1920" kicker="The second life"
-          title="An eighteen-year-old barrister’s daughter from Terenure"
-          lede="Eighteen months after Mary Catherine’s death, Gavan married Kathleen Mary Condon at St Joseph’s, Crumlin. He was thirty-eight, a widower with two small children. She was eighteen or nineteen."
-          body={[
-            "Kathleen’s father John Patrick Condon was a barrister and Clerk of the South Dublin Union at James’s Street. The Union office and Gavan’s shop on Thomas Street stood about four hundred yards apart. The two men had almost certainly known each other for years before Gavan married into the family.",
-            "Olga was born in 1923, George a few years later. The household moved through Queenstown Castle in Dalkey, Newtownsmith in Dún Laoghaire, and finally Undercliff, Killiney — a Deane and Woodward house from 1861, with two turrets and three acres of grounds, bought by a man who had grown up above a shop and sailed steerage to Canada at twenty-two.",
-          ]}
-          marginalia={[
-            { kicker: 'Officiant', body: 'Fr John A. Duffy OSA — Gavan’s own brother, an Augustinian priest.', italic: true },
-            { kicker: 'Two children', body: 'Olga (b. 1923, d. 2016) and George (b. after 1926).' },
-            { kicker: 'Coastal lives', body: 'Queenstown Castle Dalkey → Newtownsmith Dún Laoghaire → Undercliff Killiney.' },
-          ]}
-        />
+              {/* CHAPTER V — The shop */}
+              <ChapterAnchor id="shop" />
+              <ShopChapter />
 
-        {/* CHAPTER V — The shop */}
-        <ChapterAnchor id="shop" />
-        <ShopChapter />
+              {/* End-of-story signposts to the reference pages */}
+              <ReferenceSignposts />
+            </>
+          } />
 
-        {/* THE PEOPLE — family tree */}
-        <ChapterAnchor id="family" />
-        <FamilyTree people={people} setSelectedPerson={setSelectedPerson} />
+          <Route path="/family-tree" element={
+            <FamilyTree people={people} setSelectedPerson={setSelectedPerson} />
+          } />
 
-        {/* THE HOUSES */}
-        <ChapterAnchor id="places" />
-        <section style={{ padding: '60px 28px 40px', borderTop: `1px solid ${C.rule}` }}>
-          <SectionHeading kicker="Chapter — The Houses" title="From the Liberties to the sea" sub="Eight addresses, fifty years of moves." />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14, marginTop: 24 }}>
-            {Object.entries(places).map(([key, p]) => (
-              <button key={key} onClick={() => setSelectedPlace(key)} style={{
-                display: 'block', textAlign: 'left', background: C.paper,
-                border: `1px solid ${C.rule}`, padding: '16px 18px', cursor: 'pointer',
-                fontFamily: 'inherit', color: 'inherit',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
-                  <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, margin: 0, color: C.ink }}>{p.name}</h3>
-                  <span style={{ fontFamily: FM, fontSize: 10, color: C.oxblood, whiteSpace: 'nowrap', letterSpacing: '0.1em' }}>{p.era}</span>
-                </div>
-                <p style={{ margin: '6px 0 0', fontSize: 14, color: C.taupe, lineHeight: 1.5 }}>
-                  {p.desc.substring(0, 130)}{p.desc.length > 130 ? '…' : ''}
-                </p>
-              </button>
-            ))}
-          </div>
-        </section>
+          <Route path="/places" element={
+            <section style={{ padding: '60px 28px 40px' }}>
+              <SectionHeading kicker="Chapter — The Houses" title="From the Liberties to the sea" sub="Eight addresses, fifty years of moves." />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14, marginTop: 24 }}>
+                {Object.entries(places).map(([key, p]) => (
+                  <button key={key} onClick={() => setSelectedPlace(key)} style={{
+                    display: 'block', textAlign: 'left', background: C.paper,
+                    border: `1px solid ${C.rule}`, padding: '16px 18px', cursor: 'pointer',
+                    fontFamily: 'inherit', color: 'inherit',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                      <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, margin: 0, color: C.ink }}>{p.name}</h3>
+                      <span style={{ fontFamily: FM, fontSize: 10, color: C.oxblood, whiteSpace: 'nowrap', letterSpacing: '0.1em' }}>{p.era}</span>
+                    </div>
+                    <p style={{ margin: '6px 0 0', fontSize: 14, color: C.taupe, lineHeight: 1.5 }}>
+                      {p.desc.substring(0, 130)}{p.desc.length > 130 ? '…' : ''}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </section>
+          } />
 
-        {/* THE ARCHIVE */}
-        <ChapterAnchor id="archive" />
-        <ArchiveSection
-          docs={filtered} all={archiveDocs} counts={counts} types={filterTypes}
-          filter={archiveFilter} setFilter={setArchiveFilter}
-          query={archiveQuery} setQuery={setArchiveQuery}
-          buckets={buckets}
-        />
+          <Route path="/sources" element={
+            <ArchiveSection
+              docs={filtered} all={archiveDocs} counts={counts} types={filterTypes}
+              filter={archiveFilter} setFilter={setArchiveFilter}
+              query={archiveQuery} setQuery={setArchiveQuery}
+              buckets={buckets}
+            />
+          } />
 
+          <Route path="*" element={
+            <section style={{ padding: '80px 28px', textAlign: 'center' }}>
+              <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.32em', color: C.oxblood, margin: 0 }}>NOT FOUND</p>
+              <h2 style={{ fontFamily: FD, fontWeight: 700, fontSize: 32, margin: '12px 0 18px', color: C.ink }}>This page is not in the archive.</h2>
+              <p style={{ fontFamily: FB, fontStyle: 'italic', color: C.taupe, margin: 0 }}>
+                <Link to="/" style={{ color: C.oxblood }}>Return to the front page</Link>.
+              </p>
+            </section>
+          } />
+        </Routes>
       </main>
 
       {selectedPerson && (
@@ -535,7 +554,7 @@ function Masthead({ anchors }) {
               const x = ((a.y - start) / span) * 100;
               const above = i % 2 === 0;
               return (
-                <a key={i} href={a.href} title={`${a.y} — ${a.label}`} style={{ position: 'absolute', left: `${x}%`, top: 0, transform: 'translateX(-50%)', textAlign: 'center', textDecoration: 'none', width: 90, height: '100%' }}>
+                <Link key={i} to={a.href} title={`${a.y} — ${a.label}`} style={{ position: 'absolute', left: `${x}%`, top: 0, transform: 'translateX(-50%)', textAlign: 'center', textDecoration: 'none', width: 90, height: '100%' }}>
                   {above && (
                     <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0 }}>
                       <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.cream, lineHeight: 1 }}>{a.y}</div>
@@ -553,7 +572,7 @@ function Masthead({ anchors }) {
                       <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: '#d4c9a8', marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
                     </div>
                   )}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -571,18 +590,26 @@ function StickyNav() {
     { id: 'shop', label: 'The Shop' },
   ];
   const reference = [
-    { id: 'family', label: 'Family Tree' },
-    { id: 'places', label: 'Places & Houses' },
-    { id: 'archive', label: 'Sources', count: 49 },
+    { id: 'family', label: 'Family Tree', path: '/family-tree' },
+    { id: 'places', label: 'Places & Houses', path: '/places' },
+    { id: 'archive', label: 'Sources', path: '/sources', count: 49 },
   ];
-  const allIds = [...story, ...reference].map(c => c.id);
-  const [active, setActive] = React.useState('origins');
 
-  React.useEffect(() => {
+  const location = useLocation();
+  const onHome = location.pathname === '/';
+  const storyIds = story.map(c => c.id);
+  const [active, setActive] = useState(onHome ? 'origins' : null);
+
+  // Scroll-spy only runs on the home page; on routed reference pages the active
+  // state is determined by the route itself.
+  useEffect(() => {
+    if (!onHome) {
+      setActive(null);
+      return;
+    }
     const onScroll = () => {
-      // Pick the section whose top is closest to (but above) 140px from the viewport top.
-      let current = allIds[0];
-      for (const id of allIds) {
+      let current = storyIds[0];
+      for (const id of storyIds) {
         const el = document.getElementById(id);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
@@ -593,35 +620,91 @@ function StickyNav() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [onHome]);
+
+  const referenceActiveId = reference.find(r => r.path === location.pathname)?.id;
 
   const linkStyle = (isActive) => ({
     fontFamily: FD, fontSize: 14, color: isActive ? C.ink : C.taupe,
     textDecoration: 'none', padding: '4px 0', position: 'relative',
     fontWeight: isActive ? 700 : 400,
     borderBottom: isActive ? `2px solid ${C.oxblood}` : '2px solid transparent',
+    flexShrink: 0,
   });
 
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(251,246,234,0.96)', backdropFilter: 'blur(8px)', borderBottom: `1px solid ${C.rule}` }}>
       <nav style={{ maxWidth: 1180, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 22, overflowX: 'auto', whiteSpace: 'nowrap' }}>
-        <span style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.24em', color: C.oxblood, flexShrink: 0 }}>P.G.D.</span>
+        <Link to="/" style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.24em', color: C.oxblood, flexShrink: 0, textDecoration: 'none' }}>P.G.D.</Link>
         {story.map(ch => (
-          <a key={ch.id} href={`#${ch.id}`} style={linkStyle(active === ch.id)}>{ch.label}</a>
+          onHome ? (
+            <a key={ch.id} href={`#${ch.id}`} style={linkStyle(active === ch.id)}>{ch.label}</a>
+          ) : (
+            <Link key={ch.id} to={`/#${ch.id}`} style={linkStyle(false)}>{ch.label}</Link>
+          )
         ))}
         <span aria-hidden="true" style={{ width: 1, height: 18, background: C.rule, flexShrink: 0 }} />
-        {reference.map(ch => (
-          <a key={ch.id} href={`#${ch.id}`} style={linkStyle(active === ch.id)}>
-            {ch.label}
-            {ch.count != null && (
-              <span style={{ fontFamily: FM, fontSize: 10, marginLeft: 6, color: C.oxblood, letterSpacing: '0.05em' }}>
-                {ch.count}
-              </span>
-            )}
-          </a>
-        ))}
+        {reference.map(ch => {
+          const isActive = referenceActiveId === ch.id;
+          return (
+            <Link key={ch.id} to={ch.path} style={linkStyle(isActive)}>
+              {ch.label}
+              {ch.count != null && (
+                <span style={{ fontFamily: FM, fontSize: 10, marginLeft: 6, color: C.oxblood, letterSpacing: '0.05em' }}>
+                  {ch.count}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
     </div>
+  );
+}
+
+// Scrolls to the top whenever the route changes. If the new location includes
+// a hash (e.g. /#origins from a non-home page), wait one tick for the page to
+// render and then scroll the named anchor into view.
+function ScrollToTopOnRouteChange() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      const id = hash.startsWith('#') ? hash.slice(1) : hash;
+      const t = setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        else window.scrollTo(0, 0);
+      }, 60);
+      return () => clearTimeout(t);
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, hash]);
+  return null;
+}
+
+// End-of-story signposts: a quiet, editorial pair of links that lead the
+// reader from the end of the four chapters into the reference pages.
+function ReferenceSignposts() {
+  return (
+    <section style={{ padding: '60px 28px 80px', textAlign: 'center', borderTop: `1px solid ${C.rule}` }}>
+      <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.32em', color: C.oxblood, margin: 0 }}>
+        FURTHER IN
+      </p>
+      <h3 style={{ fontFamily: FD, fontWeight: 700, fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', margin: '12px 0 24px', color: C.ink, fontStyle: 'italic' }}>
+        Read on, sideways
+      </h3>
+      <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 28, marginTop: 8 }}>
+        <Link to="/family-tree" style={{ fontFamily: FD, fontSize: 16, color: C.oxblood, textDecoration: 'none', borderBottom: `1px solid ${C.oxblood}`, paddingBottom: 2 }}>
+          The Family Tree →
+        </Link>
+        <Link to="/places" style={{ fontFamily: FD, fontSize: 16, color: C.oxblood, textDecoration: 'none', borderBottom: `1px solid ${C.oxblood}`, paddingBottom: 2 }}>
+          Places & Houses →
+        </Link>
+        <Link to="/sources" style={{ fontFamily: FD, fontSize: 16, color: C.oxblood, textDecoration: 'none', borderBottom: `1px solid ${C.oxblood}`, paddingBottom: 2 }}>
+          The Sources (49) →
+        </Link>
+      </div>
+    </section>
   );
 }
 
@@ -778,6 +861,11 @@ function FamilyTree({ people, setSelectedPerson }) {
   const NW = 170, NH = 88;
   const G1 = 70, G2 = 270, G3 = 480;
   const GAVAN_X = 540;
+  // GEN II sibling centres — re-spaced so no card overlaps Gavan’s
+  const TB_C = 170;   // Thomas B
+  const LL_C = 360;   // Lily
+  const JD_C = 820;   // Rev John A. Duffy (was 730 — overlapped Gavan)
+  const AL_C = 1060;  // Aloysius (pushed right to keep the gap even)
 
   const N = ({ id, x, y, accent, faded, highlight }) => {
     const p = people[id]; if (!p) return null;
@@ -823,12 +911,7 @@ function FamilyTree({ people, setSelectedPerson }) {
         </div>
       </div>
       <div style={{ padding: '28px 28px 0' }}>
-      <SectionHeading
-        kicker=""
-        title=""
-        sub="Marrying milliners and barristers’ daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State."
-      />
-      <div style={{ display: 'flex', gap: 16, marginTop: 20, fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', color: C.taupe, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 16, marginTop: 4, fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', color: C.taupe, flexWrap: 'wrap' }}>
         <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: '#f3d9d9', border: `1px solid ${C.rose}` }} /> 1ST MARRIAGE</span>
         <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: '#e6ead8', border: `1px solid ${C.sage}` }} /> 2ND MARRIAGE</span>
         <span style={{ display: 'inline-flex', gap: 6, alignItems: 'center' }}><span style={{ width: 10, height: 10, background: 'rgba(176,141,63,0.2)', border: `2px solid ${C.gold}` }} /> DIRECT LINE</span>
@@ -836,7 +919,7 @@ function FamilyTree({ people, setSelectedPerson }) {
       </div>
 
       <div style={{ overflowX: 'auto', marginTop: 18, paddingBottom: 12 }}>
-        <svg width={1180} height={620} style={{ display: 'block', minWidth: 1180 }}>
+        <svg width={1240} height={620} style={{ display: 'block', minWidth: 1240 }}>
           {/* GEN I */}
           <N id="thomas_sr" x={310} y={G1} />
           <N id="mary_duffy" x={310 + 260} y={G1} />
@@ -845,36 +928,38 @@ function FamilyTree({ people, setSelectedPerson }) {
           <text x={310 + NW + 28} y={G1 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: C.oxblood, letterSpacing: '0.05em' }}>m. 1875</text>
 
           <N id="lizzie" x={70} y={G1 + 8} faded />
-          <text x={70 + NW + 8} y={G1 + 30} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>unmarried sister</text>
-          <text x={70 + NW + 8} y={G1 + 44} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>in the household</text>
+          {/* Annotation below Lizzie's card so it can't collide with Thomas Sr */}
+          <text x={70} y={G1 + 8 + NH + 14} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>unmarried sister</text>
+          <text x={70} y={G1 + 8 + NH + 28} style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, fill: C.taupe }}>in the household</text>
 
           {/* drop to GEN II */}
           <g stroke={C.taupe} strokeWidth={1} fill="none">
             <line x1={310 + NW + 28} x2={310 + NW + 28} y1={G1 + NH / 2 + 10} y2={G2 - 30} />
-            <line x1={170} x2={985} y1={G2 - 30} y2={G2 - 30} />
-            {[170, 360, GAVAN_X + NW / 2, 730, 985].map((cx, i) => (
+            <line x1={TB_C} x2={AL_C} y1={G2 - 30} y2={G2 - 30} />
+            {[TB_C, LL_C, GAVAN_X + NW / 2, JD_C, AL_C].map((cx, i) => (
               <line key={i} x1={cx} x2={cx} y1={G2 - 30} y2={G2} />
             ))}
           </g>
 
           {/* GEN II */}
-          <N id="thomas_b" x={170 - NW / 2} y={G2} />
-          <N id="lily" x={360 - NW / 2} y={G2} faded />
+          <N id="thomas_b" x={TB_C - NW / 2} y={G2} />
+          <N id="lily" x={LL_C - NW / 2} y={G2} faded />
           <N id="gavan" x={GAVAN_X} y={G2} highlight />
-          <N id="john_duffy" x={730 - NW / 2} y={G2} faded />
-          <N id="aloysius" x={985 - NW / 2} y={G2} faded />
+          <N id="john_duffy" x={JD_C - NW / 2} y={G2} faded />
+          <N id="aloysius" x={AL_C - NW / 2} y={G2} faded />
 
           {/* Wives flanking Gavan */}
           <N id="mary_catherine" x={GAVAN_X - 270} y={G2 + 130} accent="#f3d9d9" />
           <N id="kathleen" x={GAVAN_X + 200} y={G2 + 130} accent="#e6ead8" />
 
+          {/* First marriage line + label. Label sits over the line midpoint, just above so it never grazes the wife card or Gavan. */}
           <line x1={GAVAN_X - 270 + NW} x2={GAVAN_X} y1={G2 + 130 + NH / 2} y2={G2 + NH - 4} stroke={C.rose} strokeWidth={1.3} />
-          <rect x={GAVAN_X - 200} y={G2 + 130 + NH / 2 - 10} width={68} height={20} fill={C.cream} stroke={C.rose} />
-          <text x={GAVAN_X - 166} y={G2 + 130 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: C.rose, letterSpacing: '0.05em' }}>m. 1912 †19</text>
+          <rect x={GAVAN_X - 84} y={G2 + 104} width={68} height={20} fill={C.cream} stroke={C.rose} />
+          <text x={GAVAN_X - 50} y={G2 + 118} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: C.rose, letterSpacing: '0.05em' }}>m. 1912 †19</text>
 
           <line x1={GAVAN_X + NW} x2={GAVAN_X + 200} y1={G2 + NH - 4} y2={G2 + 130 + NH / 2} stroke={C.sage} strokeWidth={1.3} />
-          <rect x={GAVAN_X + 60} y={G2 + 130 + NH / 2 - 10} width={56} height={20} fill={C.cream} stroke={C.sage} />
-          <text x={GAVAN_X + 88} y={G2 + 130 + NH / 2 + 4} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: '#4a5d3a', letterSpacing: '0.05em' }}>m. 1920</text>
+          <rect x={GAVAN_X + 157} y={G2 + 104} width={56} height={20} fill={C.cream} stroke={C.sage} />
+          <text x={GAVAN_X + 185} y={G2 + 118} textAnchor="middle" style={{ fontFamily: FM, fontSize: 9, fill: '#4a5d3a', letterSpacing: '0.05em' }}>m. 1920</text>
 
           {/* Children */}
           <g stroke={C.taupe} strokeWidth={1} fill="none">
@@ -884,7 +969,8 @@ function FamilyTree({ people, setSelectedPerson }) {
             <line x1={350} x2={350} y1={G3 - 22} y2={G3} />
 
             <line x1={GAVAN_X + 200 + NW / 2} x2={GAVAN_X + 200 + NW / 2} y1={G2 + 130 + NH} y2={G3 - 22} />
-            <line x1={GAVAN_X + 200 + NW / 2} x2={985} y1={G3 - 22} y2={G3 - 22} />
+            {/* horizontal must span both children, not start at Kathleen — otherwise Olga floats */}
+            <line x1={770} x2={985} y1={G3 - 22} y2={G3 - 22} />
             <line x1={770} x2={770} y1={G3 - 22} y2={G3} />
             <line x1={985} x2={985} y1={G3 - 22} y2={G3} />
           </g>
