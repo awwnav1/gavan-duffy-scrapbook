@@ -3,8 +3,11 @@ import { X, MapPin, Search } from 'lucide-react';
 
 // Palette — kept faithful to the original drapery aesthetic.
 const C = {
-  cream: '#f4ebd8', creamDeep: '#ebe0c8', paper: 'rgba(255,255,255,0.55)',
-  ink: '#2a1f1a', inkSoft: '#3d2817', oxblood: '#7a3b2e', taupe: '#6b5137',
+  // Two-tone editorial: near-white pages, cream as accent only.
+  page: '#fbf6ea', pageDeep: '#f6efde',
+  cream: '#f4ebd8', creamDeep: '#ebe0c8',
+  paper: 'rgba(255,255,255,0.7)',
+  ink: '#1f1814', inkSoft: '#3d2817', oxblood: '#7a3b2e', taupe: '#6b5137',
   rule: '#c4a77d', gold: '#b08d3f', rose: '#a86b6b', sage: '#7a8a5d',
 };
 const FD = "'Playfair Display', Georgia, serif";
@@ -236,7 +239,7 @@ export default function GavanDuffyScrapbook() {
         { src: 'https://killineyhistory.ie/wp-content/uploads/2021/07/Undercliffe-with-KH-text-1-1024x792.jpg', caption: 'Undercliff, photographed c.1997. Source: Killiney History Society.' },
         { src: 'https://killineyhistory.ie/wp-content/uploads/2024/02/1888_Undercliff-824x1024.jpg', caption: 'Detail from hand-drawn Ordnance Survey map, Sheet XXVI-17, 1888. Source: OSI / UCD Library.' },
       ],
-      desc: 'The last house. Not a suburban villa but a piece of serious Victorian architecture: designed 1861 by **Deane and Woodward**, the same firm behind the Kildare Street Club, the Museum Building at Trinity College Dublin, and the Oxford Museum. Benjamin Woodward himself, the Ruskinian half of the partnership, drew Undercliff as one of his last works before his early death. The first lease was registered on 13 February 1861 for Francis Robinson, and the Killiney History Society calls Undercliff "undoubtedly Woodward\'s work and the apparent prototype" from which the neighbouring houses on Strathmore Road were derived. L-shaped plan, triangular porch, **two turrets** (one containing the secondary staircase with a triangular dormer, the other on the garden side wrapped in first-floor balconies), a triangular fanlight over the front door, granite architrave in the style of the Kildare Street Club, triple-arched dining-room windows with tall shafts, naturalistically carved stone capitals. Three acres of grounds, a gate lodge, a walled kitchen garden and a tennis court. **Bono lives a few doors away today; Strathmore, the mansion opposite, was for decades the Canadian ambassador\'s residence.** Gavan, who grew up above a shop in the Liberties and sailed steerage to Canada as a ranch hand at 22, bought his way into this in his late sixties. He lived at Undercliff no more than five or six years before he died there on 19 June 1954. He was attended at the end by **Delia Tierney, SRN SCM**, a State Registered Nurse and State Certified Midwife who ran a small private nursing home at "Alma", 3 Tubbermore Avenue, Dalkey, less than two miles away. She had been in practice there since at least 1948, and was evidently engaged to nurse Gavan at home through his final illness. She was the informant on his death cert. Kathleen put the house on the auction market five months later, November 1954. The 1948 auction advert shows the lease still had 408 years to run at £26 a year.\n\n**References:** Killiney History Society page on Undercliff — https://killineyhistory.ie/undercliff/ — includes a photograph of the house c.1997, an 1888 hand-drawn Ordnance Survey map detail showing the site, and a clipping from the **Freeman\'s Journal, Thursday 9 June 1887**. The clipping turned out NOT to be a property notice but a small classified for the sale of a carriage placed by the then-occupant: *"CARRIAGE; for Sale a canoe-shaped Open Carriage, very light and in good order, built by H F Brown and Co, of Redmond\'s hill. Apply C B Undercliffe, Killiney, where it can be seen."* Useful inadvertently because it identifies the 1887 occupant by initials only — **C.B.** — bridging the gap between Francis Robinson (the 1861 lessee) and A. Malcolm (the 1937 owner) by one resident still to be named. The advert image is here: https://killineyhistory.ie/wp-content/uploads/2021/07/The_Freeman_s_Journal_Thu__Jun_9__1887_-1024x173.jpg',
+      desc: 'The last house. Not a suburban villa but a piece of serious Victorian architecture: designed 1861 by **Deane and Woodward**, the same firm behind the Kildare Street Club, the Museum Building at Trinity College Dublin, and the Oxford Museum. Benjamin Woodward himself, the Ruskinian half of the partnership, drew Undercliff as one of his last works before his early death. The first lease was registered on 13 February 1861 for Francis Robinson, and the Killiney History Society calls Undercliff "undoubtedly Woodward\'s work and the apparent prototype" from which the neighbouring houses on Strathmore Road were derived. L-shaped plan, triangular porch, **two turrets** (one containing the secondary staircase with a triangular dormer, the other on the garden side wrapped in first-floor balconies), a triangular fanlight over the front door, granite architrave in the style of the Kildare Street Club, triple-arched dining-room windows with tall shafts, naturalistically carved stone capitals. Three acres of grounds, a gate lodge, a walled kitchen garden and a tennis court. **Bono lives a few doors away today; Strathmore, the mansion opposite, was for decades the Canadian ambassador\'s residence.** Gavan, who grew up above a shop in the Liberties and sailed steerage to Canada as a ranch hand at 22, bought his way into this in his late sixties. He lived at Undercliff no more than five or six years before he died there on 19 June 1954. He was attended at the end by **Delia Tierney, SRN SCM**, a State Registered Nurse and State Certified Midwife who ran a small private nursing home at "Alma", 3 Tubbermore Avenue, Dalkey, less than two miles away. She had been in practice there since at least 1948, and was evidently engaged to nurse Gavan at home through his final illness. She was the informant on his death cert. Kathleen put the house on the auction market five months later, November 1954. The 1948 auction advert shows the lease still had 408 years to run at £26 a year.\n\nHis funeral at **St Anne\u2019s, Shankill** was attended by **Liam Cosgrave TD** (future Taoiseach), P. Dockrell TD, E. Rooney TD, Senator Frank Hugh O\u2019Donnell, Alderman P.S. Doyle, army officers and the entire staff of Gavan Duffy Ltd. He was buried at Deansgrange.\n\n**References:** Killiney History Society page on Undercliff — https://killineyhistory.ie/undercliff/ — includes a photograph of the house c.1997, an 1888 hand-drawn Ordnance Survey map detail showing the site, and a clipping from the **Freeman\'s Journal, Thursday 9 June 1887**. The clipping turned out NOT to be a property notice but a small classified for the sale of a carriage placed by the then-occupant: *"CARRIAGE; for Sale a canoe-shaped Open Carriage, very light and in good order, built by H F Brown and Co, of Redmond\'s hill. Apply C B Undercliffe, Killiney, where it can be seen."* Useful inadvertently because it identifies the 1887 occupant by initials only — **C.B.** — bridging the gap between Francis Robinson (the 1861 lessee) and A. Malcolm (the 1937 owner) by one resident still to be named. The advert image is here: https://killineyhistory.ie/wp-content/uploads/2021/07/The_Freeman_s_Journal_Thu__Jun_9__1887_-1024x173.jpg',
     },
     calgary: {
       name: 'Calgary & Southern Alberta',
@@ -261,7 +264,7 @@ export default function GavanDuffyScrapbook() {
     { y: 1912, label: 'Marries Mary Catherine', href: '#first' },
     { y: 1920, label: 'Marries Kathleen', href: '#second' },
     { y: 1948, label: 'Gavan Duffy Ltd.', href: '#shop' },
-    { y: 1954, label: 'Dies at Killiney', href: '#killiney' },
+    { y: 1954, label: 'Dies at Killiney', href: '#places' },
   ];
 
   // Archive: type counts + filter + search.
@@ -290,8 +293,8 @@ export default function GavanDuffyScrapbook() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: `linear-gradient(180deg, ${C.cream} 0%, ${C.creamDeep} 100%)`,
-      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E"), linear-gradient(180deg, ${C.cream} 0%, ${C.creamDeep} 100%)`,
+      background: `linear-gradient(180deg, ${C.page} 0%, ${C.pageDeep} 100%)`,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)'/%3E%3C/svg%3E"), linear-gradient(180deg, ${C.page} 0%, ${C.pageDeep} 100%)`,
       fontFamily: FB, color: C.ink,
     }}>
       <Masthead anchors={anchors} />
@@ -342,7 +345,8 @@ export default function GavanDuffyScrapbook() {
           attribution="Death certificate — GRO ref 4594706"
         />
 
-        {/* CHAPTER III — First marriage */}
+        {/* CHAPTER III — Marriages & Children */}
+        <ChapterAnchor id="marriages" />
         <ChapterAnchor id="first" />
         <Chapter
           no="III" year="1912" kicker="The first marriage"
@@ -379,23 +383,6 @@ export default function GavanDuffyScrapbook() {
         {/* CHAPTER V — The shop */}
         <ChapterAnchor id="shop" />
         <ShopChapter />
-
-        {/* CHAPTER VI — Killiney */}
-        <ChapterAnchor id="killiney" />
-        <Chapter
-          no="VI" year="1954" kicker="The last house"
-          title="Undercliff, Killiney"
-          lede="A Deane and Woodward house from 1861. Two turrets, a triangular fanlight, naturalistically carved stone capitals, three acres, a gate lodge, a walled kitchen garden and a tennis court. Bono lives a few doors away today; Strathmore, the mansion opposite, was for decades the Canadian ambassador’s residence."
-          body={[
-            "Gavan, who grew up above a shop in the Liberties and sailed steerage to Canada as a ranch hand at 22, bought his way into this in his late sixties. He lived at Undercliff no more than five or six years before he died there on 19 June 1954, attended at the end by Delia Tierney, SRN SCM, who ran a small private nursing home a couple of miles away.",
-            "His funeral at St Anne’s, Shankill, was attended by Liam Cosgrave TD (future Taoiseach), P. Dockrell TD, E. Rooney TD, Senator Frank Hugh O’Donnell, Alderman P.S. Doyle, army officers and the entire staff of Gavan Duffy Ltd. He was buried at Deansgrange.",
-          ]}
-          marginalia={[
-            { kicker: 'The architects', body: 'Deane & Woodward — also the Kildare Street Club, the Museum Building at Trinity College Dublin, and the Oxford Museum.' },
-            { kicker: 'After', body: 'Kathleen put the house on the market five months later, November 1954.', italic: true },
-          ]}
-          hero={<DocSlot kind="Photograph" label="Undercliff, c.1997" source="Killiney History Society" h={260} />}
-        />
 
         {/* THE PEOPLE — family tree */}
         <ChapterAnchor id="family" />
@@ -493,70 +480,83 @@ export default function GavanDuffyScrapbook() {
 function Masthead({ anchors }) {
   const start = 1875, end = 1965, span = end - start;
   return (
-    <header style={{ borderBottom: `2px double ${C.oxblood}`, padding: '40px 24px 28px', textAlign: 'center' }}>
-      <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.oxblood, margin: 0 }}>
-        An archive of the life of
-      </p>
-      <h1 style={{ fontFamily: FD, fontWeight: 900, fontSize: 'clamp(2.4rem, 7vw, 4rem)', margin: '8px 0 4px', letterSpacing: '-0.02em', lineHeight: 1, color: C.ink }}>
-        Patrick Gavan Duffy
-      </h1>
-      <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: '1.05rem', margin: 0, color: C.oxblood }}>
-        Draper of Thomas Street
-      </p>
-      <p style={{ fontFamily: FD, fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', margin: '14px 0 0', color: C.ink, letterSpacing: '0.05em' }}>
-        1880 <span style={{ color: C.taupe }}>—</span> 1954
-      </p>
+    <header style={{
+      background: `radial-gradient(ellipse at top, #2c211b 0%, ${C.ink} 60%, #14100c 100%)`,
+      color: C.cream,
+      padding: '56px 24px 44px', textAlign: 'center',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Subtle paper grain on the dark band */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.18,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")`,
+      }} />
+      <div style={{ position: 'relative' }}>
+        <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', color: C.gold, margin: 0 }}>
+          An archive of the life of
+        </p>
+        <h1 style={{ fontFamily: FD, fontWeight: 900, fontSize: 'clamp(2.8rem, 8.5vw, 5.4rem)', margin: '10px 0 6px', letterSpacing: '-0.025em', lineHeight: 0.95, color: C.cream }}>
+          Patrick <span style={{ fontStyle: 'italic', color: C.gold, fontWeight: 700 }}>Gavan</span> Duffy
+        </h1>
+        <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: '1.15rem', margin: 0, color: '#d4c9a8' }}>
+          Draper of Thomas Street
+        </p>
+        <p style={{ fontFamily: FD, fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)', margin: '18px 0 0', color: C.cream, letterSpacing: '0.06em', fontWeight: 300 }}>
+          1880 <span style={{ color: C.gold }}>—</span> 1954
+        </p>
 
-      {/* Drapery motif: thread-and-button — four generations of drapers */}
-      <svg viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'block', margin: '14px auto 24px', width: 'min(180px, 50vw)', height: 'auto' }}>
-        <path d="M2,12 Q40,5 80,12 T100,12" stroke={C.oxblood} strokeWidth="0.8" fill="none" />
-        <path d="M218,12 Q180,19 140,12 T120,12" stroke={C.oxblood} strokeWidth="0.8" fill="none" />
-        <circle cx="110" cy="12" r="6" fill={C.cream} stroke={C.oxblood} strokeWidth="0.9" />
-        <circle cx="110" cy="12" r="4.4" fill="none" stroke={C.oxblood} strokeWidth="0.4" />
-        <circle cx="107.5" cy="9.5" r="0.6" fill={C.oxblood} />
-        <circle cx="112.5" cy="9.5" r="0.6" fill={C.oxblood} />
-        <circle cx="107.5" cy="14.5" r="0.6" fill={C.oxblood} />
-        <circle cx="112.5" cy="14.5" r="0.6" fill={C.oxblood} />
-      </svg>
+        {/* Drapery motif: thread-and-button on dark */}
+        <svg viewBox="0 0 220 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ display: 'block', margin: '18px auto 30px', width: 'min(180px, 50vw)', height: 'auto' }}>
+          <path d="M2,12 Q40,5 80,12 T100,12" stroke={C.gold} strokeWidth="0.8" fill="none" opacity="0.7" />
+          <path d="M218,12 Q180,19 140,12 T120,12" stroke={C.gold} strokeWidth="0.8" fill="none" opacity="0.7" />
+          <circle cx="110" cy="12" r="6" fill="none" stroke={C.gold} strokeWidth="0.9" />
+          <circle cx="110" cy="12" r="4.4" fill="none" stroke={C.gold} strokeWidth="0.4" opacity="0.6" />
+          <circle cx="107.5" cy="9.5" r="0.6" fill={C.gold} />
+          <circle cx="112.5" cy="9.5" r="0.6" fill={C.gold} />
+          <circle cx="107.5" cy="14.5" r="0.6" fill={C.gold} />
+          <circle cx="112.5" cy="14.5" r="0.6" fill={C.gold} />
+        </svg>
 
-      {/* Hero year scrubber — labels alternate above and below the rail so neighbours don't collide */}
-      <div style={{ maxWidth: 880, margin: '0 auto' }}>
-        <div style={{ position: 'relative', height: 110 }}>
-          <div style={{
-            position: 'absolute', left: 0, right: 0, top: 55, height: 2,
-            backgroundImage: `linear-gradient(to right, ${C.taupe} 0, ${C.taupe} 4px, transparent 4px, transparent 8px)`,
-            backgroundSize: '8px 2px',
-          }} />
-          <div style={{
-            position: 'absolute',
-            left: `${((1880 - start) / span) * 100}%`,
-            width: `${((1954 - 1880) / span) * 100}%`,
-            top: 54, height: 4, background: C.oxblood, opacity: 0.7,
-          }} />
-          {anchors.map((a, i) => {
-            const x = ((a.y - start) / span) * 100;
-            const above = i % 2 === 0;
-            return (
-              <a key={i} href={a.href} title={`${a.y} — ${a.label}`} style={{ position: 'absolute', left: `${x}%`, top: 0, transform: 'translateX(-50%)', textAlign: 'center', textDecoration: 'none', width: 90, height: '100%' }}>
-                {above && (
-                  <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0 }}>
-                    <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.ink, lineHeight: 1 }}>{a.y}</div>
-                    <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: C.taupe, marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
-                  </div>
-                )}
-                <div style={{
-                  width: 13, height: 13, borderRadius: '50%',
-                  background: C.cream, border: `2px solid ${C.oxblood}`, position: 'absolute', top: 49, left: '50%', transform: 'translateX(-50%)',
-                }} />
-                {!above && (
-                  <div style={{ position: 'absolute', top: 70, left: 0, right: 0 }}>
-                    <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.ink, lineHeight: 1 }}>{a.y}</div>
-                    <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: C.taupe, marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
-                  </div>
-                )}
-              </a>
-            );
-          })}
+        {/* Hero year scrubber — labels alternate above and below the rail */}
+        <div style={{ maxWidth: 880, margin: '0 auto' }}>
+          <div style={{ position: 'relative', height: 110 }}>
+            <div style={{
+              position: 'absolute', left: 0, right: 0, top: 55, height: 2,
+              backgroundImage: `linear-gradient(to right, rgba(196,167,125,0.5) 0, rgba(196,167,125,0.5) 4px, transparent 4px, transparent 8px)`,
+              backgroundSize: '8px 2px',
+            }} />
+            <div style={{
+              position: 'absolute',
+              left: `${((1880 - start) / span) * 100}%`,
+              width: `${((1954 - 1880) / span) * 100}%`,
+              top: 54, height: 4, background: C.gold, opacity: 0.85,
+            }} />
+            {anchors.map((a, i) => {
+              const x = ((a.y - start) / span) * 100;
+              const above = i % 2 === 0;
+              return (
+                <a key={i} href={a.href} title={`${a.y} — ${a.label}`} style={{ position: 'absolute', left: `${x}%`, top: 0, transform: 'translateX(-50%)', textAlign: 'center', textDecoration: 'none', width: 90, height: '100%' }}>
+                  {above && (
+                    <div style={{ position: 'absolute', bottom: 62, left: 0, right: 0 }}>
+                      <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.cream, lineHeight: 1 }}>{a.y}</div>
+                      <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: '#d4c9a8', marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
+                    </div>
+                  )}
+                  <div style={{
+                    width: 13, height: 13, borderRadius: '50%',
+                    background: C.ink, border: `2px solid ${C.gold}`, position: 'absolute', top: 49, left: '50%', transform: 'translateX(-50%)',
+                    boxShadow: `0 0 0 2px ${C.ink}`,
+                  }} />
+                  {!above && (
+                    <div style={{ position: 'absolute', top: 70, left: 0, right: 0 }}>
+                      <div style={{ fontFamily: FD, fontWeight: 700, fontSize: 12, color: C.cream, lineHeight: 1 }}>{a.y}</div>
+                      <div style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 11, color: '#d4c9a8', marginTop: 2, lineHeight: 1.15 }}>{a.label}</div>
+                    </div>
+                  )}
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
     </header>
@@ -567,10 +567,8 @@ function StickyNav() {
   const story = [
     { id: 'origins', label: 'Origins' },
     { id: 'alberta', label: 'Alberta' },
-    { id: 'first', label: 'First Marriage' },
-    { id: 'second', label: 'Second Life' },
+    { id: 'marriages', label: 'Marriages & Children' },
     { id: 'shop', label: 'The Shop' },
-    { id: 'killiney', label: 'Killiney' },
   ];
   const reference = [
     { id: 'family', label: 'Family Tree' },
@@ -605,7 +603,7 @@ function StickyNav() {
   });
 
   return (
-    <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(244,235,216,0.96)', backdropFilter: 'blur(8px)', borderBottom: `1px solid ${C.rule}` }}>
+    <div style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(251,246,234,0.96)', backdropFilter: 'blur(8px)', borderBottom: `1px solid ${C.rule}` }}>
       <nav style={{ maxWidth: 1180, margin: '0 auto', padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 22, overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <span style={{ fontFamily: FM, fontSize: 9, letterSpacing: '0.24em', color: C.oxblood, flexShrink: 0 }}>P.G.D.</span>
         {story.map(ch => (
@@ -633,9 +631,9 @@ function ChapterAnchor({ id }) {
 
 function Chapter({ no, year, kicker, title, lede, body, marginalia, hero }) {
   return (
-    <section style={{ padding: '52px 28px 36px', borderBottom: `1px solid ${C.rule}` }}>
+    <section style={{ padding: '64px 28px 44px', borderBottom: `1px solid ${C.rule}` }}>
       <div style={{
-        display: 'grid', gridTemplateColumns: '110px 1fr 220px', gap: 28, alignItems: 'start',
+        display: 'grid', gridTemplateColumns: '110px 1fr 220px', gap: 32, alignItems: 'start',
       }} className="chapter-grid">
         <div style={{ position: 'sticky', top: 130 }}>
           <div style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.3em', color: C.taupe }}>CHAPTER {no}</div>
@@ -648,7 +646,17 @@ function Chapter({ no, year, kicker, title, lede, body, marginalia, hero }) {
           <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.05rem, 1.8vw, 1.3rem)', lineHeight: 1.45, color: C.inkSoft, margin: '0 0 18px' }}>{lede}</p>
           {hero}
           {body.map((p, i) => (
-            <p key={i} style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 14px', textWrap: 'pretty' }}>{p}</p>
+            <p key={i} style={{ fontSize: '1.05rem', lineHeight: 1.7, margin: '0 0 14px', textWrap: 'pretty' }}>
+              {i === 0 ? (
+                <>
+                  <span style={{
+                    float: 'left', fontFamily: FD, fontWeight: 900, fontSize: '4.2rem',
+                    lineHeight: 0.85, color: C.oxblood, paddingRight: 10, paddingTop: 6, marginBottom: -4,
+                  }}>{p.charAt(0)}</span>
+                  {p.slice(1)}
+                </>
+              ) : p}
+            </p>
           ))}
         </div>
         <aside style={{ borderLeft: `1px dashed ${C.taupe}`, paddingLeft: 16 }}>
@@ -676,14 +684,14 @@ function Marginalia({ items }) {
 
 function PullQuoteSection({ eyebrow, text, attribution }) {
   return (
-    <section style={{ padding: '32px 28px', background: 'rgba(255,255,255,0.4)', borderBottom: `1px solid ${C.rule}` }}>
+    <section style={{ padding: '56px 28px', background: C.ink, borderTop: `1px solid ${C.taupe}`, borderBottom: `1px solid ${C.taupe}` }}>
       <div style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
-        <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', color: C.oxblood, margin: 0 }}>{eyebrow}</p>
-        <figure style={{ margin: '14px 0 0', padding: '20px 24px', background: 'rgba(122,59,46,0.06)', borderTop: `2px solid ${C.oxblood}`, borderBottom: `2px solid ${C.oxblood}` }}>
-          <blockquote style={{ margin: 0, fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.3rem, 2.6vw, 1.8rem)', lineHeight: 1.3, color: C.inkSoft }}>
+        <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.28em', color: C.gold, margin: 0 }}>{eyebrow}</p>
+        <figure style={{ margin: '18px 0 0', padding: '4px 0' }}>
+          <blockquote style={{ margin: 0, fontFamily: FD, fontStyle: 'italic', fontSize: 'clamp(1.4rem, 2.8vw, 2rem)', lineHeight: 1.35, color: C.cream }}>
             “{text}”
           </blockquote>
-          <figcaption style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.22em', color: C.oxblood, marginTop: 10, textTransform: 'uppercase' }}>
+          <figcaption style={{ fontFamily: FM, fontSize: 10, letterSpacing: '0.22em', color: C.gold, marginTop: 14, textTransform: 'uppercase' }}>
             — {attribution}
           </figcaption>
         </figure>
@@ -802,10 +810,22 @@ function FamilyTree({ people, setSelectedPerson }) {
   };
 
   return (
-    <section style={{ padding: '60px 28px 40px', borderTop: `1px solid ${C.rule}` }}>
+    <section style={{ padding: '0 0 40px', borderTop: `1px solid ${C.rule}` }}>
+      <div style={{ background: `linear-gradient(180deg, ${C.ink} 0%, #2c211b 100%)`, color: C.cream, padding: '52px 28px 44px', position: 'relative', overflow: 'hidden' }}>
+        <div aria-hidden="true" style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none', opacity: 0.15,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")`,
+        }} />
+        <div style={{ position: 'relative' }}>
+          <p style={{ fontFamily: FM, fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.gold, margin: 0 }}>Chapter — The People</p>
+          <h2 style={{ fontFamily: FD, fontWeight: 900, fontSize: 'clamp(2rem, 4.4vw, 3rem)', margin: '8px 0 6px', color: C.cream, letterSpacing: '-0.02em' }}>Three generations of <span style={{ fontStyle: 'italic', color: C.gold }}>drapers</span></h2>
+          <p style={{ fontFamily: FD, fontStyle: 'italic', fontSize: 17, color: '#d4c9a8', margin: 0, maxWidth: 720 }}>Marrying milliners and barristers' daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State.</p>
+        </div>
+      </div>
+      <div style={{ padding: '28px 28px 0' }}>
       <SectionHeading
-        kicker="Chapter — The People"
-        title="Three generations of drapers"
+        kicker=""
+        title=""
         sub="Marrying milliners and barristers’ daughters, raising priests and nuns and Adelaide emigrants between the famine and the Free State."
       />
       <div style={{ display: 'flex', gap: 16, marginTop: 20, fontFamily: FM, fontSize: 10, letterSpacing: '0.18em', color: C.taupe, flexWrap: 'wrap' }}>
@@ -904,6 +924,7 @@ function FamilyTree({ people, setSelectedPerson }) {
           </div>
         </div>
       </div>
+      </div>
     </section>
   );
 }
@@ -921,7 +942,7 @@ function ArchiveSection({ docs, all, counts, types, filter, setFilter, query, se
       <SectionHeading kicker="Chapter — Sources" title="The paper trail" sub={`${all.length} primary documents — birth, marriage and death certificates; censuses; newspaper clippings; probate grants; passenger manifests.`} />
 
       {/* Search + filter chips */}
-      <div style={{ marginTop: 20, padding: 16, background: 'rgba(255,255,255,0.4)', border: `1px solid ${C.rule}` }}>
+      <div style={{ marginTop: 20, padding: 16, background: C.cream, border: `1px solid ${C.rule}` }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', border: `1px solid ${C.taupe}`, background: '#fbf6e8', maxWidth: 520, marginBottom: 14 }}>
           <Search size={14} style={{ color: C.taupe }} />
           <input
