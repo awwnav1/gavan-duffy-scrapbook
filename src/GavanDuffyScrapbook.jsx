@@ -166,7 +166,7 @@ export default function GavanDuffyScrapbook() {
       name: 'John Patrick Condon',
       dates: 'c.1864 – 26 January 1936',
       role: "Kathleen's father. Barrister at Law; Clerk of the South Dublin Union; pupil of Michael Cusack; old schoolfellow of Father O'Growney.",
-      story: "**Born in Co Meath, c.1864, third son of Michael Smith Condon**, gentleman, of Middle Mountjoy Street, Dublin. The father's identification comes from the King's Inns admission notice carried in both the *Evening Herald* of 1 November 1897 and the *Irish Daily Independent* of 2 November 1897, which describes the new barrister in the standard form: *\"John Patrick Condon, third son of Michael Smith Condon, of Middle Mountjoy Street, in the City of Dublin, gentleman.\"* In 1897-newspaper usage, \"gentleman\" means a man of independent income rather than a working tradesman. So the family had moved from a Meath origin to a respectable Dublin address by John Patrick's late twenties, with at least two older brothers — one of whom is the likely father of his eventual successor at the Union, **J. E. Condon**.\n\n**A schoolfellow of Father Eugene O'Growney.** The *Freeman's Journal* of 28 September 1903 carries a routine list of South Dublin Union Board of Guardians and describes him as *\"John Patrick Condon, B.L., Clerk of the Union; an old schoolfellow of Father O'Growney's.\"* Father Eugene O'Growney (1863–1899) was the author of the Gaelic League's *Simple Lessons in Irish*, the primer that launched the Irish-language revival as a mass movement, and was Vice-President of the Gaelic League. He was born at Ballyfallon near Athboy, Co Meath, in the same year as John Patrick, so the shared school is almost certainly in the Athboy area or at **St Finian's diocesan college, Navan**, the Catholic boys' school for Co Meath in the 1870s. This explains beautifully why John Patrick was an early member of the Gaelic League: he had grown up alongside its principal author.\n\n**As a boy he was also taught by Michael Cusack**, founder of the GAA, per both his obituaries (Cusack taught in various Dublin schools in the 1870s before founding the GAA in 1884). And he was *\"one of the earliest members of the Christian Brothers' Past Pupils' Union,\"* per the *Irish Press* obituary — the CBPPU was set up in Dublin in the 1880s, so being among its earliest members fits with him having been at a Christian Brothers school in the late 1870s, which in turn fits with the move from Co Meath to Middle Mountjoy Street and a Dublin schooling.\n\n**Career at the Dublin Union.** Admitted to the Bar in November 1897, but never took briefs because he held the senior salaried post of **Clerk of the South Dublin Union** at James's Street, the enormous workhouse complex that later became St Kevin's Hospital and, eventually, St James's. He was already in that post by 1901, signing statutory union notices in the *Irish Daily Independent* of 4 and 5 November 1901 and the *Freeman's Journal* of 19 February 1902. **He held the post for at least thirty years.** Both 1936 obituaries make clear he had **retired from the Clerkship a few years before his death**, not died in post as the family record had assumed. By 7 April 1932 his nephew **J. E. Condon** was already the Clerk of the Union (per *Irish Press*), so John Patrick had retired by then, in his late sixties. By November 1934 J. E. Condon's title had been modernised to **Secretary, Board of Assistance** following the Local Government Act 1925. The Condon family kept the senior administrative chair at the Dublin Union and its successor body for at least four decades, c.1900 to 1941.\n\n**The Cosgrave connection sharpened.** W. T. Cosgrave attended John Patrick's funeral. The connection is much closer than civic-administrative network. Cosgrave had personally fought inside the South Dublin Union during Easter Week 1916: he commanded a small detachment that held the Board Room above the main James's Street arch, was cut off from Eamonn Ceannt and Cathal Brugha in the Nurses' Home, and had to bore mouseholes through partition walls to maintain communication. So when Cosgrave attended the 1936 funeral he was not merely a politician paying respects to a senior civil servant: he had personally fought a six-day battle inside the building John Patrick administered. It sharpens the question of whether the two men met during the Rising itself. The Bureau of Military History witness statement WS 297 by **Annie Mannion**, Assistant Matron at the Union during Easter Week, is the most likely place to put John Patrick's name on the Rising directly.\n\n**Residential history.** Married Anna Mary Whyte in 1898 (likely on irishgenealogy.ie civil registers). Early married years at **2 Westland Villas, Tyrconnell Road, Inchicore** (confirmed by the *Evening Herald* birth notice of 20 February 1901). At **90 South Circular Road, Kilmainham** by the 1911 census, walking distance from the Union. At **22 Greenmount Road, Terenure** by the 1926 census. At **Queenstown Castle, Coliemore Road, Dalkey** certainly by 1934. **Died there on 26 January 1936**, aged about 72.\n\n**The two obituaries**, *Evening Herald* 27 January 1936 (\"Former Clerk of Dublin Union\") and *Irish Press* 27 January 1936 (\"Mr. J. P. Condon, B.L.\"), confirm the Cusack and Christian Brothers details, and add that he was *\"very popular with all with whom he came into contact in the discharge of his official duties. Journalists, whose duty brought them to the meetings of the Board, always found him exceedingly considerate and helpful.\"*\n\n**The funeral** took place from the **Church of the Assumption, Dalkey**, after 10 o'clock Mass on Tuesday 28 January 1936, celebrated by Rev J. Creedon C.C., proceeding to **Glasnevin Cemetery**. \"A large attendance,\" per the *Evening Herald* of 28 January 1936. Statutory creditors' notices ran in both papers on 10 March 1936; probate was granted 28 February 1936. Here is the detail that recasts Gavan's courtship: **Gavan's shop at 44 Thomas Street and John Patrick's workplace at James's Street were about four hundred yards apart**, on the same thoroughfare through the Liberties. They worked within a short walk of each other for decades. Gavan was not some stranger who turned up in Terenure to marry the barrister's daughter in 1920. He and John Patrick Condon had almost certainly known each other, at least by sight and reputation, since Gavan was a boy above the shop.",
+      story: "**Born in Co Meath, c.1864, third son of Michael Smith Condon, a senior Dublin civil servant** (born c.1827, died 9 December 1905, age 78, at Palmerston Place, Dublin, of debility — John Patrick himself was the informant on the death cert, in attendance at his father's death, then living at *\"Brookpark Villa, Circular Road\"*). The father's identification comes from two converging sources: the King's Inns admission notice carried in both the *Evening Herald* of 1 November 1897 and the *Irish Daily Independent* of 2 November 1897, which describes the new barrister in the standard form *\"John Patrick Condon, third son of Michael Smith Condon, of Middle Mountjoy Street, in the City of Dublin, gentleman\"*; and the 1905 civil death register entry, which names John Patrick as the deceased's son and gives the father's occupation in plain terms as *\"Civil Servant.\"* The 1897 \"gentleman\" was the King's Inns class style; the 1905 \"civil servant\" was the actual occupation. **The career John Patrick was about to take up at the South Dublin Union ran directly in his father's footsteps.**\n\nSo the family had moved from a Co Meath origin (where John Patrick was born about 1864) to a Dublin north-side address by his late twenties, with at least two older brothers — one of whom is the likely father of his eventual successor at the Union, **J. E. Condon**. The Condon family residence then moved from Middle Mountjoy Street in 1897 to Palmerston Place (less than half a mile away, off Mountjoy Square) by 1905, where Michael Smith Condon died.\n\n**A schoolfellow of Father Eugene O'Growney.** The *Freeman's Journal* of 28 September 1903 carries a routine list of South Dublin Union Board of Guardians and describes him as *\"John Patrick Condon, B.L., Clerk of the Union; an old schoolfellow of Father O'Growney's.\"* Father Eugene O'Growney (1863–1899) was the author of the Gaelic League's *Simple Lessons in Irish*, the primer that launched the Irish-language revival as a mass movement, and was Vice-President of the Gaelic League. He was born at Ballyfallon near Athboy, Co Meath, in the same year as John Patrick, so the shared school is almost certainly in the Athboy area or at **St Finian's diocesan college, Navan**, the Catholic boys' school for Co Meath in the 1870s. This explains beautifully why John Patrick was an early member of the Gaelic League: he had grown up alongside its principal author.\n\n**As a boy he was also taught by Michael Cusack**, founder of the GAA, per both his obituaries (Cusack taught in various Dublin schools in the 1870s before founding the GAA in 1884). And he was *\"one of the earliest members of the Christian Brothers' Past Pupils' Union,\"* per the *Irish Press* obituary — the CBPPU was set up in Dublin in the 1880s, so being among its earliest members fits with him having been at a Christian Brothers school in the late 1870s, which in turn fits with the move from Co Meath to Middle Mountjoy Street and a Dublin schooling.\n\n**Career at the Dublin Union.** Admitted to the Bar in November 1897, but never took briefs because he held the senior salaried post of **Clerk of the South Dublin Union** at James's Street, the enormous workhouse complex that later became St Kevin's Hospital and, eventually, St James's. He was already in that post by 1901, signing statutory union notices in the *Irish Daily Independent* of 4 and 5 November 1901 and the *Freeman's Journal* of 19 February 1902. **He held the post for at least thirty years.** Both 1936 obituaries make clear he had **retired from the Clerkship a few years before his death**, not died in post as the family record had assumed. By 7 April 1932 his nephew **J. E. Condon** was already the Clerk of the Union (per *Irish Press*), so John Patrick had retired by then, in his late sixties. By November 1934 J. E. Condon's title had been modernised to **Secretary, Board of Assistance** following the Local Government Act 1925. The Condon family kept the senior administrative chair at the Dublin Union and its successor body for at least four decades, c.1900 to 1941.\n\n**The Cosgrave connection sharpened.** W. T. Cosgrave attended John Patrick's funeral. The connection is much closer than civic-administrative network. Cosgrave had personally fought inside the South Dublin Union during Easter Week 1916: he commanded a small detachment that held the Board Room above the main James's Street arch, was cut off from Eamonn Ceannt and Cathal Brugha in the Nurses' Home, and had to bore mouseholes through partition walls to maintain communication. So when Cosgrave attended the 1936 funeral he was not merely a politician paying respects to a senior civil servant: he had personally fought a six-day battle inside the building John Patrick administered. It sharpens the question of whether the two men met during the Rising itself. The Bureau of Military History witness statement WS 297 by **Annie Mannion**, Assistant Matron at the Union during Easter Week, is the most likely place to put John Patrick's name on the Rising directly.\n\n**Residential history.** Married Anna Mary Whyte in 1898 (likely on irishgenealogy.ie civil registers). Early married years at **2 Westland Villas, Tyrconnell Road, Inchicore** (confirmed by the *Evening Herald* birth notice of 20 February 1901). At **90 South Circular Road, Kilmainham** by the 1911 census, walking distance from the Union. At **22 Greenmount Road, Terenure** by the 1926 census. At **Queenstown Castle, Coliemore Road, Dalkey** certainly by 1934. **Died there on 26 January 1936**, aged about 72.\n\n**The two obituaries**, *Evening Herald* 27 January 1936 (\"Former Clerk of Dublin Union\") and *Irish Press* 27 January 1936 (\"Mr. J. P. Condon, B.L.\"), confirm the Cusack and Christian Brothers details, and add that he was *\"very popular with all with whom he came into contact in the discharge of his official duties. Journalists, whose duty brought them to the meetings of the Board, always found him exceedingly considerate and helpful.\"*\n\n**The funeral** took place from the **Church of the Assumption, Dalkey**, after 10 o'clock Mass on Tuesday 28 January 1936, celebrated by Rev J. Creedon C.C., proceeding to **Glasnevin Cemetery**. \"A large attendance,\" per the *Evening Herald* of 28 January 1936. Statutory creditors' notices ran in both papers on 10 March 1936; probate was granted 28 February 1936. Here is the detail that recasts Gavan's courtship: **Gavan's shop at 44 Thomas Street and John Patrick's workplace at James's Street were about four hundred yards apart**, on the same thoroughfare through the Liberties. They worked within a short walk of each other for decades. Gavan was not some stranger who turned up in Terenure to marry the barrister's daughter in 1920. He and John Patrick Condon had almost certainly known each other, at least by sight and reputation, since Gavan was a boy above the shop.",
     },
     j_e_condon: {
       name: 'J. E. Condon',
@@ -203,51 +203,110 @@ export default function GavanDuffyScrapbook() {
     thomas_st: {
       name: '42–46 Thomas Street',
       era: '1883–1954',
+      lat: 53.3432, lng: -6.2783,
+      who: [
+        { years: '1883–1917', label: 'Thomas Joseph Duffy (founder) and Mary Duffy née Lyons live above the shop with their children.' },
+        { years: '1880–c.1903', label: 'Gavan grows up here, the eldest son above the family drapery.' },
+        { years: '1903', label: 'Mary Duffy dies here, 30 May 1903, of angina.' },
+        { years: '1917', label: 'Thomas Joseph Duffy still gives Thomas Street as the firm’s address at his death.' },
+        { years: '1918–1954', label: 'PGD as proprietor of Duffy & Sons, then Gavan Duffy Ltd. Two-day mourning closure on his death in June 1954.' },
+      ],
       desc: "The shop. Founded by Thomas Duffy in 1883 at No. 44, expanded through the 1900s across five adjoining buildings. In the heart of the Liberties, between the South Dublin Union and the Guinness brewery. Home above the shop for young Gavan. Witnessed the 1916 Rising on its doorstep, the Civil War, the Emergency. Still the registered address of Gavan Duffy Ltd. at his death.\n\nNewsprint scraps from the run of the firm: in October 1890 the shop supplied the **official commemorative badge of the Father Mathew Centenary** committee, green-and-gold Irish poplin at twopence a piece — a city-scale official commission seven years after the lease was signed. By December 1918 the firm was trading as drapers across Nos. 42, 43 and 44, with a separate millinery branch on South Great George's Street. In August 1939 Gavan applied for the seven-day pub-licence transfer for the premises (heard 28 September 1939). On 21 June 1954, the Monday after his death, the firm posted a black-bordered notice in the *Irish Press*: *\"Owing to the death of Patrick Gavan Duffy (R.I.P.), the premises Gavan Duffy, Ltd., 42/46 Thomas Street will be closed until Wednesday 23rd June, 1954.\"* A two-day mourning closure for the proprietor.",
     },
     south_georges: {
       name: '44 & 45 South Great George\'s Street',
       era: 'by 1918 – c.1922',
+      lat: 53.3434, lng: -6.2653,
+      who: [
+        { years: 'by 1918 – c.1922', label: 'PGD running the millinery branch alongside the Thomas Street drapery.' },
+        { years: 'Aug 1922', label: '£55 compensation award for Civil War damage at this address.' },
+      ],
       desc: "A second Duffy premises, on the south side of the Liffey near Dublin Castle. The 13 December 1918 Evening Telegraph trade ad announces the firm as **\"DRAPERS, 42, 43, 44 THOMAS STREET\"** with a companion business **\"MILLINERS, 44 & 45 STH. GT. GEORGES ST., DUBLIN.\"** So by late 1918 Patrick Gavan Duffy was running two premises: the established drapery on Thomas Street and a separate millinery a mile away on South Great George's Street.\n\nThe second branch survived the 1916 Rising but ran into the Civil War. In August 1922, while O'Connell Street was burning and the Battle of Dublin shaping the new state, Patrick Gavan Duffy appears on a published compensation list at his South Great George's Street address, awarded **£55** for damage there (roughly €4,000 in today's money). The branch likely closed soon after; by 1939 the public licence application names only Thomas Street.",
     },
     scr_66: {
       name: '66 South Circular Road',
       era: '1912–1915',
+      lat: 53.3354, lng: -6.2924,
+      who: [
+        { years: '1912–1915', label: 'PGD (32) and Mary Catherine Byrne (20), newly married Sep 1912.' },
+        { years: 'Jun 1913', label: 'Son Thomas born here.' },
+      ],
       desc: 'First marital home, where Gavan and Mary Catherine set up after their 1912 wedding. Just down the street from her widowed mother at 10 Mountain View Terrace. Son Thomas born here in June 1913.',
     },
     st_michaels: {
       name: "66 St Michael's Terrace",
       era: '1915–c.1918',
+      lat: 53.3343, lng: -6.2778,
+      who: [
+        { years: '1915–c.1918', label: 'PGD (35), Mary Catherine, son Thomas (2–5).' },
+        { years: 'Apr 1916', label: 'Gladys born here, ten days before the Rising.' },
+      ],
       desc: 'Second home on the South Circular Road, a short move from number 66. Daughter Gladys born here in April 1916, ten days before the Rising. Same street, different house; a small step up.',
     },
     herbert_lodge: {
       name: 'Herbert Lodge, Coliemore Road, Dalkey',
       era: '1919',
+      lat: 53.2754, lng: -6.0994,
+      who: [
+        { years: 'early 1919', label: 'PGD (38) and Mary Catherine, moved to the coast for her health.' },
+        { years: 'Feb 1919', label: 'PGD gives Herbert Lodge as his address when reporting his wife’s death.' },
+      ],
       desc: "Gavan's address when he reported Mary Catherine's death in February 1919. Herbert Lodge sits on Coliemore Road, Dalkey — the same seafront road as Queenstown Castle, three minutes' walk from Dalkey railway station. A semi-detached marine residence with three reception rooms, four family bedrooms, and large gardens front and rear, built (per the 1878 Freeman's Journal auction listing) to face the Leslie estate, with a sister property called Percy Lodge next door. The household had moved to the coast for Mary Catherine's health, likely for air and quiet, but she was already in a Clontarf nursing home by the end.",
     },
     tudor_house: {
       name: 'Tudor House, Oulton Road, Clontarf',
       era: '1917 & 1919',
+      lat: 53.3651, lng: -6.1900,
+      who: [
+        { years: 'May 1917', label: 'Thomas Joseph Duffy (the founder) dies here aged c.70 after a five-day illness. PGD (36) at his bedside.' },
+        { years: 'Feb 1919', label: 'Mary Catherine Duffy (27) dies here of influenza. PGD (38) signs the death cert and the press piece names Tudor House as “their residence.”' },
+        { years: 'from c.1917', label: 'Likely arranged through PGD’s brother Thomas B Duffy, then resident in Clontarf.' },
+      ],
       desc: '**Tudor House on Oulton Road, Clontarf was a private residence, not a nursing home in any formal sense** — though the family used it twice as one. The newspaper trail traces a sequence of well-connected private occupants: William Birney (1905), George Birney the solicitor running for Clontarf council on Lord Ardilaun\'s nomination (1908), A. G. Worcester (1914), Mr Healy and his cup-winning golfer sons (1926), M. Downes (1954), Mrs Hughes (1970). It is never advertised as a nursing home, never carries the name of a matron or doctor in residence, and is paired with adjoining Beechfield House on 2½ acres when finally sold at auction in 1967.\n\nThe Duffys used Tudor House twice for end-of-life care, twenty-one months apart. **Gavan\'s father Thomas died here on 13 May 1917, of myocarditis after a five-day illness, with Gavan present at the death.** Twenty-one months later, when Gavan\'s own first wife Mary Catherine fell seriously ill with influenza in early 1919, he brought her there too. **The 1 March 1919 *Evening Telegraph* press piece on her death describes Tudor House as "their residence" — not as a nursing home.** The most likely mechanism for both deaths happening at the same Clontarf address is a family connection through **Thomas B. Duffy, Gavan\'s younger brother**, who married in April 1917 (a month before his father died) and is on the 1926 Free State Census living at **Howth Road, Clontarf West** — within a mile of Oulton Road, in the same parish. Thomas B was a Clontarf resident from at least his 1917 marriage onwards, and was almost certainly the local intermediary who arranged the use of Tudor House through neighbourhood Catholic-circle introductions (the Birneys, Healys and Worcesters of Clontarf moved in the same J.P. and council circles). Whether Thomas B himself spent his earliest married months at Tudor House before settling at Howth Road is an open question that only the 1917 marriage cert or his father\'s probate executor declaration would settle.\n\nThe house went on quietly thereafter. Sold at auction with Beechfield House in May 1967, sold again in July 1995. By the 1990s it was a private residence on the Clontarf seafront like any other.',
     },
     upper_mount: {
       name: '36 Upper Mount Street',
       era: '1923',
+      lat: 53.3367, lng: -6.2486,
+      who: [
+        { years: '30 Mar 1923', label: 'Kathleen Duffy in confinement here. Olga born at Martha Conaty’s private maternity nursing home.' },
+      ],
       desc: "A private maternity nursing home in Georgian Dublin 2, run by Martha Conaty. Where Olga was born on 30 March 1923. Not the family home — just the lying-in address.",
     },
     queenstown: {
       name: 'Queenstown Castle, Coliemore Road, Dalkey',
       era: 'c.1920s–40s',
+      lat: 53.2750, lng: -6.0995,
+      who: [
+        { years: 'c.1920–c.1925', label: 'PGD (40s), Kathleen Condon Duffy, son Thomas (b.1913), daughter Gladys (b.1916). Their first home as a married couple.' },
+        { years: '1923', label: 'Olga born from this address.' },
+        { years: 'c.1925 onwards', label: 'House passes to the Condon side; Kathleen’s brother Francis gives Queenstown Castle as his address on his 1941 marriage cert.' },
+        { years: '1941', label: 'Advertised semi-furnished to let at £132 a year; Anna Mary Whyte newly widowed in residence.' },
+        { years: '1943', label: 'Sold by private treaty through Albert MacArthur.' },
+        { years: '1947 onwards', label: 'Becomes Queenstown Castle Hotel under Martha Carney; later subdivided into apartments.' },
+      ],
       desc: "Gavan and Kathleen's first proper marital home together, after they left Thomas Street in the early 1920s. A castellated marine residence on Coliemore Road, the seafront road overlooking Dalkey Sound and Dalkey Island. Olga was born from here in 1923. By 1926 they had moved on to Newtownsmith in Dún Laoghaire. After the Duffys vacated, the Condons took the house on. Kathleen's brother Francis gave Queenstown Castle as his address on his 1941 marriage cert, so the house passed from son-in-law to father-in-law's household within a decade. Whether Gavan sold it on to John Patrick Condon, let it to him, or something else, a Registry of Deeds or Valuation Office search would settle. Either way, the flow goes Duffy first, Condon after, not the other way round.\n\nNewspaper traces fill in the rest. By April 1941 the house was being advertised semi-furnished to let at £132 a year (a big Dalkey rent for the time, Anna Mary Whyte newly widowed). **In or around July 1943, Anna Mary sold Queenstown Castle by private treaty through the estate agent Albert MacArthur** — the *Irish Press* of 31 July 1943, page 3, lists it under \"Property Sales\" alongside 34 Dame Street, The Downs Manor at Delgany on 160 acres, 11 Harcourt Street and two residences in Pembroke Street. She was 76. By September 1947 Martha Carney had bought it and was applying for a hotel licence — Queenstown Castle Hotel ran through the 1950s. By 1973 it was already subdivided into several residential units; sold again at auction in 1973 and again c.1990 to Jim Delaney of the Dalkey Island Hotel, who converted it into the six luxury apartments it remains today. On the market for €1.3 million in January 2004.",
     },
     newtownsmith: {
       name: 'Newtownsmith, Dún Laoghaire',
       era: '1926',
+      lat: 53.2945, lng: -6.1304,
+      who: [
+        { years: '1926', label: 'PGD (45), Kathleen (35), Thomas (12), Gladys (10), Olga (3), and Maud Brownson, 20-year-old servant. The whole second-marriage household on the first Free State census.' },
+      ],
       desc: 'Family home on the 1926 census — the first census of the Irish Free State. A seafront address between the People\'s Park and Sandycove. Household included Gavan, Kathleen, Thomas, Gladys, Olga, and Maud Brownson, a 20-year-old Church of Ireland servant from Ranelagh.',
     },
     undercliffe: {
       name: 'Undercliff, Killiney',
       era: 'c.1948–1954',
+      lat: 53.2585, lng: -6.1124,
+      who: [
+        { years: 'c.1948–1954', label: 'PGD (67–73) and Kathleen, the last home of the second marriage.' },
+        { years: 'Jun 1954', label: 'PGD dies here. Delia Tierney SRN SCM the attending nurse, informant on the death cert.' },
+        { years: 'Nov 1954', label: 'Kathleen puts the house to auction five months after Gavan’s death.' },
+        { years: '1954–1996', label: 'FX Buckley (Dublin meat merchant) and family in residence for forty-two years.' },
+        { years: '1996', label: 'Sold at auction for over £960,000; Bono a few doors down.' },
+      ],
       images: [
         { src: 'https://killineyhistory.ie/wp-content/uploads/2021/07/Undercliffe-with-KH-text-1-1024x792.jpg', caption: 'Undercliff, photographed c.1997. Source: Killiney History Society.' },
         { src: 'https://killineyhistory.ie/wp-content/uploads/2024/02/1888_Undercliff-824x1024.jpg', caption: 'Detail from hand-drawn Ordnance Survey map, Sheet XXVI-17, 1888. Source: OSI / UCD Library.' },
@@ -416,6 +475,7 @@ export default function GavanDuffyScrapbook() {
           <Route path="/places" element={
             <section style={{ padding: '60px 28px 40px' }}>
               <SectionHeading kicker="Chapter — The Houses" title="From the Liberties to the sea" sub="Eight addresses, fifty years of moves." />
+              <PlacesMap places={places} />
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14, marginTop: 24 }}>
                 {Object.entries(places).map(([key, p]) => (
                   <button key={key} onClick={() => setSelectedPlace(key)} style={{
@@ -609,7 +669,7 @@ function StickyNav() {
     { id: 'family', label: 'Family Tree', path: '/family-tree' },
     { id: 'children', label: 'The Children', path: '/the-children' },
     { id: 'places', label: 'Places & Houses', path: '/places' },
-    { id: 'archive', label: 'Sources', path: '/sources', count: 88 },
+    { id: 'archive', label: 'Sources', path: '/sources', count: 89 },
   ];
 
   const location = useLocation();
@@ -721,7 +781,7 @@ function ReferenceSignposts() {
           Places & Houses →
         </Link>
         <Link to="/sources" style={{ fontFamily: FD, fontSize: 16, color: C.oxblood, textDecoration: 'none', borderBottom: `1px solid ${C.oxblood}`, paddingBottom: 2 }}>
-          The Sources (88) →
+          The Sources (89) →
         </Link>
       </div>
     </section>
@@ -821,6 +881,122 @@ function DocSlot({ kind, label, source, h = 220 }) {
         SOURCE: {source}
       </figcaption>
     </figure>
+  );
+}
+
+// ── Interactive map for the Places page ───────────────────────────────────
+function PlacesMap({ places }) {
+  const mapRef = React.useRef(null);
+  const mapInstance = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!mapRef.current) return;
+    if (mapInstance.current) return;
+    let cancelled = false;
+
+    const startWhenReady = () => {
+      if (cancelled) return;
+      if (typeof window !== 'undefined' && window.L) {
+        initMap();
+      } else {
+        setTimeout(startWhenReady, 80);
+      }
+    };
+
+    const initMap = () => {
+      if (cancelled || mapInstance.current) return;
+      const L = window.L;
+      const map = L.map(mapRef.current, {
+        center: [53.33, -6.22],
+        zoom: 11,
+        scrollWheelZoom: false,
+      });
+      mapInstance.current = map;
+
+      const voyager = L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        { attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: 'abcd', maxZoom: 19 }
+      ).addTo(map);
+
+      const osm = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }
+      );
+
+      const positron = L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+        { attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: 'abcd', maxZoom: 19 }
+      );
+
+      const historic = L.tileLayer(
+        'https://tile.openhistoricalmap.org/styles/main/{z}/{x}/{y}.png',
+        { attribution: '&copy; OpenHistoricalMap contributors', maxZoom: 19, errorTileUrl: '' }
+      );
+
+      L.control.layers(
+        { 'Atlas (warm)': voyager, 'Linen (light)': positron, 'Modern OSM': osm, 'Historic OSM': historic },
+        {},
+        { collapsed: false, position: 'topright' }
+      ).addTo(map);
+
+      const pinIcon = L.divIcon({
+        className: 'gd-pin',
+        html: '<svg viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 1px 2px rgba(31,24,20,0.4));"><path d="M15 0 C7 0 0 7 0 15 c0 11 15 25 15 25 s15 -14 15 -25 c0 -8 -7 -15 -15 -15 z" fill="#7a3b2e" stroke="#1f1814" stroke-width="1.5"/><circle cx="15" cy="14" r="5" fill="#f4ebd8"/></svg>',
+        iconSize: [30, 40],
+        iconAnchor: [15, 40],
+        popupAnchor: [0, -38],
+      });
+
+      const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      const entries = Object.entries(places).filter(([, p]) => typeof p.lat === 'number' && typeof p.lng === 'number');
+      const bounds = L.latLngBounds([]);
+
+      entries.forEach(([, p]) => {
+        const m = L.marker([p.lat, p.lng], { icon: pinIcon }).addTo(map);
+        bounds.extend([p.lat, p.lng]);
+
+        const whoHtml = (p.who && p.who.length)
+          ? p.who.map(w => '<div style="margin-top:7px;line-height:1.45;font-size:12.5px;color:#1f1814;"><div style="font-family:\'Special Elite\',ui-monospace,monospace;font-size:9.5px;color:#7a3b2e;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;">' + escapeHtml(w.years) + '</div>' + escapeHtml(w.label) + '</div>').join('')
+          : '';
+
+        const popupHtml =
+          '<div style="font-family:\'EB Garamond\',Georgia,serif;color:#1f1814;max-width:280px;">' +
+          '<p style="margin:0;font-family:\'Special Elite\',ui-monospace,monospace;font-size:9.5px;letter-spacing:0.22em;color:#7a3b2e;text-transform:uppercase;">' + escapeHtml(p.era) + '</p>' +
+          '<h4 style="margin:4px 0 4px;font-family:\'Playfair Display\',Georgia,serif;font-weight:700;font-size:16px;line-height:1.2;color:#1f1814;">' + escapeHtml(p.name) + '</h4>' +
+          whoHtml +
+          '</div>';
+        m.bindPopup(popupHtml, { maxWidth: 300 });
+      });
+
+      if (entries.length) {
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
+      }
+    };
+
+    startWhenReady();
+
+    return () => {
+      cancelled = true;
+      if (mapInstance.current) {
+        try { mapInstance.current.remove(); } catch (e) { /* noop */ }
+        mapInstance.current = null;
+      }
+    };
+  }, [places]);
+
+  return (
+    <div style={{ marginTop: 22, marginBottom: 30 }}>
+      <div ref={mapRef} style={{
+        height: 'clamp(380px, 60vh, 560px)',
+        width: '100%',
+        border: '1px solid ' + C.rule,
+        background: '#ede2c4',
+        boxShadow: '0 1px 0 ' + C.rule + ' inset, 0 0 0 1px rgba(31,24,20,0.04)',
+      }} />
+      <p style={{ fontFamily: FM, fontSize: 10, color: C.taupe, marginTop: 8, fontStyle: 'italic', letterSpacing: '0.04em' }}>
+        Click a pin to read who lived there and when. The layer panel switches between a warm atlas, a quiet linen base, modern OpenStreetMap, and OpenHistoricalMap (sparse for Dublin but useful where mapped). Calgary, the eighth address in the story, sits off this view.
+      </p>
+    </div>
   );
 }
 
@@ -1327,6 +1503,7 @@ const ARCHIVE = [
   { year: 1903, type: 'Migration', title: 'SS Parisian outbound passenger manifest', src: 'Library & Archives Canada', note: 'Patrick Duffy, 23, junior draper, Dublin, Calgary. Second cabin.' },
   { year: 1903, type: 'Newspaper', title: 'SS Parisian arrival — Quebec, 23 May', src: 'Montreal Gazette, 25 May 1903', note: '"Steamship Parisian arrived at 3 p.m. Saturday."' },
   { year: 1903, type: 'BMD', title: "Death cert — Mary Duffy (Gavan's mother)", src: 'GRO', citation: '4594706', note: 'Died 30 May 1903 at 44 Thomas Street, angina pectoris, three hours.' },
+  { year: 1905, type: 'BMD', title: 'Death cert — Michael Smith Condon (father of John Patrick)', src: 'GRO civil death register, Dublin North 1905', citation: 'Group Reg ID 4796699', note: "Died 9 Dec 1905 at Palmerston Place, Dublin, age 78. Occupation: Civil Servant. Cause: debility. Informant: John P. Condon, son, in attendance, of Brookpark Villa, Circular Road. Registered 12 Dec 1905. Identifies JPC's father (born c.1827) and gives a new JPC residential trace at Brookpark Villa, Circular Road, between Inchicore (1901) and Kilmainham (1911)." },
   { year: 1907, type: 'Newspaper', title: 'Calgary Herald — "Variegated Jags" police court column', src: 'Calgary Herald, 14 Aug 1907', note: 'A possible trace: a Patrick Duffy fined $3.50 for being drunk in public.' },
   { year: 1908, type: 'Newspaper', title: 'Auction of Springfield House & Queenstown Castle', src: 'Irish Independent, 9 Jul 1908', note: 'Re J. Milo Burke, Esq., J.P., D.L., Deceased.' },
   { year: 1909, type: 'Newspaper', title: 'Auction of contents of Queenstown Castle', src: 'Irish Independent, 11 Mar 1909', note: 'Dispersal of Milo Burke’s effects.' },
